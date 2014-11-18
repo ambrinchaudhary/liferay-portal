@@ -1862,6 +1862,12 @@ public class PropsValues {
 
 	public static boolean USER_NOTIFICATION_EVENT_CONFIRMATION_ENABLED = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.USER_NOTIFICATION_EVENT_CONFIRMATION_ENABLED));
 
+	public static final int USERS_ADMIN_ORGANIZATION_COLUMN_LIMIT = GetterUtil.getInteger(PropsUtil.get(PropsKeys.USERS_ADMIN_ORGANIZATION_COLUMN_LIMIT), 50);
+
+	public static final int USERS_ADMIN_ROLE_COLUMN_LIMIT = GetterUtil.getInteger(PropsUtil.get(PropsKeys.USERS_ADMIN_ROLE_COLUMN_LIMIT), 50);
+
+	public static final int USERS_ADMIN_USER_GROUP_COLUMN_LIMIT = GetterUtil.getInteger(PropsUtil.get(PropsKeys.USERS_ADMIN_USER_GROUP_COLUMN_LIMIT), 50);
+
 	public static final boolean USERS_DELETE = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.USERS_DELETE));
 
 	public static final String USERS_EMAIL_ADDRESS_AUTO_SUFFIX = PropsUtil.get(PropsKeys.USERS_EMAIL_ADDRESS_AUTO_SUFFIX);

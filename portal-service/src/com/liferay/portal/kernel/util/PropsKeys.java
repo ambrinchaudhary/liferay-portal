@@ -2637,6 +2637,12 @@ public interface PropsKeys {
 
 	public static final String USER_NOTIFICATION_EVENT_CONFIRMATION_ENABLED = "user.notification.event.confirmation.enabled";
 
+	public static final String USERS_ADMIN_ORGANIZATION_COLUMN_LIMIT = "users.admin.organization.column.limit";
+
+	public static final String USERS_ADMIN_ROLE_COLUMN_LIMIT = "users.admin.role.column.limit";
+
+	public static final String USERS_ADMIN_USER_GROUP_COLUMN_LIMIT = "users.admin.user.group.column.limit";
+
 	public static final String USERS_DELETE = "users.delete";
 
 	public static final String USERS_EMAIL_ADDRESS_AUTO_SUFFIX = "users.email.address.auto.suffix";
