@@ -1,4 +1,3 @@
-<%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
  *
@@ -12,23 +11,14 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
---%>
 
-<%@ include file="/html/portlet/journal/init.jsp" %>
+package com.liferay.portal.kernel.editor.util;
 
-<%
-String referringPortletResource = ParamUtil.getString(request, "referringPortletResource");
+/**
+ * @author Roberto Díaz
+ */
+public class EditorConstants {
 
-Portlet selPortlet = PortletLocalServiceUtil.getPortletById(company.getCompanyId(), referringPortletResource);
-%>
+	public static final String DATA_IMAGE_ID_ATTRIBUTE = "data-image-id";
 
-<aui:script>
-	Liferay.fire(
-		'closeWindow',
-		{
-			id: '_<%= HtmlUtil.escapeJS(selPortlet.getPortletId()) %>_editAsset',
-			portletAjaxable: <%= selPortlet.isAjaxable() %>,
-			refresh: '<%= HtmlUtil.escapeJS(selPortlet.getPortletId()) %>'
-		}
-	);
-</aui:script>
+}
