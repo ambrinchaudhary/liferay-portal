@@ -10,8 +10,31 @@
 		outline: 2px dashed rgba(176, 180, 187, 0.5);
 	}
 
+	.drop-here-info {
+		color: #32A8E6;
+		display: none;
+		font-size: 30px;
+	}
+
 	&.drop-active {
-		outline-color: #118ADE;
+		outline-color: #32A8E6;
+		outline-width: 4px;
+
+		.image-wrapper {
+			opacity: 0.15;
+		}
+
+		.change-image-controls {
+			display: none;
+		}
+
+		.browse-image-controls {
+			display: none;
+		}
+
+		.drop-here-info {
+			display: block;
+		}
 	}
 
 	&.draggable-image {
@@ -28,6 +51,12 @@
 			max-width: inherit;
 		}
 
+		&.drop-enabled {
+			.image-wrapper {
+				height : 100px;
+			}
+		}
+
 		.image-wrapper {
 			height : 400px;
 			overflow: hidden;
@@ -42,7 +71,7 @@
 		max-width: 100%;
 	}
 
-	.browse-image-controls {
+	.browse-image-controls, .drop-here-info {
 		left: 0;
 		padding: 10px;
 		position: absolute;
@@ -52,6 +81,12 @@
 		@include transform(translate(0, -50%));
 
 		width: 100%;
+	}
+
+	.change-image-controls {
+		bottom: 10px;
+		position: absolute;
+		right: 10px;
 	}
 
 	.current-image {
