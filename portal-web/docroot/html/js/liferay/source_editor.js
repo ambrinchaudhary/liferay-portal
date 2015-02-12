@@ -43,20 +43,6 @@ AUI.add(
 
 		var TPL_CODE_CONTAINER = '<div class="{cssClass}"></div>';
 
-		var TPL_FULL_SCREEN = '<div class="lfr-header-fullscreen">' +
-			'<div class="header-left">HTML</div>' +
-			'<div class="header-right">' +
-				'<span id="vertical" class="icon-pause"></span>' +
-				'<span id="horizontal" class="icon-pause icon-rotate-90"></span>' +
-				'<span id="simple" class="icon-stop"></span>'+
-			'</div>'+
-		'</div>' +
-		'<div class="' + CSS_SOURCE_EDITOR_FULLSCREEN + ' vertical">' +
-			'<div class="' + CSS_CONTENT_HTML +' {cssPrefix}"> <div id="{sourceCodeId}" class="{cssCode}"></div> </div>' +
-			'<div class="content-splitter"></div>' +
-			'<div class="alloy-editor alloy-editor-placeholder ' + CSS_CONTENT_PREVIEW + '"> {preview} </div>' +
-		'</div>';
-
 		var TPL_THEME_BUTTON = '<li data-action="{action}"><button type="button" class="btn btn-default btn-lg"><i class="{iconCssClass}"></i></button></li>';
 
 		var TPL_TOOLBAR = '<ul class="{cssClass}">{buttons}</ul>';
@@ -213,97 +199,6 @@ AUI.add(
 						}
 
 						return instance.editor;
-					},
-
-					openFullScreen: function() {
-						var instance = this;
-
-						var sourceCodeId = A.guid();
-
-						var templateContent = Lang.sub(
-							TPL_FULL_SCREEN,
-							{
-								cssCode: instance.getClassName(STR_CODE),
-								cssPrefix: CSS_PREFIX,
-								preview: instance.get(STR_VALUE),
-								sourceCodeId: sourceCodeId
-							}
-						);
-
-						var fullScreenDialog;
-
-						Liferay.Util.openWindow(
-							{
-								dialog: {
-									after: {
-										destroy: function() {
-											instance._currentEditor.destroy();
-
-											instance._currentEditor = instance.getEditor();
-										}
-									},
-									bodyContent: templateContent,
-									constrain: true,
-									cssClass: CSS_DIALOG,
-									destroyOnHide: true,
-									modal: true,
-									toolbars: {
-										footer: [
-											{
-												cssClass: 'btn-primary',
-												label: Liferay.Language.get('done'),
-												on: {
-													click: function() {
-														var currentValue = instance._currentEditor.getValue();
-
-														fullScreenDialog.hide();
-
-														instance.fire(
-															EVENT_FULLSCREEN_DONE,
-															{
-																content: currentValue
-															}
-														);
-													}
-												}
-											},
-											{
-												label: Liferay.Language.get('cancel'),
-												on: {
-													click: function() {
-														fullScreenDialog.hide();
-
-														instance.fire(EVENT_FULLSCREEN_CANCEL);
-													}
-												}
-											}
-										],
-										header: [
-											{
-												cssClass: 'close',
-												label: '\u00D7',
-												on: {
-													click: function(event) {
-														fullScreenDialog.hide();
-
-														event.domEvent.stopPropagation();
-
-														instance.fire(EVENT_FULLSCREEN_CANCEL);
-													}
-												},
-												render: true
-											}
-										]
-									}
-								},
-								title: instance.get('fullScreenTitle')
-							},
-							function(dialog) {
-								fullScreenDialog = dialog;
-
-								instance._renderFullScreenEditor(sourceCodeId);
-							}
-						);
 					},
 
 					_attachFullScreenEvents: function() {
@@ -463,7 +358,7 @@ AUI.add(
 
 						fullScreenEditor.getSession().on('change', A.debounce(onChangeFn, instance.get('previewDelay')));
 
-						instance._currentEditor = fullScreenEditor; window.fseditor = fullScreenEditor;
+						instance._currentEditor = fullScreenEditor;
 
 						AUI.$(STR_DOT + CSS_CONTENT_HTML).append(
 							Lang.sub(

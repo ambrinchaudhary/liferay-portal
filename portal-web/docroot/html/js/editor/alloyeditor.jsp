@@ -386,18 +386,121 @@ boolean skipEditorLoading = GetterUtil.getBoolean((String)request.getAttribute("
 
 			editorSwitch.on('click', switchMode);
 
+		var CSS_CONTENT_HTML = 'content-html';
+		var CSS_DIALOG = 'fullscreen-dialog';
+
+		var CSS_CONTENT_PREVIEW = 'content-preview';
+		var CSS_SOURCE_EDITOR_FULLSCREEN = 'lfr-source-editor-fullscreen';
+
 			editorFullscreen.on(
 				'click',
 				function(event) {
-					var editor = Liferay.component('<%= name %>Source');
 
-					var currentContent = window['<%= name %>'].getHTML();
+					new A.FulScreenSourceEditor({}).render();
 
-					if (currentContent !== editor.get(STR_VALUE)) {
-						editor.set(STR_VALUE, currentContent);
-					}
+					var TPL_FULL_SCREEN = '<div class="lfr-header-fullscreen">' +
+						'<div class="header-left">HTML</div>' +
+						'<div class="header-right">' +
+							'<span id="vertical" class="icon-pause"></span>' +
+							'<span id="horizontal" class="icon-pause icon-rotate-90"></span>' +
+							'<span id="simple" class="icon-stop"></span>'+
+						'</div>'+
+					'</div>' +
+					'<div class="' + CSS_SOURCE_EDITOR_FULLSCREEN + ' vertical">' +
+						'<div class="' + CSS_CONTENT_HTML +' {cssPrefix}"> <div id="{sourceCodeId}" class="{cssCode}"></div> </div>' +
+						'<div class="content-splitter"></div>' +
+						'<div class="alloy-editor alloy-editor-placeholder ' + CSS_CONTENT_PREVIEW + '"> {preview} </div>' +
+					'</div>';
 
-					editor.openFullScreen();
+					var sourceCodeId = A.guid();
+
+					var templateContent = A.Lang.sub(
+						TPL_FULL_SCREEN,
+						{
+							cssCode: 'lfr-source-editor-code',
+							cssPrefix: 'lfr-source-editor',
+							preview: window['<%= name %>'].getHTML(),
+							sourceCodeId: sourceCodeId
+						}
+					);
+
+					var fullScreenDialog;
+
+					Liferay.Util.openWindow(
+						{
+							dialog: {
+								after: {
+									destroy: function() {
+										//instance._currentEditor.destroy();
+
+										//instance._currentEditor = instance.getEditor();
+									}
+								},
+								bodyContent: templateContent,
+								constrain: true,
+								cssClass: CSS_DIALOG,
+								destroyOnHide: true,
+								modal: true,
+								toolbars: {
+									footer: [
+										{
+											cssClass: 'btn-primary',
+											label: Liferay.Language.get('done'),
+											on: {
+												click: function() {
+													//var currentValue = instance._currentEditor.getValue();
+
+													fullScreenDialog.hide();
+
+													instance.fire(
+														EVENT_FULLSCREEN_DONE,
+														{
+															content: currentValue
+														}
+													);
+												}
+											}
+										},
+										{
+											label: Liferay.Language.get('cancel'),
+											on: {
+												click: function() {
+													fullScreenDialog.hide();
+
+													instance.fire(EVENT_FULLSCREEN_CANCEL);
+												}
+											}
+										}
+									],
+									header: [
+										{
+											cssClass: 'close',
+											label: '\u00D7',
+											on: {
+												click: function(event) {
+													fullScreenDialog.hide();
+
+													instance.fire(EVENT_FULLSCREEN_CANCEL);
+												}
+											}
+										}
+									]
+								}
+							},
+							title: 'ahsjdhalsjd'
+						},
+						function(dialog) {
+							fullScreenDialog = dialog;
+
+							var sourceEditor = new A.LiferayFullScreenSourceEditor(
+								{
+									boundingBox: A.one('#' + sourceCodeId),
+									mode: 'html',
+									value: window['<%= name %>'].getHTML()
+								}
+							).render();
+						}
+					);
 				}
 			);
 		</c:if>
