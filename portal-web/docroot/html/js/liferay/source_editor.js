@@ -61,6 +61,12 @@ AUI.add(
 
 		var TPL_TOOLBAR = '<ul class="{cssClass}">{buttons}</ul>';
 
+		var aceDefaultOptions = {
+			fontSize: 13,
+			showInvisibles: false,
+			showPrintMargin: false
+		};
+
 		var LiferaySourceEditor = A.Component.create(
 			{
 				ATTRS: {
@@ -72,14 +78,14 @@ AUI.add(
 							var aceEditor = instance.getEditor();
 
 							return {
-								fullScreenMode: aceDefaultOptions,
 								defaultMode: A.merge(
 									aceDefaultOptions,
 									{
 										maxLines: Math.floor(A.DOM.winHeight() / aceEditor.renderer.lineHeight) - 15,
 										minLines: 10
 									}
-								)
+								),
+								fullScreenMode: aceDefaultOptions
 							};
 						}
 					},

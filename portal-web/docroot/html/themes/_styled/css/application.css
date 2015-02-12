@@ -914,7 +914,7 @@ input.switch {
 	}
 
 	&.vertical {
-		.content-html, .splitter, .content-preview  {
+		.content-html, .content-splitter, .content-preview  {
 			float: left;
 			height: 100%;
 		}
@@ -933,7 +933,7 @@ input.switch {
 	}
 
 	&.horizontal {
-		.content-html, .splitter, .content-preview  {
+		.content-html, .content-splitter, .content-preview  {
 			width: 100%;
 		}
 
