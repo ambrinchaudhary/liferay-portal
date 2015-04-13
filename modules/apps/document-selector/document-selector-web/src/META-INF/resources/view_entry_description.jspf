@@ -14,10 +14,7 @@
  */
 --%>
 
-<%@ include file="/init.jsp" %>
-
 <%
-FileEntry fileEntry = (FileEntry) request.getAttribute("blog_images.jsp-fileEntry");
 FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
 
 String imageURL = DLUtil.getImagePreviewURL(fileEntry, themeDisplay);

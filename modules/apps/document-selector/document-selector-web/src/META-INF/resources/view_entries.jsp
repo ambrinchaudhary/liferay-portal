@@ -81,28 +81,8 @@ iteratorURL.setParameter("type", type);
 		</c:otherwise>
 	</c:choose>
 
-			<liferay-ui:image-selector draggableImage="vertical" fileEntryId="<%= 0 %>" maxFileSize="<%= PrefsPropsUtil.getLong(PropsKeys.BLOGS_IMAGE_COVER_MAX_SIZE) %>" paramName="blogImageFileEntry" uploadURL="<%= coverImageSelectorURL %>" validExtensions='<%= StringUtil.merge(imageExtensions, ", ") %>' />
+		<liferay-ui:image-selector draggableImage="vertical" fileEntryId="<%= 0 %>" maxFileSize="<%= PrefsPropsUtil.getLong(PropsKeys.BLOGS_IMAGE_COVER_MAX_SIZE) %>" paramName="blogImageFileEntry" uploadURL="<%= coverImageSelectorURL %>" validExtensions='<%= StringUtil.merge(imageExtensions, ", ") %>' />
 	</div>
-
-	<c:if test='<%= displayStyle.equals("list") %>'>
-		<table class="table table-bordered">
-			<thead class="table-columns">
-			<tr>
-				<th class="table-header">
-					<liferay-ui:message key="name" />
-				</th>
-				<th class="table-header">
-					<liferay-ui:message key="size" />
-				</th>
-				<th class="table-header">
-					<liferay-ui:message key="status" />
-				</th>
-				<th class="table-header">
-					<liferay-ui:message key="modified-date" />
-				</th>
-			<tr>
-			</thead>
-	</c:if>
 
 	<liferay-ui:search-container
 		emptyResultsMessage="there-are-no-documents-in-this-folder"
@@ -110,44 +90,43 @@ iteratorURL.setParameter("type", type);
 	>
 
 		<%
-			String keywords = ParamUtil.getString(request, "keywords");
+		String keywords = ParamUtil.getString(request, "keywords");
 
-			if (Validator.isNotNull(keywords)) {
-				SearchContext searchContext = SearchContextFactory.getInstance(request);
+		if (Validator.isNotNull(keywords)) {
+			SearchContext searchContext = SearchContextFactory.getInstance(request);
 
-				searchContext.setAttribute("groupId", groupId);
-				searchContext.setAttribute("mimeTypes", DocumentSelectorUtil.getMimeTypes(request));
-				searchContext.setAttribute("paginationType", "regular");
+			searchContext.setAttribute("groupId", groupId);
+			searchContext.setAttribute("mimeTypes", DocumentSelectorUtil.getMimeTypes(request));
+			searchContext.setAttribute("paginationType", "regular");
 
-				int entryEnd = ParamUtil.getInteger(request, "entryEnd", GetterUtil.getInteger(PropsUtil.get(PropsKeys.SEARCH_CONTAINER_PAGE_DEFAULT_DELTA), 20));
+			int entryEnd = ParamUtil.getInteger(request, "entryEnd", GetterUtil.getInteger(PropsUtil.get(PropsKeys.SEARCH_CONTAINER_PAGE_DEFAULT_DELTA), 20));
 
-				searchContext.setEnd(entryEnd);
+			searchContext.setEnd(entryEnd);
 
-				searchContext.setFolderIds(new long[]{folderId});
-				searchContext.setGroupIds(new long[]{groupId});
-				searchContext.setIncludeFolders(false);
+			searchContext.setFolderIds(new long[]{folderId});
+			searchContext.setGroupIds(new long[]{groupId});
+			searchContext.setIncludeFolders(false);
 
-				searchContext.setKeywords(keywords);
+			searchContext.setKeywords(keywords);
 
-				searchContext.setScopeStrict(false);
+			searchContext.setScopeStrict(false);
 
-				int entryStart = ParamUtil.getInteger(request, "entryStart");
+			searchContext.setEnd(searchContainer.getEnd());
+			searchContext.setStart(searchContainer.getStart());
 
-				searchContext.setStart(entryStart);
+			Hits hits = DLAppServiceUtil.search(repositoryId, searchContext);
 
-				Hits hits = DLAppServiceUtil.search(repositoryId, searchContext);
+			searchContainer.setTotal(hits.getLength());
 
-				searchContainer.setTotal(hits.getLength());
+			searchContainer.setResults(DLUtil.getFileEntries(hits));
+		}
+		else {
+			String[] mimeTypes = DocumentSelectorUtil.getMimeTypes(request);
 
-				searchContainer.setResults(DLUtil.getFileEntries(hits));
-			}
-			else {
-				String[] mimeTypes = DocumentSelectorUtil.getMimeTypes(request);
+			searchContainer.setTotal(DLAppServiceUtil.getFileEntriesCount(repositoryId, folderId, mimeTypes));
 
-				searchContainer.setTotal(DLAppServiceUtil.getFileEntriesCount(repositoryId, folderId, mimeTypes));
-
-				searchContainer.setResults(DLAppServiceUtil.getFileEntries(repositoryId, folderId, mimeTypes, searchContainer.getStart(), searchContainer.getEnd(), searchContainer.getOrderByComparator()));
-			}
+			searchContainer.setResults(DLAppServiceUtil.getFileEntries(repositoryId, folderId, mimeTypes, searchContainer.getStart(), searchContainer.getEnd(), searchContainer.getOrderByComparator()));
+		}
 		%>
 
 		<liferay-ui:search-container-row
@@ -156,21 +135,21 @@ iteratorURL.setParameter("type", type);
 			modelVar="fileEntry"
 		>
 
-			<%
-			request.setAttribute("blog_images.jsp-fileEntry", fileEntry);
-
-			String jspPage = "/view_entry_" + displayStyle + ".jsp";
-			%>
-
-			<liferay-util:include page="<%= jspPage %>" servletContext="<%= application %>" />
+			<c:choose>
+				<c:when test="<%= displayStyle.equals("description") %>">
+					<%@ include file="/view_entry_description.jspf" %>
+				</c:when>
+				<c:when test="<%= displayStyle.equals("icon") %>">
+					<%@ include file="/view_entry_icon.jspf" %>
+				</c:when>
+				<c:otherwise >
+					<%@ include file="/view_entry_list.jspf" %>
+				</c:otherwise>
+			</c:choose>
 
 		</liferay-ui:search-container-row>
-
+		<liferay-ui:search-iterator />
 	</liferay-ui:search-container>
-
-	<c:if test='<%= displayStyle.equals("list") %>'>
-		</table>
-	</c:if>
 </div>
 
 <div id="<%= tabId %>ImageViewerPreview"></div>
