@@ -1,5 +1,20 @@
+<%--
+/**
+ * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
+ *
+ * This library is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU Lesser General Public License as published by the Free
+ * Software Foundation; either version 2.1 of the License, or (at your option)
+ * any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
+ * details.
+ */
+--%>
+
 <%@ include file="/init.jsp" %>
-<%@ page import="com.liferay.portlet.documentlibrary.util.DLImpl" %>
 
 <%
 FileEntry fileEntry = (FileEntry) request.getAttribute("blog_images.jsp-fileEntry");
@@ -14,9 +29,9 @@ Integer status = latestFileVersion.getStatus();
 %>
 
 <div class="col-md-3 preview-content">
-	<a href="<%= previewURL %>" class="image-preview" title="<%= imageTitle %>">
-		<img align="left" alt="" src="<%= thumbnailSrc %>"/>
-		<div class="image-info hide">
+	<a class="image-preview" href="<%= previewURL %>" title="<%= imageTitle %>">
+		<img align="left" src="<%= thumbnailSrc %>" />
+		<div class="hide image-info">
 			<dl>
 				<dt><liferay-ui:message key="format" /></dt>
 				<dd>JPG</dd>
