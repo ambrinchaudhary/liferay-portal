@@ -14,32 +14,52 @@
  */
 --%>
 
-<%
-FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
+<liferay-ui:search-container
+	searchContainer="<%= dlSearchContainer %>"
+	total="<%= dlSearchContainer.getTotal() %>"
+	totalVar="dlSearchContainerTotal"
+>
+	<liferay-ui:search-container-results
+		results="<%= dlSearchContainer.getResults() %>"
+		resultsVar="dlSearchContainerResults"
+		/>
 
-String imageURL = DLUtil.getImagePreviewURL(fileEntry, themeDisplay);
-String imageTitle = DLUtil.getTitleWithExtension(fileEntry);
-String iconCssClass = DLUtil.getFileIconCssClass(imageTitle.substring(imageTitle.lastIndexOf(".") + 1));
+	<liferay-ui:search-container-row
+		className="com.liferay.portal.kernel.repository.model.FileEntry"
+		keyProperty="fileEntryId"
+		modelVar="fileEntry"
+	>
 
-String author = fileEntry.getUserName();
-Integer status = latestFileVersion.getStatus();
-%>
+		<%
+		FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
 
-<liferay-ui:search-container-column-text name="title" >
-	<a class="image-preview" href="<%= imageURL %>" title="<%= imageTitle %>">
-		<c:if test="<%= Validator.isNotNull(iconCssClass) %>">
-			<i class="<%= iconCssClass %>"></i>
-		</c:if>
-		<span class="taglib-text">
-			<%= imageTitle %>
-		</span>
-	</a>
-</liferay-ui:search-container-column-text>
+		String imageTitle = DLUtil.getTitleWithExtension(fileEntry);
+		String iconCssClass = DLUtil.getFileIconCssClass(imageTitle.substring(imageTitle.lastIndexOf(".") + 1));
 
-<liferay-ui:search-container-column-text name="size" value="<%= TextFormatter.formatStorageSize(fileEntry.getSize(), locale) %>"/>
+		String author = fileEntry.getUserName();
+		%>
 
-<liferay-ui:search-container-column-status name="status" status="<%= status %>"/>
+		<liferay-ui:search-container-column-text name="title">
+			<a class="image-preview" href="<%= DLUtil.getImagePreviewURL(fileEntry, themeDisplay) %>" title="<%= imageTitle %>">
+				<c:if test="<%= Validator.isNotNull(iconCssClass) %>">
+					<i class="<%= iconCssClass %>"></i>
+				</c:if>
 
-<liferay-ui:search-container-column-text name="modified-date" >
-	<liferay-ui:message arguments="<%= new String[] {LanguageUtil.getTimeDescription(locale, System.currentTimeMillis() - fileEntry.getModifiedDate().getTime(), true), HtmlUtil.escape(author)} %>" key="x-ago-by-x" translateArguments="<%= false %>" />
-</liferay-ui:search-container-column-text>
+				<span class="taglib-text">
+					<%= imageTitle %>
+				</span>
+			</a>
+		</liferay-ui:search-container-column-text>
+
+		<liferay-ui:search-container-column-text name="size" value="<%= TextFormatter.formatStorageSize(fileEntry.getSize(), locale) %>" />
+
+		<liferay-ui:search-container-column-status name="status" status="<%= latestFileVersion.getStatus() %>" />
+
+		<liferay-ui:search-container-column-text name="modified-date">
+			<liferay-ui:message arguments="<%= new String[] {LanguageUtil.getTimeDescription(locale, System.currentTimeMillis() - fileEntry.getModifiedDate().getTime(), true), HtmlUtil.escape(author)} %>" key="x-ago-by-x" translateArguments="<%= false %>" />
+		</liferay-ui:search-container-column-text>
+
+	</liferay-ui:search-container-row>
+
+	<liferay-ui:search-iterator paginate="<%= false %>" searchContainer="<%= dlSearchContainer %>" />
+</liferay-ui:search-container>

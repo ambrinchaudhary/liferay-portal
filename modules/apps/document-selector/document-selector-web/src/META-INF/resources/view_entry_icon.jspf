@@ -14,20 +14,9 @@
  */
 --%>
 
-<%
-FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
-
-String previewURL = DLUtil.getImagePreviewURL(fileEntry, themeDisplay);
-String thumbnailSrc = DLUtil.getPreviewURL(fileEntry, fileEntry.getLatestFileVersion(), themeDisplay, "&imageThumbnail=1");
-String imageTitle = DLUtil.getTitleWithExtension(fileEntry);
-
-String author = fileEntry.getUserName();
-Integer status = latestFileVersion.getStatus();
-%>
-
 <div class="col-md-3 preview-content">
-	<a class="image-preview" href="<%= previewURL %>" title="<%= imageTitle %>">
-		<img align="left" src="<%= thumbnailSrc %>" />
+	<a class="image-preview" href="<%= DLUtil.getImagePreviewURL(fileEntry, themeDisplay) %>" title="<%= imageTitle %>">
+		<img align="left" src="<%= DLUtil.getPreviewURL(fileEntry, fileEntry.getLatestFileVersion(), themeDisplay, "&imageThumbnail=2") %>" />
 		<div class="hide image-info">
 			<dl>
 				<dt><liferay-ui:message key="format" /></dt>
@@ -37,10 +26,10 @@ Integer status = latestFileVersion.getStatus();
 				<dd><%= TextFormatter.formatStorageSize(fileEntry.getSize(), locale) %></dd>
 
 				<dt><liferay-ui:message key="status" />:</dt>
-				<dd><aui:workflow-status showIcon="<%= false %>" showLabel="<%= false %>" status="<%= status %>" /> </dd>
+				<dd><aui:workflow-status showIcon="<%= false %>" showLabel="<%= false %>" status="<%= latestFileVersion.getStatus() %>" /> </dd>
 
 				<dt><liferay-ui:message key="modified" />:</dt>
-				<dd><liferay-ui:message arguments="<%= new String[] {LanguageUtil.getTimeDescription(locale, System.currentTimeMillis() - fileEntry.getModifiedDate().getTime(), true), HtmlUtil.escape(author)} %>" key="x-ago-by-x" translateArguments="<%= false %>" /></dd>
+				<dd><liferay-ui:message arguments="<%= new String[] {LanguageUtil.getTimeDescription(locale, System.currentTimeMillis() - fileEntry.getModifiedDate().getTime(), true), HtmlUtil.escape(fileEntry.getUserName())} %>" key="x-ago-by-x" translateArguments="<%= false %>" /></dd>
 
 			</dl>
 		</div>
