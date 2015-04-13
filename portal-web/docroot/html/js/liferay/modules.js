@@ -449,6 +449,12 @@
 							'uploader'
 						]
 					},
+					'liferay-image-viewer': {
+						path: 'image_viewer.js',
+						requires: [
+							'aui-image-viewer'
+						]
+					},
 					'liferay-inline-editor-base': {
 						path: 'inline_editor_base.js',
 						requires: [
