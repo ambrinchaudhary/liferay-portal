@@ -142,10 +142,8 @@ else {
 
 				String imageURL = DLUtil.getImagePreviewURL(fileEntry, themeDisplay);
 				String imageTitle = DLUtil.getTitleWithExtension(fileEntry);
-				String author = fileEntry.getUserName();
 
 				FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
-				Integer status = latestFileVersion.getStatus();
 			%>
 
 				<c:choose>

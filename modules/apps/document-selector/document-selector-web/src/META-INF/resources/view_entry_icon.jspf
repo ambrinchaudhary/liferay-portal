@@ -37,7 +37,7 @@
 					<dd><%= imageTitle %></dd>
 
 					<dt><liferay-ui:message key="modified" />:</dt>
-					<dd><liferay-ui:message arguments="<%= new String[] {LanguageUtil.getTimeDescription(locale, System.currentTimeMillis() - fileEntry.getModifiedDate().getTime(), true), HtmlUtil.escape(author)} %>" key="x-ago-by-x" translateArguments="<%= false %>" /></dd>
+					<dd><liferay-ui:message arguments="<%= new String[] {LanguageUtil.getTimeDescription(locale, System.currentTimeMillis() - fileEntry.getModifiedDate().getTime(), true), HtmlUtil.escape(fileEntry.getUserName())} %>" key="x-ago-by-x" translateArguments="<%= false %>" /></dd>
 				</dl>
 			</liferay-ui:section>
 
@@ -47,7 +47,7 @@
 					<dd><%= latestFileVersion.getVersion() %></dd>
 
 					<dt><liferay-ui:message key="status" />:</dt>
-					<dd><aui:workflow-status showIcon="<%= false %>" showLabel="<%= false %>" status="<%= status %>" /> </dd>
+					<dd><aui:workflow-status showIcon="<%= false %>" showLabel="<%= false %>" status="<%= latestFileVersion.getStatus() %>" /> </dd>
 				</dl>
 			</liferay-ui:section>
 		</liferay-ui:tabs>
