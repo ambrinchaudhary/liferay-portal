@@ -103,7 +103,7 @@ dlSearchContainer.setResults(PortletFileRepositoryUtil.getPortletFileEntries(sco
 
 				<c:choose>
 					<c:when test='<%= displayStyle.equals("icon") %>'>
-						<%@ include file="/view_entry_icon.jspf" %>
+						<%@ include file="/META-INF/resources/view_entry_icon.jspf" %>
 					</c:when>
 					<c:otherwise>
 						<%@ include file="/META-INF/resources/view_entry_descriptive.jspf" %>
@@ -116,7 +116,7 @@ dlSearchContainer.setResults(PortletFileRepositoryUtil.getPortletFileEntries(sco
 
 		</c:when>
 		<c:otherwise>
-			<%@ include file="/view_entry_list.jspf" %>
+			<%@ include file="/META-INF/resources/view_entry_list.jspf" %>
 		</c:otherwise>
 	</c:choose>
 

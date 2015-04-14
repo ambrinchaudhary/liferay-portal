@@ -23,6 +23,8 @@
 			<a class="image-preview" href="<%= imageURL %>" title="<%= imageTitle %>">
 				<%= imageTitle %>
 			</a>
+
+			<%@ include file="/META-INF/resources/entry_metadata.jspf" %>
 		</p>
 		<p>
 			<small>

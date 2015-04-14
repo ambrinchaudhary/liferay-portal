@@ -49,6 +49,9 @@
 					<%= imageTitle %>
 				</span>
 			</a>
+
+			<%@ include file="/META-INF/resources/entry_metadata.jspf" %>
+
 		</liferay-ui:search-container-column-text>
 
 		<liferay-ui:search-container-column-text name="size" value="<%= TextFormatter.formatStorageSize(fileEntry.getSize(), locale) %>" />
