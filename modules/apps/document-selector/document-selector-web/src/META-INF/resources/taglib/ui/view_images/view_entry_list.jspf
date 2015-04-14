@@ -15,13 +15,13 @@
 --%>
 
 <liferay-ui:search-container
-	searchContainer="<%= dlSearchContainer %>"
-	total="<%= dlSearchContainer.getTotal() %>"
-	totalVar="dlSearchContainerTotal"
+	searchContainer="<%= imageSearchContainer %>"
+	total="<%= imageSearchContainer.getTotal() %>"
+	totalVar="searchContainerTotal"
 >
 	<liferay-ui:search-container-results
-		results="<%= dlSearchContainer.getResults() %>"
-		resultsVar="dlSearchContainerResults"
+		results="<%= imageSearchContainer.getResults() %>"
+		resultsVar="searchContainerResults"
 		/>
 
 	<liferay-ui:search-container-row
@@ -50,7 +50,7 @@
 				</span>
 			</a>
 
-			<%@ include file="/META-INF/resources/entry_metadata.jspf" %>
+			<%@ include file="/META-INF/resources/taglib/ui/view_images/entry_metadata.jspf" %>
 
 		</liferay-ui:search-container-column-text>
 
@@ -64,5 +64,5 @@
 
 	</liferay-ui:search-container-row>
 
-	<liferay-ui:search-iterator paginate="<%= false %>" searchContainer="<%= dlSearchContainer %>" />
+	<liferay-ui:search-iterator paginate="<%= false %>" searchContainer="<%= imageSearchContainer %>" />
 </liferay-ui:search-container>

@@ -19,24 +19,17 @@
 <%
 long groupId = ParamUtil.getLong(request, "groupId", scopeGroupId);
 
-String eventName = ParamUtil.getString(request, "eventName");
-boolean showGroupsSelector = ParamUtil.getBoolean(request, "showGroupsSelector");
-
 String displayStyle = ParamUtil.getString(request, "displayStyle");
 
 if (Validator.isNull(displayStyle)) {
 	displayStyle = "icon";
 }
+
+String eventName = ParamUtil.getString(request, "eventName");
+boolean showGroupsSelector = ParamUtil.getBoolean(request, "showGroupsSelector");
 %>
 
 <aui:form method="post" name="selectDocumentFm">
-
-	<liferay-portlet:renderURL portletName="<%= PortletKeys.DOCUMENT_SELECTOR %>" varImpl="documentSelectorURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
-		<portlet:param name="mvcPath" value="/view.jsp" />
-		<portlet:param name="groupId" value="<%= String.valueOf(groupId) %>" />
-		<portlet:param name="eventName" value="<%= eventName %>" />
-		<portlet:param name="showGroupsSelector" value="<%= String.valueOf(showGroupsSelector) %>" />
-	</liferay-portlet:renderURL>
 
 	<%
 	PortletURL imageSelectorStyleIconURL = PortletURLUtil.clone(currentURLObj, liferayPortletResponse);
@@ -67,10 +60,37 @@ if (Validator.isNull(displayStyle)) {
 	</aui:nav-bar>
 
 	<%
-		request.setAttribute("jsp-displayStyle", displayStyle);
-		request.setAttribute("jsp-tabId", "blogImages"); // TODO pendiente de backend
-		request.setAttribute("jsp-tabName", "Blog images"); // TODO pendiente de backend
+	String[] tabs1Names = DocumentSelectorUtil.getTabs1Names(request);
+
+	long folderId = BlogsEntryLocalServiceUtil.addAttachmentsFolder(themeDisplay.getUserId(), groupId).getFolderId();
+
+	PortletURL iteratorURL = renderResponse.createRenderURL(); // TODO
+
+	iteratorURL.setParameter("mvcPath", "/view.jsp");
+	iteratorURL.setParameter("tabs1Names", StringUtil.merge(tabs1Names));
+	iteratorURL.setParameter("groupId", String.valueOf(groupId));
+	iteratorURL.setParameter("folderId", String.valueOf(folderId));
+	iteratorURL.setParameter("ckEditorFuncNum", DocumentSelectorUtil.getType(request));
+	iteratorURL.setParameter("eventName", eventName);
+	iteratorURL.setParameter("showGroupsSelector", String.valueOf(showGroupsSelector));
+	iteratorURL.setParameter("type", DocumentSelectorUtil.getType(request));
+
+	SearchContainer imageSearchContainer = new SearchContainer(renderRequest, null, null, "curEntry", SearchContainer.DEFAULT_DELTA, iteratorURL, null, null);
+
+	imageSearchContainer.setTotal(PortletFileRepositoryUtil.getPortletFileEntriesCount(scopeGroupId, folderId));
+	imageSearchContainer.setResults(PortletFileRepositoryUtil.getPortletFileEntries(scopeGroupId, folderId));
 	%>
 
-	<liferay-util:include page="/view_entries.jsp" servletContext="<%= application %>" />
+	<portlet:actionURL var="uploadURL">
+		<portlet:param name="struts_action" value="/blogs/cover_image_selector" />
+	</portlet:actionURL>
+
+	<document-selector-ui:view-images
+		displayStyle="<%= displayStyle %>"
+		idPrefix="blogImages"
+		imageSearchContainer="<%= imageSearchContainer %>"
+		servletContext="<%= application %>"
+		tabName="Blog images"
+		uploadURL="<%= uploadURL %>"
+	/>
 </aui:form>

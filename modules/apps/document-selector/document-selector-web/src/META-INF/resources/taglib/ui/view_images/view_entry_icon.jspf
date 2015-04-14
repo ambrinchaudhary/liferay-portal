@@ -19,5 +19,5 @@
 		<img align="left" src="<%= DLUtil.getPreviewURL(fileEntry, fileEntry.getLatestFileVersion(), themeDisplay, "&imageThumbnail=2") %>" />
 	</a>
 
-	<%@ include file="/META-INF/resources/entry_metadata.jspf" %>
+	<%@ include file="/META-INF/resources/taglib/ui/view_images/entry_metadata.jspf" %>
 </aui:col>

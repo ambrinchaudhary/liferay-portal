@@ -24,7 +24,7 @@
 				<%= imageTitle %>
 			</a>
 
-			<%@ include file="/META-INF/resources/entry_metadata.jspf" %>
+			<%@ include file="/META-INF/resources/taglib/ui/view_images/entry_metadata.jspf" %>
 		</p>
 		<p>
 			<small>
