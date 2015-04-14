@@ -64,38 +64,8 @@ dlSearchContainer.setOrderByCol(orderByCol);
 dlSearchContainer.setOrderByComparator(orderByComparator);
 dlSearchContainer.setOrderByType(orderByType);
 
-String keywords = ParamUtil.getString(request, "keywords");
-
-if (Validator.isNotNull(keywords)) {
-	SearchContext searchContext = SearchContextFactory.getInstance(request);
-
-	searchContext.setAttribute("groupId", groupId);
-	searchContext.setAttribute("paginationType", "regular");
-
-	searchContext.setFolderIds(new long[]{folderId});
-	searchContext.setGroupIds(new long[]{groupId});
-	searchContext.setIncludeFolders(false);
-
-	searchContext.setKeywords(keywords);
-
-	searchContext.setScopeStrict(false);
-
-	searchContext.setEnd(dlSearchContainer.getEnd());
-	searchContext.setStart(dlSearchContainer.getStart());
-
-	Repository repository = PortletFileRepositoryUtil.getPortletRepository(groupId, PortletKeys.BLOGS);
-
-	Hits hits = DLAppServiceUtil.search(repository.getRepositoryId(), searchContext);
-
-	dlSearchContainer.setTotal(hits.getLength());
-
-	dlSearchContainer.setResults(DLUtil.getFileEntries(hits));
-}
-else {
-	dlSearchContainer.setTotal(PortletFileRepositoryUtil.getPortletFileEntriesCount(scopeGroupId, folderId));
-
-	dlSearchContainer.setResults(PortletFileRepositoryUtil.getPortletFileEntries(scopeGroupId, folderId));
-}
+dlSearchContainer.setTotal(PortletFileRepositoryUtil.getPortletFileEntriesCount(scopeGroupId, folderId));
+dlSearchContainer.setResults(PortletFileRepositoryUtil.getPortletFileEntries(scopeGroupId, folderId));
 %>
 
 <div class="image-selector-container style-<%= displayStyle %>" id="<%= tabId %>ImageSelectorContainer">
