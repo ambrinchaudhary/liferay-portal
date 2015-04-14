@@ -70,17 +70,16 @@ dlSearchContainer.setResults(PortletFileRepositoryUtil.getPortletFileEntries(sco
 	</portlet:actionURL>
 
 	<c:choose>
-	<c:when test='<%= !displayStyle.equals("icon") %>'>
-	<div class="drop-zone">
+		<c:when test='<%= !displayStyle.equals("icon") %>'>
+			<div class="drop-zone">
 		</c:when>
-
 		<c:otherwise>
 		<div class="col-md-3 preview-content drop-zone">
 			</c:otherwise>
-			</c:choose>
+	</c:choose>
 
-			<liferay-ui:image-selector draggableImage="vertical" fileEntryId="<%= 0 %>" maxFileSize="<%= PrefsPropsUtil.getLong(PropsKeys.BLOGS_IMAGE_COVER_MAX_SIZE) %>" paramName="blogImageFileEntry" uploadURL="<%= coverImageSelectorURL %>" validExtensions='<%= StringUtil.merge(imageExtensions, ", ") %>' />
-		</div>
+	<liferay-ui:image-selector draggableImage="vertical" fileEntryId="<%= 0 %>" maxFileSize="<%= PrefsPropsUtil.getLong(PropsKeys.BLOGS_IMAGE_COVER_MAX_SIZE) %>" paramName="blogImageFileEntry" uploadURL="<%= coverImageSelectorURL %>" validExtensions='<%= StringUtil.merge(imageExtensions, ", ") %>' />
+</div>
 
 	<c:choose>
 		<c:when test='<%= !displayStyle.equals("list") %>'>
