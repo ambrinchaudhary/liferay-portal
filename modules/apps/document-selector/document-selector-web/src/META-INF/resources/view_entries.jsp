@@ -1,9 +1,3 @@
-<%@ page
-	import="com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil" %>
-<%@ page import="com.liferay.portal.model.Repository" %>
-
-<%@ page
-	import="com.liferay.portlet.blogs.service.BlogsEntryLocalServiceUtil" %>
 <%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
@@ -122,7 +116,8 @@ dlSearchContainer.setResults(PortletFileRepositoryUtil.getPortletFileEntries(sco
 
 	<liferay-ui:search-paginator searchContainer="<%= dlSearchContainer %>" />
 </div>
-<div id="<%= tabId %>ImageViewerPreview" class="lfr-image-viewer"></div>
+
+<div class="lfr-image-viewer" id="<%= tabId %>ImageViewerPreview"></div>
 
 <aui:script use="liferay-image-viewer">
 	var viewer = new Liferay.ImageViewer(
