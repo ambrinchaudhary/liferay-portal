@@ -1,3 +1,9 @@
+<%@ page
+	import="com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil" %>
+<%@ page import="com.liferay.portal.model.Repository" %>
+
+<%@ page
+	import="com.liferay.portlet.blogs.service.BlogsEntryLocalServiceUtil" %>
 <%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
@@ -21,25 +27,9 @@ String[] tabs1Names = DocumentSelectorUtil.getTabs1Names(request);
 
 long groupId = ParamUtil.getLong(request, "groupId", scopeGroupId);
 
-long repositoryId = groupId;
+Folder folder = BlogsEntryLocalServiceUtil.addAttachmentsFolder(themeDisplay.getUserId(), groupId);
 
-Folder folder = (Folder)request.getAttribute(WebKeys.DOCUMENT_LIBRARY_FOLDER);
-
-long folderId = BeanParamUtil.getLong(folder, request, "folderId", DLFolderConstants.DEFAULT_PARENT_FOLDER_ID);
-
-if ((folder != null) && (folder.getGroupId() != groupId)) {
-	folder = null;
-
-	folderId = 0;
-}
-
-if (folderId > 0) {
-	folder = DLAppServiceUtil.getFolder(folderId);
-}
-
-if (folder != null) {
-	repositoryId = folder.getRepositoryId();
-}
+long folderId = folder.getFolderId();
 
 String ckEditorFuncNum = DocumentSelectorUtil.getCKEditorFuncNum(request);
 String eventName = ParamUtil.getString(request, "eventName");
@@ -80,12 +70,7 @@ if (Validator.isNotNull(keywords)) {
 	SearchContext searchContext = SearchContextFactory.getInstance(request);
 
 	searchContext.setAttribute("groupId", groupId);
-	searchContext.setAttribute("mimeTypes", DocumentSelectorUtil.getMimeTypes(request));
 	searchContext.setAttribute("paginationType", "regular");
-
-	int entryEnd = ParamUtil.getInteger(request, "entryEnd", GetterUtil.getInteger(PropsUtil.get(PropsKeys.SEARCH_CONTAINER_PAGE_DEFAULT_DELTA), 20));
-
-	searchContext.setEnd(entryEnd);
 
 	searchContext.setFolderIds(new long[]{folderId});
 	searchContext.setGroupIds(new long[]{groupId});
@@ -98,18 +83,18 @@ if (Validator.isNotNull(keywords)) {
 	searchContext.setEnd(dlSearchContainer.getEnd());
 	searchContext.setStart(dlSearchContainer.getStart());
 
-	Hits hits = DLAppServiceUtil.search(repositoryId, searchContext);
+	Repository repository = PortletFileRepositoryUtil.getPortletRepository(groupId, PortletKeys.BLOGS);
+
+	Hits hits = DLAppServiceUtil.search(repository.getRepositoryId(), searchContext);
 
 	dlSearchContainer.setTotal(hits.getLength());
 
 	dlSearchContainer.setResults(DLUtil.getFileEntries(hits));
 }
 else {
-	String[] mimeTypes = DocumentSelectorUtil.getMimeTypes(request);
+	dlSearchContainer.setTotal(PortletFileRepositoryUtil.getPortletFileEntriesCount(scopeGroupId, folderId));
 
-	dlSearchContainer.setTotal(DLAppServiceUtil.getFileEntriesCount(repositoryId, folderId, mimeTypes));
-
-	dlSearchContainer.setResults(DLAppServiceUtil.getFileEntries(repositoryId, folderId, mimeTypes, dlSearchContainer.getStart(), dlSearchContainer.getEnd(), dlSearchContainer.getOrderByComparator()));
+	dlSearchContainer.setResults(PortletFileRepositoryUtil.getPortletFileEntries(scopeGroupId, folderId));
 }
 %>
 
