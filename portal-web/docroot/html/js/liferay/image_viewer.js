@@ -4,6 +4,9 @@ AUI.add(
 		var Lang = A.Lang;
 
 		var CSS_FOOTER_BUTTONS = A.getClassName('image', 'viewer', 'footer', 'buttons'),
+			CSS_FOOTER_CONTROL = A.getClassName('image', 'viewer', 'footer', 'control'),
+			CSS_FOOTER_CONTROL_LEFT = A.getClassName('image', 'viewer', 'footer', 'control', 'left'),
+			CSS_FOOTER_CONTROL_RIGHT = A.getClassName('image', 'viewer', 'footer', 'control', 'rigth'),
 			CSS_IMAGE_CONTAINER = A.getClassName('image', 'viewer', 'base', 'image', 'container'),
 			CSS_IMAGE_CURRENT_CONTAINER = A.getClassName('image', 'viewer', 'base', 'current', 'image'),
 			CSS_IMAGE_INFO = A.getClassName('image', 'viewer', 'base', 'image', 'info'),
@@ -46,10 +49,10 @@ AUI.add(
 
 						//OTRA forma de hacer esto?
 						instance.TPL_IMAGE_CONTAINER = '<div class="' + CSS_IMAGE_CONTAINER + '"> <div class="' + CSS_IMAGE_INFO + '"></div>' +
-            			'<span class="glyphicon glyphicon-time ' + CSS_LOADING_ICON + '"></span></div>';
+						'<span class="glyphicon glyphicon-time ' + CSS_LOADING_ICON + '"></span></div>';
 
-						instance.TPL_CONTROL_LEFT = '<a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a>';
-				        instance.TPL_CONTROL_RIGHT = '<a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a>';
+						instance.TPL_CONTROL_LEFT = '<a href="#" class="' + CSS_FOOTER_CONTROL + ' ' + CSS_FOOTER_CONTROL_LEFT +'"><span class="glyphicon glyphicon-chevron-left"></span></a>';
+						instance.TPL_CONTROL_RIGHT = '<a href="#" class="' + CSS_FOOTER_CONTROL + ' ' + CSS_FOOTER_CONTROL_RIGHT +'"><span class="glyphicon glyphicon-chevron-right"></span></a>';
 					},
 
 					bindUI: function() {
@@ -63,6 +66,13 @@ AUI.add(
 							'.glyphicon-info-sign',
 							instance
 						);
+
+						instance.footerNode.delegate(
+							'click',
+							instance._onControlsClick,
+							'.' + CSS_FOOTER_CONTROL,
+							instance
+						);
 					},
 
 					renderUI: function() {
@@ -73,12 +83,26 @@ AUI.add(
 						instance._renderFooter();
 					},
 
+					_onControlsClick: function(event) {
+						var instance = this;
+
+						event.preventDefault();
+						event.stopImmediatePropagation();
+
+						if (event.currentTarget.hasClass(CSS_FOOTER_CONTROL_LEFT)) {
+							instance.prev();
+						}
+						else if (event.currentTarget.hasClass(CSS_FOOTER_CONTROL_RIGHT)) {
+							instance.next();
+						}
+					},
+
 					_onInfoClick: function(event) {
 						var instance = this;
 
 						event.preventDefault();
 
-						instance.get('contentBox').one('.' + CSS_IMAGE_CURRENT_CONTAINER).toggleClass('show-info');
+						instance.get('contentBox').all('.' + CSS_IMAGE_CONTAINER + ' .' + CSS_IMAGE_INFO).toggleClass('show-info');
 					},
 
 					_showCurrentImage: function() {
@@ -86,9 +110,9 @@ AUI.add(
 
 						A.ImageViewer.superclass._showCurrentImage.apply(instance, arguments);
 
-			            instance._syncCaptionUI();
-			            instance._syncInfoUI();
-			            instance._syncImageInfoUI();
+						instance._syncCaptionUI();
+						instance._syncInfoUI();
+						instance._syncImageInfoUI();
 					},
 
 					_syncImageInfoUI: function() {
@@ -96,13 +120,20 @@ AUI.add(
 
 						var link = instance.get('links').item(instance.get('currentIndex'));
 
-						var infoHTML = link.one('.image-info') ? link.one('.image-info').html() : '';
+						var infoHTML = link.siblings('.image-info') ? link.siblings('.image-info').html() : '';
 
 						var imageInfoNode = instance.get('contentBox').one('.' + CSS_IMAGE_CURRENT_CONTAINER + ' .' + CSS_IMAGE_INFO);
 
 						if (imageInfoNode && infoHTML) {
 							imageInfoNode.html(infoHTML);
 						}
+					},
+
+					_renderControls: function() {
+						var body = A.one('body');
+
+						this._closeEl = A.Node.create(this.TPL_CLOSE);
+						body.append(this._closeEl);
 					},
 
 					_renderFooter: function() {
@@ -116,13 +147,13 @@ AUI.add(
 						instance._captionEl.selectable();
 						container.append(instance._captionEl);
 
-						//container.append(instance.get('controlPrevious'));
+						container.append(A.Node.create(instance.TPL_CONTROL_LEFT));
 
 						instance._infoEl = A.Node.create(instance.TPL_INFO);
 						instance._infoEl.selectable();
 						container.append(instance._infoEl);
 
-						//container.append(instance.get('controlNext'));
+						container.append(A.Node.create(instance.TPL_CONTROL_RIGHT));
 
 						instance._footerButtons = A.Node.create(instance.TPL_FOOTER_BUTTONS);
 						container.append(instance._footerButtons);
@@ -130,7 +161,6 @@ AUI.add(
 				}
 			}
 		);
-
 
 		Liferay.ImageViewer = LfrImageViewer;
 	},

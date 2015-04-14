@@ -142,8 +142,10 @@ else {
 
 				String imageURL = DLUtil.getImagePreviewURL(fileEntry, themeDisplay);
 				String imageTitle = DLUtil.getTitleWithExtension(fileEntry);
+				String author = fileEntry.getUserName();
 
 				FileVersion latestFileVersion = fileEntry.getLatestFileVersion();
+				Integer status = latestFileVersion.getStatus();
 			%>
 
 				<c:choose>
@@ -167,6 +169,7 @@ else {
 
 	<liferay-ui:search-paginator searchContainer="<%= dlSearchContainer %>" />
 </div>
+<div id="<%= tabId %>ImageViewerPreview" class="lfr-image-viewer"></div>
 
 <aui:script use="liferay-image-viewer">
 	var viewer = new Liferay.ImageViewer(
@@ -180,7 +183,8 @@ else {
 			preloadAllImages: false,
 			preloadNeighborImages: true,
 			infoTemplate: '{current} of {total}',
-			showPlayer: false
+			showPlayer: false,
+			zIndex: 1
 		}
 	).render('#<%= tabId %>ImageViewerPreview');
 </aui:script>

@@ -14,24 +14,43 @@
  */
 --%>
 
-<div class="col-md-3 preview-content">
+<aui:col cssClass="preview-content" width="<%= 33 %>">
 	<a class="image-preview" href="<%= DLUtil.getImagePreviewURL(fileEntry, themeDisplay) %>" title="<%= imageTitle %>">
 		<img align="left" src="<%= DLUtil.getPreviewURL(fileEntry, fileEntry.getLatestFileVersion(), themeDisplay, "&imageThumbnail=2") %>" />
-		<div class="hide image-info">
-			<dl>
-				<dt><liferay-ui:message key="format" /></dt>
-				<dd>JPG</dd>
-
-				<dt><liferay-ui:message key="size" /></dt>
-				<dd><%= TextFormatter.formatStorageSize(fileEntry.getSize(), locale) %></dd>
-
-				<dt><liferay-ui:message key="status" />:</dt>
-				<dd><aui:workflow-status showIcon="<%= false %>" showLabel="<%= false %>" status="<%= latestFileVersion.getStatus() %>" /> </dd>
-
-				<dt><liferay-ui:message key="modified" />:</dt>
-				<dd><liferay-ui:message arguments="<%= new String[] {LanguageUtil.getTimeDescription(locale, System.currentTimeMillis() - fileEntry.getModifiedDate().getTime(), true), HtmlUtil.escape(fileEntry.getUserName())} %>" key="x-ago-by-x" translateArguments="<%= false %>" /></dd>
-
-			</dl>
-		</div>
 	</a>
-</div>
+
+	<div class="image-info hide">
+		<liferay-ui:tabs
+			names="file info,versions"
+			refresh="<%= false %>"
+		>
+
+			<liferay-ui:section>
+				<dl>
+					<dt><liferay-ui:message key="format" /></dt>
+					<dd><%= latestFileVersion.getExtension() %></dd>
+
+					<dt><liferay-ui:message key="size" /></dt>
+					<dd><%= TextFormatter.formatStorageSize(fileEntry.getSize(), locale) %></dd>
+
+					<dt><liferay-ui:message key="name" />:</dt>
+					<dd><%= imageTitle %></dd>
+
+					<dt><liferay-ui:message key="modified" />:</dt>
+					<dd><liferay-ui:message arguments="<%= new String[] {LanguageUtil.getTimeDescription(locale, System.currentTimeMillis() - fileEntry.getModifiedDate().getTime(), true), HtmlUtil.escape(author)} %>" key="x-ago-by-x" translateArguments="<%= false %>" /></dd>
+				</dl>
+			</liferay-ui:section>
+
+			<liferay-ui:section>
+				<dl>
+					<dt><liferay-ui:message key="version" />:</dt>
+					<dd><%= latestFileVersion.getVersion() %></dd>
+
+					<dt><liferay-ui:message key="status" />:</dt>
+					<dd><aui:workflow-status showIcon="<%= false %>" showLabel="<%= false %>" status="<%= status %>" /> </dd>
+				</dl>
+			</liferay-ui:section>
+		</liferay-ui:tabs>
+	</div>
+
+</aui:col>
