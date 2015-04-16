@@ -1,0 +1,56 @@
+.lfr-image-viewer {
+	.image-viewer-base-image-info {
+		float: right;
+		text-align: left;
+		transition: width 0.8s, opacity 0.1s ease-out 0.7s;
+		width: 0;
+
+		dt {
+			margin-top: 10px;
+		}
+
+		&.show-info {
+			width: 33%;
+		}
+	}
+
+	.image-viewer-footer-content {
+		bottom: 15px;
+		padding: 0 20px;
+		position: fixed;
+		text-align: center;
+		width: 100%;
+
+		.image-viewer-caption {
+			position: absolute;
+		}
+
+		.image-viewer-footer-control {
+			margin: 0 10px;
+		}
+
+		.image-viewer-thumbnails {
+			display: none;
+		}
+
+		.glyphicon-info-sign {
+			position: absolute;
+			right: 20px;
+		}
+	}
+
+	&.image-viewer-close {
+		left: 20px;
+
+		h4 {
+			float: left;
+			text-shadow: none;
+		}
+
+		span {
+			float: left;
+			margin-right: 10px;
+			margin-top: 5px;
+		}
+	}
+}
