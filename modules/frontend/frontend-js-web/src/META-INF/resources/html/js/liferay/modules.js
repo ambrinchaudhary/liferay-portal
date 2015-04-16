@@ -459,6 +459,12 @@
 							'uploader'
 						]
 					},
+					'liferay-image-viewer': {
+						path: 'image_viewer.js',
+						requires: [
+							'aui-image-viewer'
+						]
+					},
 					'liferay-inline-editor-base': {
 						path: 'inline_editor_base.js',
 						requires: [
@@ -501,6 +507,9 @@
 							'liferay-input-move-boxes',
 							'sortable'
 						]
+					},
+					'liferay-item-selector-dialog': {
+						path: 'item_selector_dialog.js'
 					},
 					'liferay-language': {
 						path: 'language.js'
