@@ -2,6 +2,7 @@ Bundle-Name: Liferay Document Selector Web
 Bundle-SymbolicName: com.liferay.document.selector.web
 Bundle-Version: 1.0.0
 Export-Package: com.liferay.document.selector
+Import-Package: com.liferay.document.selector.browser.taglib.ui,*
 Include-Resource:\
 	classes,\
 	META-INF/resources=src/META-INF/resources
