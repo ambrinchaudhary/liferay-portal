@@ -26,6 +26,19 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class BrowserTag extends IncludeTag {
 
+	public BrowserTag() {
+		super();
+
+		ServletContext customServletContext =
+			ServletContextProvider.getServletContext();
+
+		if (customServletContext == null) {
+			throw new RuntimeException();
+		}
+
+		setServletContext(customServletContext);
+	}
+
 	@Override
 	public boolean isCustomServletContext() {
 		return true;
