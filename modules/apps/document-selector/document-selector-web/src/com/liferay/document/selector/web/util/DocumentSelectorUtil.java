@@ -16,6 +16,7 @@ package com.liferay.document.selector.web.util;
 
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portlet.documentlibrary.util.AudioProcessorUtil;
@@ -49,6 +50,10 @@ public class DocumentSelectorUtil {
 		String tabs1Names = ParamUtil.getString(request, "tabs1Names");
 
 		if (Validator.isNotNull(tabs1Names)) {
+			if (!tabs1Names.contains("blogImages")) {
+				tabs1Names += ",blogImages"; // TODO pruebas
+			}
+
 			return StringUtil.split(tabs1Names);
 		}
 
