@@ -67,7 +67,7 @@ response.setContentType(ContentTypes.TEXT_JAVASCRIPT);
 
 	config.disableObjectResizing = true;
 
-	config.extraPlugins = 'a11yhelpbtn,creole,lfrpopup,wikilink';
+	config.extraPlugins = 'a11yhelpbtn,creole,imageselector,lfrpopup,wikilink';
 
 	config.filebrowserWindowFeatures = 'title=<%= LanguageUtil.get(locale, "browse") %>';
 

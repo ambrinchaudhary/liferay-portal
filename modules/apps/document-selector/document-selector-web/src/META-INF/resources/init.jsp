@@ -20,6 +20,7 @@
 
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
 <%@ taglib uri="http://liferay.com/tld/ddm" prefix="liferay-ddm" %>
+<%@ taglib uri="http://liferay.com/tld/item-selector/ui" prefix="item-selector-ui" %>
 <%@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %>
 <%@ taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %>
 <%@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
@@ -32,6 +33,7 @@ page import="com.liferay.document.selector.web.search.FileEntrySearch" %><%@
 page import="com.liferay.document.selector.web.util.DocumentSelectorUtil" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.configuration.Filter" %><%@
+page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
 page import="com.liferay.portal.kernel.log.Log" %><%@
@@ -57,6 +59,7 @@ page import="com.liferay.portal.kernel.util.Validator" %><%@
 page import="com.liferay.portal.kernel.util.WebKeys" %><%@
 page import="com.liferay.portal.kernel.workflow.WorkflowConstants" %><%@
 page import="com.liferay.portal.model.Group" %><%@
+page import="com.liferay.portal.portletfilerepository.PortletFileRepositoryUtil" %><%@
 page import="com.liferay.portal.security.auth.PrincipalException" %><%@
 page import="com.liferay.portal.security.permission.ActionKeys" %><%@
 page import="com.liferay.portal.service.GroupLocalServiceUtil" %><%@
@@ -67,6 +70,7 @@ page import="com.liferay.portlet.PortletURLUtil" %><%@
 page import="com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil" %><%@
 page import="com.liferay.portlet.asset.model.AssetRenderer" %><%@
 page import="com.liferay.portlet.asset.model.AssetRendererFactory" %><%@
+page import="com.liferay.portlet.blogs.service.BlogsEntryLocalServiceUtil" %><%@
 page import="com.liferay.portlet.documentlibrary.DuplicateFileException" %><%@
 page import="com.liferay.portlet.documentlibrary.DuplicateFolderNameException" %><%@
 page import="com.liferay.portlet.documentlibrary.FileExtensionException" %><%@
