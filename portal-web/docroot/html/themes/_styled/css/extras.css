@@ -664,3 +664,49 @@ input.switch {
 		}
 	}
 }
+
+/* -------- Custom Image Viewer ------*/
+
+.lfr-image-viewer {
+	.image-viewer-base {
+		outline: none;
+	}
+
+	.image-viewer-mask {
+		opacity: 1;
+	}
+
+	.image-viewer-base-image-info {
+		color: #FFF;
+		opacity: 0;
+
+		dt {
+			color: #FFF;
+		}
+
+		dd {
+			color: #777;
+		}
+
+		&.show-info {
+			opacity: 1;
+		}
+	}
+
+	.image-viewer-footer-content {
+		color: #FFF;
+
+		.image-viewer-footer-control {
+			color: #777;
+		}
+
+		.glyphicon-info-sign {
+			color: #FFF;
+			font-size: 25px;
+		}
+	}
+
+	&.image-viewer-close h4 {
+		color: #FFF;
+	}
+}
