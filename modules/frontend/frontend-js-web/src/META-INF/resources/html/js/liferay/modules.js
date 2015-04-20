@@ -502,6 +502,14 @@
 							'sortable'
 						]
 					},
+					'liferay-item-browser': {
+						path: 'item_browser.js',
+						requires: [
+							'liferay-item-viewer',
+							'liferay-portlet-base',
+							'liferay-storage-formatter'
+						]
+					},
 					'liferay-item-selector-dialog': {
 						path: 'item_selector_dialog.js'
 					},
