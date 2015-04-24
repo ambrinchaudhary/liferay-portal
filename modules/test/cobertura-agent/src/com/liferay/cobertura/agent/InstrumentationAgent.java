@@ -14,6 +14,9 @@
 
 package com.liferay.cobertura.agent;
 
+import com.liferay.cobertura.instrument.CoberturaClassFileTransformer;
+import com.liferay.cobertura.instrument.ProjectDataUtil;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -30,7 +33,6 @@ import net.sourceforge.cobertura.coveragedata.CoverageData;
 import net.sourceforge.cobertura.coveragedata.CoverageDataFileHandler;
 import net.sourceforge.cobertura.coveragedata.LineData;
 import net.sourceforge.cobertura.coveragedata.ProjectData;
-import net.sourceforge.cobertura.coveragedata.TouchCollector;
 
 /**
  * @author Shuyang Zhou
@@ -162,10 +164,6 @@ public class InstrumentationAgent {
 				}
 			}
 		}
-
-		// See LPS-52161
-
-		modifiableClasses.add(TouchCollector.class);
 
 		_instrumentation.retransformClasses(
 			modifiableClasses.toArray(new Class<?>[modifiableClasses.size()]));
