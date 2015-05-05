@@ -8,10 +8,10 @@
 		dt {
 			margin-top: 10px;
 		}
+	}
 
-		&.show-info {
-			width: 33%;
-		}
+	.show-info .image-viewer-base-image-info {
+		width: 33%;
 	}
 
 	.image-viewer-footer-content {
@@ -28,6 +28,7 @@
 
 		.image-viewer-footer-control {
 			margin: 0 10px;
+			position: relative;
 		}
 
 		.image-viewer-thumbnails {
@@ -78,10 +79,10 @@
 		dd {
 			color: #777;
 		}
+	}
 
-		&.show-info {
-			opacity: 1;
-		}
+	.show-info .image-viewer-base-image-info {
+		opacity: 1;
 	}
 
 	.image-viewer-footer-content {
