@@ -16,9 +16,11 @@ package com.liferay.gradle.plugins;
 
 import com.liferay.gradle.plugins.extensions.LiferayExtension;
 import com.liferay.gradle.plugins.tasks.BuildCssTask;
-import com.liferay.gradle.plugins.tasks.BuildXsdTask;
 import com.liferay.gradle.plugins.tasks.DirectDeployTask;
+import com.liferay.gradle.plugins.wsdd.builder.BuildWSDDTask;
+import com.liferay.gradle.plugins.wsdd.builder.WSDDBuilderPlugin;
 import com.liferay.gradle.plugins.wsdl.builder.BuildWSDLTask;
+import com.liferay.gradle.plugins.xsd.builder.BuildXSDTask;
 import com.liferay.gradle.util.FileUtil;
 import com.liferay.gradle.util.GradleUtil;
 import com.liferay.gradle.util.Validator;
@@ -67,13 +69,6 @@ public class LiferayWebAppPlugin extends LiferayJavaPlugin {
 	public static final String DEPLOY_TASK_NAME = "deploy";
 
 	public static final String DIRECT_DEPLOY_TASK_NAME = "directDeploy";
-
-	@Override
-	public void apply(Project project) {
-		super.apply(project);
-
-		configureWebAppDirName(project);
-	}
 
 	protected Copy addTaskDeploy(Project project) {
 		Copy copy = GradleUtil.addTask(project, DEPLOY_TASK_NAME, Copy.class);
@@ -167,6 +162,11 @@ public class LiferayWebAppPlugin extends LiferayJavaPlugin {
 	}
 
 	@Override
+	protected void configureProperties(Project project) {
+		configureWebAppDirName(project);
+	}
+
+	@Override
 	protected void configureSourceSetMain(Project project) {
 		SourceSet sourceSet = GradleUtil.getSourceSet(
 			project, SourceSet.MAIN_SOURCE_SET_NAME);
@@ -198,14 +198,37 @@ public class LiferayWebAppPlugin extends LiferayJavaPlugin {
 		buildCssTask.setRootDirs(getWebAppDir(project));
 	}
 
-	protected void configureTaskBuildWSDLDestinationDir(
-		BuildWSDLTask buildWSDLTask) {
+	@Override
+	protected void configureTaskBuildWSDD(Project project) {
+		super.configureTaskBuildWSDD(project);
 
-		File destinationDir = buildWSDLTask.getDestinationDir();
+		BuildWSDDTask buildWSDDTask = (BuildWSDDTask)GradleUtil.getTask(
+			project, WSDDBuilderPlugin.BUILD_WSDD_TASK_NAME);
 
-		if (!destinationDir.exists()) {
-			buildWSDLTask.setDestinationDir("docroot/WEB-INF/lib");
-		}
+		configureTaskBuildWSDDInputFileName(buildWSDDTask);
+		configureTaskBuildWSDDServerConfigFileName(buildWSDDTask);
+	}
+
+	protected void configureTaskBuildWSDDInputFileName(
+		BuildWSDDTask buildWSDDTask) {
+
+		Project project = buildWSDDTask.getProject();
+
+		File inputFile = new File(getWebAppDir(project), "WEB-INF/service.xml");
+
+		buildWSDDTask.setInputFileName(project.relativePath(inputFile));
+	}
+
+	protected void configureTaskBuildWSDDServerConfigFileName(
+		BuildWSDDTask buildWSDDTask) {
+
+		Project project = buildWSDDTask.getProject();
+
+		File serverConfigFile = new File(
+			getWebAppDir(project), "WEB-INF/server-config.wsdd");
+
+		buildWSDDTask.setServerConfigFileName(
+			project.relativePath(serverConfigFile));
 	}
 
 	@Override
@@ -213,20 +236,18 @@ public class LiferayWebAppPlugin extends LiferayJavaPlugin {
 		File inputDir = buildWSDLTask.getInputDir();
 
 		if (!inputDir.exists()) {
-			buildWSDLTask.setInputDir("docroot/WEB-INF/wsdl");
+			inputDir = new File(
+				getWebAppDir(buildWSDLTask.getProject()), "WEB-INF/wsdl");
+
+			buildWSDLTask.setInputDir(inputDir);
 		}
 	}
 
-	protected void configureTaskBuildXsdRootDir(BuildXsdTask buildXsdTask) {
-		if (buildXsdTask.getRootDir() != null) {
-			return;
-		}
+	protected void configureTaskBuildXSDInputDir(BuildXSDTask buildXSDTask) {
+		File inputDir = new File(
+			getWebAppDir(buildXSDTask.getProject()), "WEB-INF/xsd");
 
-		Project project = buildXsdTask.getProject();
-
-		File rootDir = new File(getWebAppDir(project), "WEB-INF/xsd");
-
-		buildXsdTask.setRootDir(rootDir);
+		buildXSDTask.setInputDir(inputDir);
 	}
 
 	protected void configureTaskDeploy(
