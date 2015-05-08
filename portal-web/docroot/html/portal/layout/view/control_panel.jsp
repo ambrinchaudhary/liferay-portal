@@ -173,13 +173,18 @@ request.setAttribute("control_panel.jsp-ppid", ppid);
 			</div>
 		</div>
 		<aui:script use="liferay-control-panel">
+
+			<%
+			String controlPanelMenuPortletId = PortletProviderUtil.getPortletId(PortalAdministrationApplicationType.SiteAdmin.CLASS_NAME, PortletProvider.Action.VIEW);
+			%>
+
 			new Liferay.ControlPanel(
 				{
 					panelContainerId: 'controlPanelMenuAddContentPanelContainer',
-					searchPanelId: '_160_searchPanel',
+					searchPanelId: '_<%= controlPanelMenuPortletId %>_searchPanel',
 					sidebarHiddenAttr: 'controlPanelSidebarHidden',
 					sidebarMinimizedAttr: 'control-panel-sidebar-minimized',
-					togglerComponentId: '_160_controlPanelMenuAddContentPanelContainer',
+					togglerComponentId: '_<%= controlPanelMenuPortletId %>_controlPanelMenuAddContentPanelContainer',
 				}
 			);
 		</aui:script>
