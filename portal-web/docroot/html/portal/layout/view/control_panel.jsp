@@ -155,7 +155,10 @@ request.setAttribute("control_panel.jsp-ppid", ppid);
 
 									<c:if test="<%= !singlePortlet %>">
 										<aui:col cssClass="panel-page-menu" width="<%= 25 %>">
-											<liferay-portlet:runtime portletName="160" />
+											<liferay-portlet:runtime
+												portletProviderAction="<%= PortletProvider.Action.VIEW %>"
+												portletProviderClassName="<%= PortalAdministrationApplicationType.SiteAdmin.CLASS_NAME %>"
+											/>
 										</aui:col>
 									</c:if>
 
@@ -169,6 +172,22 @@ request.setAttribute("control_panel.jsp-ppid", ppid);
 				</div>
 			</div>
 		</div>
+		<aui:script use="liferay-control-panel">
+
+			<%
+			String controlPanelMenuPortletId = PortletProviderUtil.getPortletId(PortalAdministrationApplicationType.SiteAdmin.CLASS_NAME, PortletProvider.Action.VIEW);
+			%>
+
+			new Liferay.ControlPanel(
+				{
+					panelContainerId: 'controlPanelMenuAddContentPanelContainer',
+					searchPanelId: '_<%= controlPanelMenuPortletId %>_searchPanel',
+					sidebarHiddenAttr: 'controlPanelSidebarHidden',
+					sidebarMinimizedAttr: 'control-panel-sidebar-minimized',
+					togglerComponentId: '_<%= controlPanelMenuPortletId %>_controlPanelMenuAddContentPanelContainer',
+				}
+			);
+		</aui:script>
 	</c:when>
 	<c:otherwise>
 		<%@ include file="/html/portal/layout/view/panel_content.jspf" %>
