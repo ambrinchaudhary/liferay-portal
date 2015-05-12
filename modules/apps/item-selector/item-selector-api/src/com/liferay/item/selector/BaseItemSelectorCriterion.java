@@ -14,9 +14,9 @@
 
 package com.liferay.item.selector;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 /**
  * @author Iván Zaera
@@ -25,18 +25,18 @@ public abstract class BaseItemSelectorCriterion
 	implements ItemSelectorCriterion {
 
 	@Override
-	public Set<Class<?>> getAvailableReturnTypes() {
+	public List<Class<?>> getAvailableReturnTypes() {
 		return _availableReturnTypes;
 	}
 
 	@Override
-	public Set<Class<?>> getDesiredReturnTypes() {
+	public List<Class<?>> getDesiredReturnTypes() {
 		return _desiredReturnTypes;
 	}
 
 	@Override
 	public void setDesiredReturnTypes(Class<?>... desiredReturnTypes) {
-		Set<Class<?>> desiredReturnTypesSet = new HashSet<>();
+		List<Class<?>> desiredReturnTypesSet = new ArrayList<>();
 
 		Collections.addAll(desiredReturnTypesSet, desiredReturnTypes);
 
@@ -49,20 +49,20 @@ public abstract class BaseItemSelectorCriterion
 		_desiredReturnTypes = desiredReturnTypesSet;
 	}
 
-	protected static Set<Class<?>> getInmutableSet(Class<?>... classes) {
-		Set<Class<?>> set = new HashSet<>();
+	protected static List<Class<?>> getInmutableList(Class<?>... classes) {
+		List<Class<?>> list = new ArrayList<>();
 
-		Collections.addAll(set, classes);
+		Collections.addAll(list, classes);
 
-		return Collections.unmodifiableSet(set);
+		return Collections.unmodifiableList(list);
 	}
 
-	protected BaseItemSelectorCriterion(Set<Class<?>> availableReturnTypes) {
+	protected BaseItemSelectorCriterion(List<Class<?>> availableReturnTypes) {
 		_availableReturnTypes = availableReturnTypes;
 		_desiredReturnTypes = _availableReturnTypes;
 	}
 
-	private final Set<Class<?>> _availableReturnTypes;
-	private Set<Class<?>> _desiredReturnTypes;
+	private final List<Class<?>> _availableReturnTypes;
+	private List<Class<?>> _desiredReturnTypes;
 
 }
