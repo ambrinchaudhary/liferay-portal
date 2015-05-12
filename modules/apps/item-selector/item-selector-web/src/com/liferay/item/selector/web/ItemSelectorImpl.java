@@ -115,8 +115,7 @@ public class ItemSelectorImpl implements ItemSelector {
 
 				itemSelectorViewRenderers.add(
 					new ItemSelectorViewRendererImpl(
-						itemSelectorView, itemSelectorCriterion, portletURL,
-						itemSelectedCallback));
+						itemSelectorView, itemSelectorCriterion, portletURL));
 			}
 		}
 
