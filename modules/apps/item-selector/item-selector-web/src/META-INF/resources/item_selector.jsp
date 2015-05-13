@@ -20,8 +20,22 @@
 LocalizedItemSelectorRendering localizedItemSelectorRendering = LocalizedItemSelectorRendering.get(liferayPortletRequest);
 %>
 
-<aui:script>
-	//TODO
+<aui:script use="aui-base">
+
+	Liferay.on(
+		'<portlet:namespace/>selectedItem',
+		function(event) {
+			var selectPageMessage = A.one('#<portlet:namespace />selectPageMessage');
+
+			var button = selectPageMessage.one('.selector-button');
+
+			button.attr('data-returnType', event.returnType);
+			button.attr('data-value', event.value);
+
+			Liferay.Util.selectEntityHandler('#<portlet:namespace />selectPageMessage', '<%= HtmlUtil.escapeJS(localizedItemSelectorRendering.getItemSelectedEventName()) %>');
+		}
+	);
+
 </aui:script>
 
 <liferay-ui:tabs names="<%= StringUtil.merge(localizedItemSelectorRendering.getTitles()) %>" refresh="<%= false %>" type="pills" value="<%= localizedItemSelectorRendering.getSelectedTab() %>">
@@ -46,3 +60,7 @@ LocalizedItemSelectorRendering localizedItemSelectorRendering = LocalizedItemSel
 	%>
 
 </liferay-ui:tabs>
+
+<div id="<portlet:namespace />selectPageMessage">
+	<aui:button cssClass="selector-button" value="done" />
+</div>

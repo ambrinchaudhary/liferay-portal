@@ -147,8 +147,14 @@ if (group.getPrivateLayoutsPageCount() > 0) {
 
 	button.on(
 		'click',
-		function() {
-			//TODO
+		function(event) {
+			Liferay.fire(
+				'<portlet:namespace/>selectedItem',
+				{
+					returnType : event.target.getAttribute('data-returnType'),
+					value : event.target.getAttribute('data-value')
+				}
+			);
 		}
 	);
 
@@ -176,12 +182,43 @@ if (group.getPrivateLayoutsPageCount() > 0) {
 
 			messageType = 'info';
 
-			button.attr('data-url', url);
+			<%
+			List<Class<?>> desiredReturnTypes = layoutItemSelectorCriterion.getDesiredReturnTypes();
 
-			button.attr('data-uuid', uuid);
+			String returnType = StringPool.BLANK;
 
-			button.attr('data-layoutpath', messageText);
-		}
+			for (Class<?> desiredReturnType : desiredReturnTypes) {
+				if (desiredReturnType == URL.class) {
+					returnType = URL.class.getName();
+				}
+				else if (desiredReturnType == UUID.class) {
+					returnType = UUID.class.getName();
+				}
+				else {
+					continue;
+				}
+
+				break;
+			}
+
+			if (Validator.isNull(returnType)) {
+				throw new RuntimeException();
+			}
+			%>
+
+			button.attr('data-returnType', '<%= returnType %>' );
+
+			<c:choose>
+				<c:when test="<%= returnType.equals(URL.class.getName()) %>">
+					button.attr('data-value', url);
+				</c:when>
+				<c:when test="<%= returnType.equals(UUID.class.getName()) %>">
+					button.attr('data-value', uuid);
+				</c:when>
+			</c:choose>
+
+		button.attr('data-layoutpath', messageText);
+	}
 
 		Liferay.Util.toggleDisabled(button, disabled);
 
