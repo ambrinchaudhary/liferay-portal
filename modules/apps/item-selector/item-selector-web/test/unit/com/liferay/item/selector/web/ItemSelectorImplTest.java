@@ -32,6 +32,8 @@ import java.util.Map;
 
 import javax.portlet.PortletRequest;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -108,10 +110,10 @@ public class ItemSelectorImplTest extends PowerMockito {
 	public void testGetItemSelectorRendering() {
 		setUpItemSelectionCriterionHandlers();
 
-		PortletRequest portletRequest = getMockPortletRequest();
+		HttpServletRequest request = getMockRequest();
 
 		ItemSelectorRendering itemSelectorRendering =
-			_itemSelectorImpl.getItemSelectorRendering(portletRequest);
+			_itemSelectorImpl.getItemSelectorRendering(request);
 
 		Assert.assertEquals(
 			"itemSelectedEventName",
@@ -155,16 +157,16 @@ public class ItemSelectorImplTest extends PowerMockito {
 		Assert.assertEquals(2, itemSelectorViewRenderers.size());
 	}
 
-	protected PortletRequest getMockPortletRequest() {
+	protected HttpServletRequest getMockRequest() {
 		Map<String, String[]> parameters =
 			_itemSelectorImpl.getItemSelectorParameters(
 				"itemSelectedEventName", _mediaItemSelectorCriterion,
 				_flickrItemSelectorCriterion);
 
-		PortletRequest portletRequest = mock(PortletRequest.class);
+		HttpServletRequest request = mock(HttpServletRequest.class);
 
 		when(
-			portletRequest.getParameterMap()
+			request.getParameterMap()
 		).thenReturn(
 			parameters
 		);
@@ -172,12 +174,12 @@ public class ItemSelectorImplTest extends PowerMockito {
 		ThemeDisplay themeDisplay = mock(ThemeDisplay.class);
 
 		when(
-			portletRequest.getAttribute(WebKeys.THEME_DISPLAY)
+			request.getAttribute(WebKeys.THEME_DISPLAY)
 		).thenReturn(
 			themeDisplay
 		);
 
-		return portletRequest;
+		return request;
 	}
 
 	protected void setUpItemSelectionCriterionHandlers() {
