@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -48,6 +47,8 @@ import javax.portlet.PortletModeException;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.WindowStateException;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -69,9 +70,9 @@ public class ItemSelectorImpl implements ItemSelector {
 
 	@Override
 	public ItemSelectorRendering getItemSelectorRendering(
-		PortletRequest portletRequest) {
+		HttpServletRequest request) {
 
-		Map<String, String[]> parameters = portletRequest.getParameterMap();
+		Map<String, String[]> parameters = request.getParameterMap();
 
 		String itemSelectedEventName = getValue(
 			parameters, PARAMETER_ITEM_SELECTED_EVENT_NAME);
@@ -106,12 +107,11 @@ public class ItemSelectorImpl implements ItemSelector {
 					itemSelectorViews) {
 
 				PortletURL portletURL = getItemSelectorURL(
-					portletRequest, itemSelectedEventName,
-					itemSelectorCriteriaArray);
+					request, itemSelectedEventName, itemSelectorCriteriaArray);
 
 				portletURL.setParameter(
 					PARAMETER_SELECTED_TAB,
-					itemSelectorView.getTitle(portletRequest.getLocale()));
+					itemSelectorView.getTitle(request.getLocale()));
 
 				itemSelectorViewRenderers.add(
 					new ItemSelectorViewRendererImpl(
@@ -126,17 +126,17 @@ public class ItemSelectorImpl implements ItemSelector {
 
 	@Override
 	public PortletURL getItemSelectorURL(
-		PortletRequest portletRequest, String itemSelectedEventName,
+		HttpServletRequest request, String itemSelectedEventName,
 		ItemSelectorCriterion... itemSelectorCriteria) {
 
 		Map<String, String[]> parameters = getItemSelectorParameters(
 			itemSelectedEventName, itemSelectorCriteria);
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		PortletURL portletURL = PortletURLFactoryUtil.create(
-			portletRequest, ItemSelectorPortletKeys.ITEM_SELECTOR,
+			request, ItemSelectorPortletKeys.ITEM_SELECTOR,
 			themeDisplay.getPlid(), PortletRequest.ACTION_PHASE);
 
 		try {
