@@ -35,18 +35,23 @@ public abstract class BaseItemSelectorCriterion
 	}
 
 	@Override
-	public void setDesiredReturnTypes(Class<?>... desiredReturnTypes) {
-		List<Class<?>> desiredReturnTypesSet = new ArrayList<>();
+	public void setDesiredReturnTypes(Class<?> ... desiredReturnType) {
+		List<Class<?>> desiredReturnTypesList = new ArrayList<>();
 
-		Collections.addAll(desiredReturnTypesSet, desiredReturnTypes);
+		Collections.addAll(desiredReturnTypesList, desiredReturnType);
 
-		if (!_availableReturnTypes.containsAll(desiredReturnTypesSet)) {
+		if (!_availableReturnTypes.containsAll(desiredReturnTypesList)) {
 			throw new IllegalArgumentException(
 				"Desired return types must be a subset of available return " +
 					"types");
 		}
 
-		_desiredReturnTypes = desiredReturnTypesSet;
+		_desiredReturnTypes = desiredReturnTypesList;
+	}
+
+	@Override
+	public void setDesiredReturnTypes(List<Class<?>> desiredReturnTypes) {
+		_desiredReturnTypes = desiredReturnTypes;
 	}
 
 	protected static List<Class<?>> getInmutableList(Class<?>... classes) {
