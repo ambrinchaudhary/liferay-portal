@@ -150,3 +150,21 @@ String uploadMessage = GetterUtil.getString(request.getAttribute("liferay-ui:ite
 		}
 	);
 </aui:script>
+
+<aui:script>
+	var container = $('#<portlet:namespace />selectDocumentFm');
+
+	container.on(
+		'click',
+		'.selector-button',
+		function(event) {
+			Liferay.fire(
+				'<portlet:namespace/>selectedItem',
+				{
+					returnType : event.target.getAttribute('data-returnType'),
+					value : event.target.getAttribute('data-value')
+				}
+			);
+		}
+	);
+</aui:script>

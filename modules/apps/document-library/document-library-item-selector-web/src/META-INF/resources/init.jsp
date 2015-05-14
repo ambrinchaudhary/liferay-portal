@@ -62,6 +62,8 @@ page import="com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalSer
 page import="com.liferay.portlet.documentlibrary.service.permission.DLFolderPermission" %><%@
 page import="com.liferay.portlet.documentlibrary.util.DLUtil" %>
 
+<%@ page import="java.net.URL" %>
+
 <%@ page import="java.util.Arrays" %><%@
 page import="java.util.Collections" %><%@
 page import="java.util.HashMap" %><%@

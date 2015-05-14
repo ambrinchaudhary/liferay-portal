@@ -14,8 +14,9 @@
 
 package com.liferay.item.selector;
 
-import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Iván Zaera
@@ -23,10 +24,10 @@ import javax.portlet.PortletURL;
 public interface ItemSelector {
 
 	public ItemSelectorRendering getItemSelectorRendering(
-		PortletRequest portletRequest);
+		HttpServletRequest request);
 
 	public PortletURL getItemSelectorURL(
-		PortletRequest portletRequest, String itemSelectedCallback,
+		HttpServletRequest request, String itemSelectedEventName,
 		ItemSelectorCriterion... itemSelectorCriteria);
 
 }
