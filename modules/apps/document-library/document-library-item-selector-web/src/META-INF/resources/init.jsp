@@ -29,6 +29,7 @@ page import="com.liferay.document.library.item.selector.web.DLItemSelectorView" 
 page import="com.liferay.document.library.item.selector.web.search.FileEntryDisplayTerms" %><%@
 page import="com.liferay.document.library.item.selector.web.search.FileEntrySearch" %><%@
 page import="com.liferay.portal.kernel.configuration.Filter" %><%@
+page import="com.liferay.portal.kernel.repository.model.FileEntry" %><%@
 page import="com.liferay.portal.kernel.repository.model.Folder" %><%@
 page import="com.liferay.portal.kernel.search.Hits" %><%@
 page import="com.liferay.portal.kernel.search.SearchContext" %><%@
@@ -60,6 +61,8 @@ page import="com.liferay.portlet.documentlibrary.service.DLAppServiceUtil" %><%@
 page import="com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalServiceUtil" %><%@
 page import="com.liferay.portlet.documentlibrary.service.permission.DLFolderPermission" %><%@
 page import="com.liferay.portlet.documentlibrary.util.DLUtil" %>
+
+<%@ page import="java.net.URL" %>
 
 <%@ page import="java.util.Arrays" %><%@
 page import="java.util.Collections" %><%@
