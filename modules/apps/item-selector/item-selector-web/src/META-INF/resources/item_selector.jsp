@@ -22,13 +22,25 @@ LocalizedItemSelectorRendering localizedItemSelectorRendering = LocalizedItemSel
 
 <aui:script use="aui-base">
 
+	var selectPageMessage = A.one('#<portlet:namespace />selectPageMessage');
+
+	var button = selectPageMessage.one('.selector-button');
+
+	<%
+	Map<String, String[]> parameterMap = liferayPortletRequest.getParameterMap();
+
+	if (parameterMap.containsKey("CKEditorFuncNum")) {
+	%>
+
+		button.attr('data-ckeditorfuncnum', '<%= parameterMap.get("CKEditorFuncNum")[0] %>');
+
+	<%
+	}
+	%>
+
 	Liferay.on(
 		'<portlet:namespace/>selectedItem',
 		function(event) {
-			var selectPageMessage = A.one('#<portlet:namespace />selectPageMessage');
-
-			var button = selectPageMessage.one('.selector-button');
-
 			button.attr('data-returnType', event.returnType);
 			button.attr('data-value', event.value);
 
