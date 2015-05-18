@@ -140,7 +140,7 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 		DLItemSelectorCriterion documentItemSelectorCriterion =
 			new DLItemSelectorCriterion(
 				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, groupId, null,
-				new String[0], false);
+				new String[0]);
 
 		return getPopulatedItemSelectorURL(
 			liferayPortletResponse, eventName, fileBrowserParamsMap,
@@ -154,7 +154,7 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 		DLItemSelectorCriterion flashItemSelectorCriterion =
 			new DLItemSelectorCriterion(
 				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, groupId, "flash",
-				new String[0], false);
+				new String[0]);
 
 		return getPopulatedItemSelectorURL(
 			liferayPortletResponse, eventName, fileBrowserParamsMap,
@@ -168,7 +168,7 @@ public class AlloyEditorConfigContributor extends BaseEditorConfigContributor {
 		DLItemSelectorCriterion imageItemSelectorCriterion =
 			new DLItemSelectorCriterion(
 				DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, groupId, "images",
-				new String[] {"image/bmp", "image/gif", "image/jpeg"}, false);
+				new String[] {"image/bmp", "image/gif", "image/jpeg"});
 
 		imageItemSelectorCriterion.setDesiredReturnTypes(URL.class);
 

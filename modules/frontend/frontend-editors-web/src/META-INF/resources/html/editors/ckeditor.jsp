@@ -464,9 +464,9 @@ if (inlineEdit && Validator.isNotNull(inlineEditSaveURL)) {
 				imageItemSelectorCriterion = documentItemSelectorCriterion;
 			}
 			else {
-				documentItemSelectorCriterion = new DLItemSelectorCriterion(DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, themeDisplay.getScopeGroupId(), null, new String[0], false);
-				flashItemSelectorCriterion = new DLItemSelectorCriterion(DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, themeDisplay.getScopeGroupId(), "flash", new String[0], false);
-				imageItemSelectorCriterion = new DLItemSelectorCriterion(DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, themeDisplay.getScopeGroupId(), "images", new String[0], false);
+				documentItemSelectorCriterion = new DLItemSelectorCriterion(DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, themeDisplay.getScopeGroupId(), null, new String[0]);
+				flashItemSelectorCriterion = new DLItemSelectorCriterion(DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, themeDisplay.getScopeGroupId(), "flash", new String[0]);
+				imageItemSelectorCriterion = new DLItemSelectorCriterion(DLFolderConstants.DEFAULT_PARENT_FOLDER_ID, themeDisplay.getScopeGroupId(), "images", new String[0]);
 			}
 
 			documentItemSelectorCriterion.setDesiredReturnTypes(URL.class);
