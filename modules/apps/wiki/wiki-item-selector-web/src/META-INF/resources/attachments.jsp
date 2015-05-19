@@ -34,6 +34,7 @@ wikiAttachmentsSearchContainer.setResults(wikiPage.getAttachmentsFileEntries(wik
 %>
 
 <liferay-ui:item-selector-browser
+	desiredReturnTypes="<%= wikiAttachmentItemSelectorCriterion.getAvailableReturnTypes() %>"
 	displayStyle="<%= displayStyle %>"
 	idPrefix="wikiAttachments"
 	searchContainer="<%= wikiAttachmentsSearchContainer %>"

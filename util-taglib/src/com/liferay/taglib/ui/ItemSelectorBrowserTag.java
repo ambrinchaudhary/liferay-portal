@@ -19,13 +19,18 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.taglib.util.IncludeTag;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Roberto Díaz
  */
 public class ItemSelectorBrowserTag extends IncludeTag {
+
+	public void setDesiredReturnTypes(List<Class<?>> desiredReturnTypes) {
+		_desiredReturnTypes = desiredReturnTypes;
+	}
 
 	public void setDisplayStyle(String displayStyle) {
 		_displayStyle = displayStyle;
@@ -68,29 +73,39 @@ public class ItemSelectorBrowserTag extends IncludeTag {
 			return _uploadMessage;
 		}
 
-		return LanguageUtil.get(request, "upload-a-document-by-dropping-it-right-here-or-by-pressing-plus-icon");
+		return LanguageUtil.get(
+			request,
+			"upload-a-document-by-dropping-it-right-here-or-by-pressing-plus-" +
+				"icon");
 	}
 
 	@Override
 	protected void setAttributes(HttpServletRequest request) {
-		request.setAttribute("liferay-ui:item-selector-browser:displayStyle", _displayStyle);
-		request.setAttribute("liferay-ui:item-selector-browser:idPrefix", _idPrefix);
-		request.setAttribute("liferay-ui:item-selector-browser:desiredReturnTypes", _desiredReturnTypes);
-		request.setAttribute("liferay-ui:item-selector-browser:searchContainer", _searchContainer);
-		request.setAttribute("liferay-ui:item-selector-browser:tabName", _tabName);
-		request.setAttribute("liferay-ui:item-selector-browser:uploadMessage", getUploadMessage());
+		request.setAttribute(
+			"liferay-ui:item-selector-browser:displayStyle", _displayStyle);
+		request.setAttribute(
+			"liferay-ui:item-selector-browser:idPrefix", _idPrefix);
+		request.setAttribute(
+			"liferay-ui:item-selector-browser:desiredReturnTypes",
+			_desiredReturnTypes);
+		request.setAttribute(
+			"liferay-ui:item-selector-browser:searchContainer",
+			_searchContainer);
+		request.setAttribute(
+			"liferay-ui:item-selector-browser:tabName", _tabName);
+		request.setAttribute(
+			"liferay-ui:item-selector-browser:uploadMessage",
+			getUploadMessage());
 	}
 
-	private static final String _PAGE = "/html/taglib/ui/item_selector_browser/page.jsp";
+	private static final String _PAGE =
+		"/html/taglib/ui/item_selector_browser/page.jsp";
 
+	private List<Class<?>> _desiredReturnTypes;
 	private String _displayStyle;
 	private String _idPrefix;
-	private List<Class<?>> _desiredReturnTypes;
 	private SearchContainer<?> _searchContainer;
 	private String _tabName;
 	private String _uploadMessage;
 
-	public void set_desiredReturnTypes(List<Class<?>> desiredReturnTypes) {
-		_desiredReturnTypes = desiredReturnTypes;
-	}
 }
