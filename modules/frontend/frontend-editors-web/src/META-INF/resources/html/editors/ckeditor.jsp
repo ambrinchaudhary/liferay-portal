@@ -488,8 +488,6 @@ if (inlineEdit && Validator.isNotNull(inlineEditSaveURL)) {
 					layoutItemSelectorURL.setParameter(entry.getKey(), entry.getValue());
 				}
 			}
-
-			documentItemSelectorURL.setParameter("data-ckeditorfuncnum", ItemSelectorUtil.getCKEditorFuncNum(request));
 			%>
 
 			filebrowserBrowseUrl = '<%= layoutItemSelectorURL %>';
