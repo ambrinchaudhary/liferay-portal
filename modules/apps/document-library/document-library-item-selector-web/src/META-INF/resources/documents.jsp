@@ -28,11 +28,12 @@ DLItemSelectorCriterion dlItemSelectorCriterion = (DLItemSelectorCriterion)reque
 long repositoryId = dlItemSelectorCriterion.getRepositoryId();
 long folderId = dlItemSelectorCriterion.getFolderId();
 
-documentsSearchContainer.setTotal(DLAppServiceUtil.getFoldersCount(repositoryId, folderId));
-documentsSearchContainer.setResults(DLAppServiceUtil.getFolders(repositoryId, folderId, searchContainer.getStart(), searchContainer.getEnd()));
+documentsSearchContainer.setTotal(DLAppServiceUtil.getFileEntriesCount(repositoryId, folderId));
+documentsSearchContainer.setResults(DLAppServiceUtil.getFileEntries(repositoryId, folderId, documentsSearchContainer.getStart(), documentsSearchContainer.getEnd()));
 %>
 
 <liferay-ui:item-selector-browser
+	desiredReturnTypes="<%= dlItemSelectorCriterion.getAvailableReturnTypes() %>"
 	displayStyle="<%= displayStyle %>"
 	idPrefix="documents"
 	searchContainer="<%= documentsSearchContainer %>"
