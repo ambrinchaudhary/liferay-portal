@@ -3,6 +3,8 @@
 (function() {
 	'use strict';
 
+	var Util = Liferay.Util;
+
 	var ButtonImage = React.createClass(
 		{
 			displayName: 'ButtonImage',
@@ -42,41 +44,52 @@
 				);
 			},
 
+			_closeDialog: function(dialogId) {
+				var instance = this;
+
+				var dialog = Util.getWindow(dialogId);
+
+				dialog.hide();
+
+				instance._selectedItem = null;
+			},
+
 			_handleClick: function() {
+				var instance = this;
+
 				var editor = this.props.editor.get('nativeEditor');
 
 				var eventName = editor.name + 'selectDocument';
 
-				Liferay.Util.selectEntity(
-					{
-						dialog: {
-							constrain: true,
-							destroyOnHide: true,
-							modal: true
-						},
-						eventName: eventName,
-						id: eventName,
-						title: Liferay.Language.get('select-image'),
-						uri: editor.config.filebrowserImageBrowseUrl
-					},
-					this._onDocumentSelected
+				AUI().use(
+					'liferay-item-selector-dialog',
+					function(A) {
+						var dialog = new A.LiferayItemSelectorDialog(
+							{
+								url: editor.config.filebrowserImageBrowseUrl,
+								eventName: eventName
+							}
+						);
+
+						dialog.on('itemSelected', instance._onDocumentSelected);
+					}
 				);
 			},
 
-			_onDocumentSelected: function(event) {
+			_onDocumentSelected: function(item) {
 				var instance = this;
 
 				var editor = instance.props.editor.get('nativeEditor');
 
 				var eventName = editor.name + 'selectDocument';
 
-				Liferay.Util.getWindow(eventName).onceAfter(
+				Util.getWindow(eventName).onceAfter(
 					'visibleChange',
 					function() {
 						var image = CKEDITOR.dom.element.createFromHtml(
 							instance.props.imageTPL.output(
 								{
-									src: event.url
+									src: item.value
 								}
 							)
 						);

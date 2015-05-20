@@ -14,13 +14,40 @@
 
 package com.liferay.frontend.editors.web;
 
+import com.liferay.item.selector.ItemSelector;
+import com.liferay.portal.kernel.editor.Editor;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Raymond Augé
  */
-@Component(
-	property = {"editor.name=ckeditor_creole"}, service = Object.class
-)
-public class CKEditorCreoleEditor {
+@Component(property = {"editor.name=ckeditor_creole"}, service = Editor.class)
+public class CKEditorCreoleEditor implements Editor {
+
+	@Override
+	public void addEditorAttributes(HttpServletRequest request) {
+		request.setAttribute("itemSelector", _itemSelector);
+	}
+
+	@Override
+	public String getPath(HttpServletRequest request) {
+		ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		return themeDisplay.getPathEditors() + "/editors/ckeditor_creole.jsp";
+	}
+
+	@Reference
+	public void setItemSelector(ItemSelector itemSelector) {
+		_itemSelector = itemSelector;
+	}
+
+	private ItemSelector _itemSelector;
+
 }
