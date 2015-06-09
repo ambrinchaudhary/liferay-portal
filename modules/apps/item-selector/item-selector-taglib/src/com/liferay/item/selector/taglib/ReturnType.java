@@ -14,6 +14,9 @@
 
 package com.liferay.item.selector.taglib;
 
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.StringPool;
@@ -38,8 +41,19 @@ public enum ReturnType {
 	FILE_ENTRY(FileEntry.class) {
 
 		@Override
-		public String getValue(FileEntry fileEntry, ThemeDisplay themeDisplay) {
-			return String.valueOf(fileEntry.getFileEntryId());
+		public String getValue(FileEntry fileEntry, ThemeDisplay themeDisplay)
+			throws Exception {
+
+			JSONObject fileEntryJSONObject = JSONFactoryUtil.createJSONObject();
+
+			fileEntryJSONObject.put("fileEntry", fileEntry.getFileEntryId());
+			fileEntryJSONObject.put("groupId", fileEntry.getGroupId());
+			fileEntryJSONObject.put("title", fileEntry.getTitle());
+			fileEntryJSONObject.put(
+				"url", DLUtil.getImagePreviewURL(fileEntry, themeDisplay));
+			fileEntryJSONObject.put("uudil", fileEntry.getUuid());
+
+			return fileEntryJSONObject.toString();
 		}
 
 	},
