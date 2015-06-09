@@ -924,7 +924,6 @@ AUI.add(
 						var criterionJSON = {
 							desiredReturnTypes:
 								[
-									'java.net.URL',
 									'com.liferay.portal.kernel.repository.model.FileEntry'
 								]
 						};
