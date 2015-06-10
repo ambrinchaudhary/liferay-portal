@@ -16,6 +16,7 @@ package com.liferay.document.library.item.selector.web;
 
 import com.liferay.document.library.item.selector.web.display.context.DLItemSelectorViewDisplayContext;
 import com.liferay.item.selector.ItemSelectorCriterion;
+import com.liferay.item.selector.ItemSelectorReturnType;
 
 import java.io.IOException;
 
@@ -29,8 +30,9 @@ import javax.servlet.ServletResponse;
 /**
  * @author Roberto Díaz
  */
-public abstract class BaseDLItemSelectorView<T extends ItemSelectorCriterion>
-	implements DLItemSelectorView<T> {
+public abstract class BaseDLItemSelectorView
+	<T extends ItemSelectorCriterion, S extends ItemSelectorReturnType>
+		implements DLItemSelectorView<T, S> {
 
 	@Override
 	public String[] getMimeTypes() {
@@ -44,7 +46,7 @@ public abstract class BaseDLItemSelectorView<T extends ItemSelectorCriterion>
 		throws IOException, ServletException {
 
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(
-			"/o/document-library-item-selector-web/documents.jsp");
+			getJspPath());
 
 		DLItemSelectorViewDisplayContext dlItemSelectorViewDisplayContext =
 			new DLItemSelectorViewDisplayContext(
@@ -56,5 +58,7 @@ public abstract class BaseDLItemSelectorView<T extends ItemSelectorCriterion>
 
 		requestDispatcher.include(request, response);
 	}
+
+	protected abstract String getJspPath();
 
 }

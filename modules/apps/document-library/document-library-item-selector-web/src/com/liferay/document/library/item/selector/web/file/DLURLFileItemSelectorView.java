@@ -16,10 +16,14 @@ package com.liferay.document.library.item.selector.web.file;
 
 import com.liferay.document.library.item.selector.web.BaseDLItemSelectorView;
 import com.liferay.item.selector.ItemSelectorView;
+import com.liferay.item.selector.criteria.DefaultItemSelectorReturnType;
 import com.liferay.item.selector.criteria.file.criterion.FileItemSelectorCriterion;
+import com.liferay.portal.util.PropsValues;
 
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -27,8 +31,9 @@ import org.osgi.service.component.annotations.Component;
  * @author Roberto Díaz
  */
 @Component(service = ItemSelectorView.class)
-public class DLFileItemSelectorView
-	extends BaseDLItemSelectorView<FileItemSelectorCriterion> {
+public class DLURLFileItemSelectorView
+	extends BaseDLItemSelectorView
+		<FileItemSelectorCriterion, DefaultItemSelectorReturnType> {
 
 	@Override
 	public Class<FileItemSelectorCriterion> getItemSelectorCriterionClass() {
@@ -36,11 +41,36 @@ public class DLFileItemSelectorView
 	}
 
 	@Override
+	public String getJspPath() {
+		return "/o/document-library-item-selector-web/url.jsp";
+	}
+
+	@Override
+	public String[] getMimeTypes() {
+		return PropsValues.DL_FILE_ENTRY_PREVIEW_IMAGE_MIME_TYPES;
+	}
+
+	@Override
+	public Set<DefaultItemSelectorReturnType>
+		getSupportedItemSelectorReturnTypes() {
+
+		return SUPPORTED_ITEM_SELECTOR_RETURN_TYPES;
+	}
+
+	@Override
 	public String getTitle(Locale locale) {
 		ResourceBundle resourceBundle = ResourceBundle.getBundle(
 			"content/Language", locale);
 
-		return resourceBundle.getString("images");
+		return resourceBundle.getString("file-url");
+	}
+
+	private static final Set<DefaultItemSelectorReturnType>
+		SUPPORTED_ITEM_SELECTOR_RETURN_TYPES = new HashSet<>();
+
+	static {
+		SUPPORTED_ITEM_SELECTOR_RETURN_TYPES.add(
+			DefaultItemSelectorReturnType.URL);
 	}
 
 }
