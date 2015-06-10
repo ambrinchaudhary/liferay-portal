@@ -104,7 +104,6 @@ JSONObject itemSelectorJSONParamJSONObject = JSONFactoryUtil.createJSONObject();
 
 JSONArray desiredReturnTypesJSONArray = JSONFactoryUtil.createJSONArray();
 
-desiredReturnTypesJSONArray.put(URL.class.getName());
 desiredReturnTypesJSONArray.put(FileEntry.class.getName());
 
 itemSelectorJSONParamJSONObject.put("desiredReturnTypes", desiredReturnTypesJSONArray);
