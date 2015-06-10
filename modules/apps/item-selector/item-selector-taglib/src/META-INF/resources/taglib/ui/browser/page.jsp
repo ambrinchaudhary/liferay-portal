@@ -183,7 +183,7 @@ String uploadMessage = GetterUtil.getString(request.getAttribute("liferay-ui:ite
 				selectedItem: function(event) {
 					Liferay.Util.getOpener().Liferay.fire('<%= itemSelectedEventName %>', event);
 				}
-			},
+			},e
 			rootNode: '#<%= idPrefix %>ItemSelectorContainer'
 		}
 	);
