@@ -172,6 +172,11 @@ jdbc.default.password=${database.password}]]></echo>
 						<arg line="${database.service.name} start" />
 					</exec>
 
+					<antcall target="copy-optional-jars" inheritall="false" >
+						<param name="database.type" value="${database.type}" />
+						<param name="todir" value="lib/development" />
+					</antcall>
+
 					<antcall target="rebuild-database" inheritall="false" >
 						<param name="database.type" value="${database.type}" />
 					</antcall>
@@ -2534,12 +2539,32 @@ go]]></replacevalue>
 		<if>
 			<os family="unix" />
 			<then>
-				<mkdir dir="lib/development/libs" />
+				<mirrors-get
+					dest="lib/development/opencv-linux-x86.jar"
+					src="http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/2.4.9-0.9/opencv-2.4.9-0.9-linux-x86.jar"
+				/>
 
-				<copy todir="lib/development/libs">
-					<fileset dir="tools/selenium/sikuli/linux" />
-				</copy>
+				<mirrors-get
+					dest="lib/development/opencv-linux-x86_64.jar"
+					src="http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/2.4.9-0.9/opencv-2.4.9-0.9-linux-x86_64.jar"
+				/>
 			</then>
+			<else>
+				<if>
+					<os family="windows" />
+					<then>
+						<mirrors-get
+							dest="lib/development/opencv-windows-x86.jar"
+							src="http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/2.4.9-0.9/opencv-2.4.9-0.9-windows-x86.jar"
+						/>
+
+						<mirrors-get
+							dest="lib/development/opencv-windows-x86_64.jar"
+							src="http://repo1.maven.org/maven2/org/bytedeco/javacpp-presets/opencv/2.4.9-0.9/opencv-2.4.9-0.9-windows-x86_64.jar"
+						/>
+					</then>
+				</if>
+			</else>
 		</if>
 	</target>
 
@@ -4721,6 +4746,10 @@ module.framework.properties.osgi.console=11312</echo>
 		<ant antfile="build-test-plugins.xml" target="deploy-simple-server-plugins" />
 	</target>
 
+	<target name="prepare-system-ext-properties">
+		<echo file="${app.server.classes.portal.dir}/system-ext.properties">log.sanitizer.enabled=false</echo>
+	</target>
+
 	<target name="prepare-test-build">
 		<record-git-commit-portal />
 
@@ -4964,10 +4993,6 @@ module.framework.properties.osgi.console=11312</echo>
 		<antcall target="record-test-plugin-names" inheritAll="false" />
 	</target>
 
-	<target name="prepare-system-ext-properties">
-		<echo file="${app.server.classes.portal.dir}/system-ext.properties">log.sanitizer.enabled=false</echo>
-	</target>
-
 	<target name="prepare-test-build-tomcat-dependents">
 		<if>
 			<equals arg1="${test.build.bundle.tcat}" arg2="true" />
@@ -5201,7 +5226,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 				<if>
 					<equals arg1="${database.type}" arg2="db2" />
 					<then>
-						<exec executable="${db2.executable}">
+						<exec executable="${db2.executable}" failonerror="true">
 							<arg value="-fcreate.sql" />
 							<arg value="-t" />
 						</exec>
@@ -5248,7 +5273,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 								</else>
 							</if>
 
-							<exec executable="${mysql.executable}" input="create.sql">
+							<exec executable="${mysql.executable}" input="create.sql" failonerror="true">
 								<arg line="${mysql.arg.line}" />
 							</exec>
 						</then>
@@ -5259,7 +5284,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 							<get-database-property property.name="database.password" />
 							<get-database-property property.name="database.username" />
 
-							<exec executable="${oracle.sqlplus.executable}">
+							<exec executable="${oracle.sqlplus.executable}" failonerror="true">
 								<arg value="${oracle.admin.user}/${oracle.admin.password}" />
 								<arg value="@create.sql" />
 								<arg value="${database.username}" />
@@ -5272,7 +5297,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 						<then>
 							<get-database-property property.name="database.username" />
 
-							<exec executable="${postgresql.executable}">
+							<exec executable="${postgresql.executable}" failonerror="true">
 								<arg value="-f" />
 								<arg value="create.sql" />
 								<arg value="-U" />
@@ -5287,7 +5312,7 @@ cluster.link.bind.addr["cluster-link-udp"]=127.0.0.1</echo>
 							<get-database-property property.name="database.schema" />
 							<get-database-property property.name="database.username" />
 
-							<exec executable="${sybase.executable}">
+							<exec executable="${sybase.executable}" failonerror="true">
 								<arg value="-i" />
 								<arg value="create.sql" />
 								<arg value="-P" />
@@ -5875,7 +5900,7 @@ jdbc.default.password=${database.mysql.password}</echo>
 					<and>
 						<or>
 							<available file="portal-web/test-results/functional/screenshots" />
-							<available file="portal-web/test-results/${poshi.runner.results.dir}/screenshot" />
+							<available file="portal-web/test-results/${poshi.runner.results.dir}/screenshots" />
 						</or>
 						<equals arg1="${test.save.screenshot}" arg2="true" />
 					</and>
@@ -5883,18 +5908,14 @@ jdbc.default.password=${database.mysql.password}</echo>
 						<if>
 							<equals arg1="${test.poshi.runner.enabled}" arg2="true" />
 							<then>
-								<property name="screenshot.dir" value="portal-web/test-results/${poshi.runner.results.dir}/screenshot" />
-
-								<property name="screenshot.dest.dir"  value="${jenkins.shared.results.dir}/${job.name}/builds/${env.BUILD_NUMBER}/screenshot" />
+								<property name="screenshot.dir" value="portal-web/test-results/${poshi.runner.results.dir}/screenshots" />
 							</then>
 							<else>
 								<property name="screenshot.dir" value="portal-web/test-results/functional/screenshots" />
-
-								<property name="screenshot.dest.dir"  value="${jenkins.shared.results.dir}/${job.name}/builds/${env.BUILD_NUMBER}/screenshots" />
 							</else>
 						</if>
 
-						<copy todir="${screenshot.dest.dir}">
+						<copy todir="${jenkins.shared.results.dir}/${job.name}/builds/${env.BUILD_NUMBER}/screenshots">
 							<fileset dir="${screenshot.dir}" erroronmissingdir="false" />
 						</copy>
 					</then>
@@ -6005,8 +6026,6 @@ jdbc.default.password=${database.mysql.password}</echo>
 		<if>
 			<equals arg1="${solr.enabled}" arg2="true" />
 			<then>
-				<ant antfile="build-test-solr.xml" target="prepare-solr-web-properties" />
-
 				<ant antfile="build-test-solr.xml" target="start-solr" />
 			</then>
 		</if>

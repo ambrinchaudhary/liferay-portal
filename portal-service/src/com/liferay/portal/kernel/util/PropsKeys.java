@@ -803,12 +803,6 @@ public interface PropsKeys {
 
 	public static final String DOCKBAR_ADMINISTRATIVE_LINKS_SHOW_IN_POP_UP = "dockbar.administrative.links.show.in.pop.up";
 
-	public static final String DYNAMIC_DATA_LISTS_ERROR_TEMPLATE = "dynamic.data.lists.error.template";
-
-	public static final String DYNAMIC_DATA_LISTS_RECORD_SET_FORCE_AUTOGENERATE_KEY = "dynamic.data.lists.record.set.force.autogenerate.key";
-
-	public static final String DYNAMIC_DATA_LISTS_STORAGE_TYPE = "dynamic.data.lists.storage.type";
-
 	public static final String DYNAMIC_DATA_MAPPING_IMAGE_EXTENSIONS = "dynamic.data.mapping.image.extensions";
 
 	public static final String DYNAMIC_DATA_MAPPING_IMAGE_SMALL_MAX_SIZE = "dynamic.data.mapping.image.small.max.size";
@@ -920,14 +914,6 @@ public interface PropsKeys {
 	public static final String HOT_UNDEPLOY_INTERVAL = "hot.undeploy.interval";
 
 	public static final String HOT_UNDEPLOY_ON_REDEPLOY = "hot.undeploy.on.redeploy";
-
-	public static final String HTTP_HEADER_SECURE_X_CONTENT_TYPE_OPTIONS = "http.header.secure.x.content.type.options";
-
-	public static final String HTTP_HEADER_SECURE_X_CONTENT_TYPE_OPTIONS_URLS_EXCLUDES = "http.header.secure.x.content.type.options.urls.excludes";
-
-	public static final String HTTP_HEADER_SECURE_X_FRAME_OPTIONS = "http.header.secure.x.frame.options";
-
-	public static final String HTTP_HEADER_SECURE_X_XSS_PROTECTION = "http.header.secure.x.xss.protection";
 
 	public static final String HTTP_HEADER_VERSION_VERBOSITY = "http.header.version.verbosity";
 

@@ -21,6 +21,9 @@ import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.journal.service.permission.JournalArticlePermission;
 import com.liferay.journal.util.JournalContentUtil;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.Property;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -261,7 +264,8 @@ public class JournalArticleIndexer
 		}
 
 		try {
-			String[] ddmStructureKeys = new String[ddmStructureIds.size()];
+			final String[] ddmStructureKeys =
+				new String[ddmStructureIds.size()];
 
 			for (int i = 0; i < ddmStructureIds.size(); i++) {
 				long ddmStructureId = ddmStructureIds.get(i);
@@ -272,13 +276,63 @@ public class JournalArticleIndexer
 				ddmStructureKeys[i] = ddmStructure.getStructureKey();
 			}
 
-			List<JournalArticle> articles =
-				_journalArticleLocalService.
-					getIndexableArticlesByDDMStructureKey(ddmStructureKeys);
+			final ActionableDynamicQuery actionableDynamicQuery =
+				_journalArticleLocalService.getActionableDynamicQuery();
 
-			for (JournalArticle article : articles) {
-				doReindex(article, false);
-			}
+			actionableDynamicQuery.setAddCriteriaMethod(
+				new ActionableDynamicQuery.AddCriteriaMethod() {
+
+					@Override
+					public void addCriteria(DynamicQuery dynamicQuery) {
+						Property ddmStructureKey = PropertyFactoryUtil.forName(
+							"DDMStructureKey");
+
+						if (!JournalServiceConfigurationValues.
+								JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
+
+							Property statusProperty =
+								PropertyFactoryUtil.forName("status");
+
+							Integer[] statuses = {
+								WorkflowConstants.STATUS_APPROVED,
+								WorkflowConstants.STATUS_IN_TRASH
+							};
+
+							dynamicQuery.add(statusProperty.in(statuses));
+						}
+
+						dynamicQuery.add(ddmStructureKey.in(ddmStructureKeys));
+					}
+
+				});
+			actionableDynamicQuery.setPerformActionMethod(
+				new ActionableDynamicQuery.PerformActionMethod() {
+
+					@Override
+					public void performAction(Object object)
+						throws PortalException {
+
+						JournalArticle article = (JournalArticle)object;
+
+						if (!JournalServiceConfigurationValues.
+								JOURNAL_ARTICLE_INDEX_ALL_VERSIONS) {
+
+							article =
+								_journalArticleLocalService.getLatestArticle(
+									article.getResourcePrimKey());
+						}
+
+						try {
+							doReindex(article, false);
+						}
+						catch (Exception e) {
+							throw new PortalException(e);
+						}
+					}
+
+				});
+
+			actionableDynamicQuery.performActions();
 		}
 		catch (Exception e) {
 			throw new SearchException(e);
