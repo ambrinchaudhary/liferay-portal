@@ -141,7 +141,7 @@ String uploadMessage = GetterUtil.getString(request.getAttribute("liferay-ui:ite
 
 					<li class="list-group-item list-group-item-default">
 						<div class="list-group-item-field">
-							<img src="<%= DLUtil.getThumbnailSrc(fileEntry, themeDisplay) %>" />
+							<img src="<%= DLUtil.getThumbnailSrc(fileEntry, themeDisplay) %>" style="<%= DLUtil.getThumbnailStyle(true, 9, 128, 128) %>" />
 						</div>
 
 						<div class="list-group-item-content">

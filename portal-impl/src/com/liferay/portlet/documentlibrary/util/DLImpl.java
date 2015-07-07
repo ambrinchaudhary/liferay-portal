@@ -1028,7 +1028,19 @@ public class DLImpl implements DL {
 
 	@Override
 	public String getThumbnailStyle(boolean max, int margin) throws Exception {
-		StringBundler sb = new StringBundler(5);
+		return getThumbnailStyle(
+			max, margin,
+			PrefsPropsUtil.getInteger(
+				PropsKeys.DL_FILE_ENTRY_THUMBNAIL_MAX_HEIGHT),
+			PrefsPropsUtil.getInteger(
+				PropsKeys.DL_FILE_ENTRY_THUMBNAIL_MAX_WIDTH));
+	}
+
+	@Override
+	public String getThumbnailStyle(
+		boolean max, int margin, int height, int width) {
+
+		StringBundler sb = new StringBundler(7);
 
 		if (max) {
 			sb.append("max-height: ");
@@ -1037,9 +1049,8 @@ public class DLImpl implements DL {
 			sb.append("height: ");
 		}
 
-		sb.append(
-			PrefsPropsUtil.getLong(
-				PropsKeys.DL_FILE_ENTRY_THUMBNAIL_MAX_HEIGHT) + 2 * margin);
+		sb.append(height);
+		sb.append(2 * margin);
 
 		if (max) {
 			sb.append("px; max-width: ");
@@ -1048,9 +1059,8 @@ public class DLImpl implements DL {
 			sb.append("px; width: ");
 		}
 
-		sb.append(
-			PrefsPropsUtil.getLong(
-				PropsKeys.DL_FILE_ENTRY_THUMBNAIL_MAX_WIDTH) + 2 * margin);
+		sb.append(width);
+		sb.append(2 * margin);
 		sb.append("px;");
 
 		return sb.toString();
