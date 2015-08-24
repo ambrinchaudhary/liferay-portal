@@ -36,9 +36,7 @@ AUI.add(
 						instance._entriesContainer = instance.byId('entriesContainer');
 
 						var checkBoxesId = [
-							instance.ns(STR_ROW_IDS_FILE_SHORTCUT_CHECKBOX),
-							instance.ns(STR_ROW_IDS_FOLDER_CHECKBOX),
-							instance.ns(STR_ROW_IDS_FILE_ENTRY_CHECKBOX)
+							config.rowIds
 						];
 
 						var displayStyle = config.displayStyle;
@@ -60,6 +58,7 @@ AUI.add(
 						selectConfig.namespace = namespace;
 						selectConfig.portletContainerId = portletContainerId;
 						selectConfig.selector = 'entry-selector';
+						selectConfig.toggleSelector = 'click-selector';
 
 						instance._appViewSelect = new Liferay.AppViewSelect(selectConfig);
 
