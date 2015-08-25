@@ -350,12 +350,12 @@ dlSearchContainer.setResults(results);
 
 			<liferay-ui:search-container
 				searchContainer="<%= dlSearchContainer %>"
+				total="<%= total %>"
 				totalVar="dlSearchContainerTotal"
 			>
 				<liferay-ui:search-container-results
 					results="<%= results %>"
 					resultsVar="dlSearchContainerResults"
-					total="<%= total %>"
 				/>
 
 				<liferay-ui:search-container-row
