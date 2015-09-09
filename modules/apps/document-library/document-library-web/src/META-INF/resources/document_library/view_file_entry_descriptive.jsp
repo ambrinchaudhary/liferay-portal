@@ -28,11 +28,12 @@ if (row.getObject() instanceof FileEntry) {
 else if (row.getObject() instanceof FileShortcut) {
 	fileShortcut = (FileShortcut)row.getObject();
 
+	fileShortcut = fileShortcut.toEscapedModel();
+
 	fileEntry = DLAppLocalServiceUtil.getFileEntry(fileShortcut.getToFileEntryId());
 }
 
 fileEntry = fileEntry.toEscapedModel();
-fileShortcut = fileShortcut.toEscapedModel();
 
 FileVersion fileVersion = fileEntry.getFileVersion();
 
