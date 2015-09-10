@@ -27,6 +27,11 @@ public class DLVisualizationHelper {
 		_dlRequestHelper = dlRequestHelper;
 	}
 
+	public String getDisplayStyle() {
+		return ParamUtil.getString(
+			_dlRequestHelper.getRequest(), "displayStyle", "icon");
+	}
+
 	public boolean isAddFolderButtonVisible() {
 		String portletName = _dlRequestHelper.getPortletName();
 
