@@ -1,0 +1,32 @@
+{namespace ImageEditorFilterComponent}
+
+/**
+ * Image Editor Filter Component
+ *
+ * @param? image
+ * @param key
+ */
+{template .render}
+	{let $filters : ['grayscale', 'polaroid', 'sepia', 'invert'] /}
+
+	<div id="{$key}">
+		<ul class="list-unstyled list-table">
+			{foreach $filter in $filters}
+				<li>
+					<a data-onclick="previewFilter" data-filter="{$filter}">
+						<div id="{$key}{$filter}" style="position: relative;">
+							{if strContains($image, 'data:image')}
+								<img alt="thumbnail" class="img-rounded" src="{$image|filterImageDataUri}" style="opacity: 0.2;" height="60px" width="60px">
+							{else}
+								<img alt="thumbnail" class="img-rounded" src="{$image}" style="opacity: 0.2;" height="60px" width="60px">
+							{/if}
+
+							<canvas width="60" height="60" style="position: absolute; top: 0; left: 0;"></canvas>
+						</div>
+						<span>{$filter}</span>
+					</a>
+				</li>
+			{/foreach}
+		</ul>
+	</div>
+{/template}

@@ -113,9 +113,14 @@ if (!draggableImage.equals("none")) {
 }
 %>
 
+<liferay-portlet:renderURL portletName="<%= PortletProviderUtil.getPortletId(Image.class.getName(), PortletProvider.Action.EDIT) %>" var="viewImageEditorURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
+	<liferay-portlet:param name="mvcRenderCommandName" value="/image_editor/view" />
+</liferay-portlet:renderURL>
+
 <aui:script use="<%= modules %>">
 	var imageSelector = new Liferay.ImageSelector(
 		{
+			editUrl: '<%= viewImageEditorURL %>',
 			errorNode: '#<%= randomNamespace + "errorAlert" %>',
 			fileEntryImageNode: '#<%= randomNamespace %>image',
 			itemSelectorEventName: '<%= itemSelectorEventName %>',
