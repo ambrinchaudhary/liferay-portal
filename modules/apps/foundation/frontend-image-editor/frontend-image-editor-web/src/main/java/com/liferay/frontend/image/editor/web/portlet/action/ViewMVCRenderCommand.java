@@ -18,6 +18,7 @@ import com.liferay.frontend.image.editor.capability.ImageEditorCapability;
 import com.liferay.frontend.image.editor.web.constants.ImageEditorPortletKeys;
 import com.liferay.frontend.image.editor.web.portlet.tracker.ImageEditorCapabilityTracker;
 import com.liferay.frontend.image.editor.web.portlet.tracker.ImageEditorCapabilityTracker.ImageEditorCapabilityInformation;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
 import com.liferay.portal.kernel.template.Template;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
