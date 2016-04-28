@@ -97,6 +97,9 @@ public class SoyPortlet extends MVCPortlet {
 				path = namespace;
 			}
 
+			System.out.println(namespace);
+			System.out.println(path);
+
 			template.put(
 				TemplateConstants.NAMESPACE,
 				_soyPortletHelper.getTemplateNamespace(path));
