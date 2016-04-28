@@ -62,62 +62,62 @@ var getControlPoints = function(filter) {
 	var controlPoints;
 
 	switch(filter.toLowerCase()) {
-		case '1977':
-			controlPoints = CONTROL_POINTS_1977;
+		case 'ruby':
+			controlPoints = CONTROL_POINTS_RUBY;
 			break;
-		case 'amaro':
-			controlPoints = CONTROL_POINTS_AMARO;
+		case 'absinthe':
+			controlPoints = CONTROL_POINTS_ABSINTHE;
 			break;
-		case 'brannan':
-			controlPoints = CONTROL_POINTS_BRANNAN;
+		case 'chroma':
+			controlPoints = CONTROL_POINTS_CHROMA;
 			break;
-		case 'earlybird':
-			controlPoints = CONTROL_POINTS_EARLYBIRD;
+		case 'atari':
+			controlPoints = CONTROL_POINTS_ATARI;
 			break;
-		case 'hefe':
-			controlPoints = CONTROL_POINTS_HEFE;
+		case 'tripel':
+			controlPoints = CONTROL_POINTS_TRIPEL;
 			break;
-		case 'hudson':
-			controlPoints = CONTROL_POINTS_HUDSON;
+		case 'ailis':
+			controlPoints = CONTROL_POINTS_AILIS;
 			break;
-		case 'inkwell':
-			controlPoints = CONTROL_POINTS_INKWELL;
+		case 'flatfoot':
+			controlPoints = CONTROL_POINTS_FLATFOOT;
 			break;
-		case 'kelvin':
-			controlPoints = CONTROL_POINTS_KELVIN;
+		case 'pyrexia':
+			controlPoints = CONTROL_POINTS_PYREXIA;
 			break;
-		case 'lofi':
-			controlPoints = CONTROL_POINTS_LOFI;
+		case 'umbra':
+			controlPoints = CONTROL_POINTS_UMBRA;
 			break;
-		case 'mayfair':
-			controlPoints = CONTROL_POINTS_MAYFAIR;
+		case 'rouge':
+			controlPoints = CONTROL_POINTS_ROUGE;
 			break;
-		case 'nashville':
-			controlPoints = CONTROL_POINTS_NASHVILLE;
+		case 'idyll':
+			controlPoints = CONTROL_POINTS_IDYLL;
 			break;
-		case 'rise':
-			controlPoints = CONTROL_POINTS_RISE;
+		case 'glimmer':
+			controlPoints = CONTROL_POINTS_GLIMMER;
 			break;
-		case 'sierra':
-			controlPoints = CONTROL_POINTS_SIERRA;
+		case 'elysium':
+			controlPoints = CONTROL_POINTS_ELYSIUM;
 			break;
-		case 'sutro':
-			controlPoints = CONTROL_POINTS_SUTRO;
+		case 'nucleus':
+			controlPoints = CONTROL_POINTS_NUCLEUS;
 			break;
-		case 'toaster':
-			controlPoints = CONTROL_POINTS_TOASTER;
+		case 'amber':
+			controlPoints = CONTROL_POINTS_AMBER;
 			break;
-		case 'valencia':
-			controlPoints = CONTROL_POINTS_VALENCIA;
+		case 'paella':
+			controlPoints = CONTROL_POINTS_PAELLA;
 			break;
-		case 'xpro2':
-			controlPoints = CONTROL_POINTS_XPRO_II;
+		case 'aureus':
+			controlPoints = CONTROL_POINTS_AUREUS;
 			break;
-		case 'walden':
-			controlPoints = CONTROL_POINTS_WALDEN;
+		case 'expanse':
+			controlPoints = CONTROL_POINTS_EXPANSE;
 			break;
-		case 'willow':
-			controlPoints = CONTROL_POINTS_WILLOW;
+		case 'orchid':
+			controlPoints = CONTROL_POINTS_ORCHID;
 			break;
 	}
 
@@ -161,7 +161,7 @@ var DESATURATION_MATRIX = [
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step19/1977-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_1977 = {
+var CONTROL_POINTS_RUBY = {
 	red: [[0, 75], [75, 125], [145, 200], [190, 220], [255, 230]],
 	green: [[0, 62], [65, 82], [108, 132], [175, 210], [210, 208], [255, 208]],
 	blue: [[0, 52], [42, 54], [110, 120], [154, 168], [232, 235], [255, 242]]
@@ -171,7 +171,7 @@ var CONTROL_POINTS_1977 = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step2/Amaro-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_AMARO = {
+var CONTROL_POINTS_ABSINTHE = {
 	red: [[0, 19], [30, 62], [82, 148], [128, 188], [145, 200], [255, 250]],
 	green: [[0, 25], [35, 80], [106, 175], [151, 188], [215, 215], [240, 235], [255, 245]],
 	blue: [[0, 0], [48, 72], [115, 188], [160, 120], [233, 245], [255, 255]]
@@ -181,7 +181,7 @@ var CONTROL_POINTS_AMARO = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step14/Brannan-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_BRANNAN = {
+var CONTROL_POINTS_CHROMA = {
 	red: [[0, 35], [40, 50], [125, 165], [175, 230], [255, 255]],
 	green: [[0, 35], [62, 62], [88, 95], [132, 158], [225, 230], [255, 232]],
 	blue: [[0, 0], [65, 50], [92, 102], [180, 220], [255, 255]]
@@ -191,7 +191,7 @@ var CONTROL_POINTS_BRANNAN = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step11/Earlybird-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_EARLYBIRD = {
+var CONTROL_POINTS_ATARI = {
 	red: [[0, 25], [45, 80], [85, 135], [120, 180], [230, 240], [255, 255]],
 	green: [[0, 18], [42, 58], [90, 102], [120, 130], [165, 140], [217, 195], [255, 210]],
 	blue: [[0, 0], [40, 55], [88, 112], [132, 172], [168, 198], [215, 218], [255, 240]],
@@ -201,7 +201,7 @@ var CONTROL_POINTS_EARLYBIRD = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step17/Hefe-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_HEFE = {
+var CONTROL_POINTS_TRIPEL = {
 	red: [[0, 0], [60, 55], [130, 155], [255, 255]],
 	green: [[0, 0], [65, 30], [125, 105], [170, 165], [255, 240]],
 	blue: [[0, 0], [65, 40], [125, 125], [255, 255]]
@@ -211,7 +211,7 @@ var CONTROL_POINTS_HEFE = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step5/Hudson-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_HUDSON = {
+var CONTROL_POINTS_AILIS = {
 	red: [[0, 35], [42, 68], [85, 115], [124, 165], [170, 200], [215, 228], [255, 255]],
 	green: [[0, 0], [24, 42], [60, 100], [105, 170], [145, 208], [210, 235], [255, 245]],
 	blue: [[0, 0], [45, 60], [102, 135], [140, 182], [192, 215], [255, 255]]
@@ -221,7 +221,7 @@ var CONTROL_POINTS_HUDSON = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step15/InkWell-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_INKWELL = {
+var CONTROL_POINTS_FLATFOOT = {
 	red: [[0, 0], [60, 75], [168, 218], [255, 255]],
 	green: [[0, 0], [60, 75], [168, 218], [255, 255]],
 	blue: [[0, 0], [60, 75], [168, 218], [255, 255]],
@@ -232,7 +232,7 @@ var CONTROL_POINTS_INKWELL = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step20/Kelvin-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_KELVIN = {
+var CONTROL_POINTS_PYREXIA = {
 	red: [[0, 0], [60, 102], [110, 185], [150, 220], [235, 245], [255, 245]],
 	green: [[0, 0], [88, 12], [145, 140], [185, 212], [255, 255]],
 	blue: [[0, 0], [68, 68], [105, 120], [190, 220], [255, 255]]
@@ -242,7 +242,7 @@ var CONTROL_POINTS_KELVIN = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step10/Lo-Fi-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_LOFI = {
+var CONTROL_POINTS_UMBRA = {
 	red: [[0, 0], [40, 20], [88, 80], [128, 150], [170, 200], [230, 245], [255, 255]],
 	green: [[0, 0], [62, 50], [100, 95], [130, 155], [150, 182], [190, 220], [255, 255]],
 	blue: [[0, 0], [35, 15], [90, 70], [105, 105], [148, 180], [188, 218], [255, 255]]
@@ -252,7 +252,7 @@ var CONTROL_POINTS_LOFI = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step3/Mayfair-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_MAYFAIR = {
+var CONTROL_POINTS_ROUGE = {
 	red: [[0, 30], [85, 110], [125, 170], [221, 232], [254, 242]],
 	green: [[0, 15], [45, 60], [85, 115], [135, 185], [182, 215], [235, 230], [255, 225]],
 	blue: [[0, 15], [40, 55], [80, 95], [142, 196], [188, 215], [255, 230]]
@@ -262,7 +262,7 @@ var CONTROL_POINTS_MAYFAIR = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step18/Nashville-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_NASHVILLE = {
+var CONTROL_POINTS_IDYLL = {
 	red: [[0, 0], [30, 5], [58, 25], [83, 85], [112, 140], [190, 125], [255, 255]],
 	green: [[0, 65], [40, 90], [85, 115], [212, 185], [255, 205]],
 	blue: [[0, 0], [20, 5], [50, 62], [132, 150], [190, 205], [255, 225]]
@@ -272,7 +272,7 @@ var CONTROL_POINTS_NASHVILLE = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step4/Rise-filter/
  * @type {Object}
  */
-var CONTROL_POINTS_RISE = {
+var CONTROL_POINTS_GLIMMER = {
 	red: [[0, 25], [30, 70], [130, 192], [170, 200], [233, 233], [255, 255]],
 	green: [[0, 35], [40, 75], [82, 124], [120, 162], [175, 188], [220, 214], [255, 255]],
 	blue: [[0, 25], [30, 72], [65, 118], [100, 158], [152, 195], [210, 230], [250, 250]]
@@ -282,7 +282,7 @@ var CONTROL_POINTS_RISE = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step8/Sierra-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_SIERRA = {
+var CONTROL_POINTS_ELYSIUM = {
 	red: [[0, 10], [48, 88], [105, 155], [130, 180], [190, 212], [232, 234], [255, 245]],
 	green: [[0, 30], [45, 82], [95, 132], [138, 164], [176, 182], [210, 200], [255, 218]],
 	blue: [[0, 0], [38, 72], [85, 124], [124, 160], [172, 186], [218, 210], [255, 230]]
@@ -292,7 +292,7 @@ var CONTROL_POINTS_SIERRA = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step12/Sutro-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_SUTRO = {
+var CONTROL_POINTS_NUCLEUS = {
 	red: [[0, 0], [40, 35], [90, 92], [145, 155], [235, 230], [255, 235]],
 	green: [[0, 0], [80, 80], [128, 112], [182, 145], [255, 220]],
 	blue: [[0, 0], [62, 50], [155, 140], [210, 188], [255, 225]]
@@ -302,7 +302,7 @@ var CONTROL_POINTS_SUTRO = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step13/Toaster-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_TOASTER = {
+var CONTROL_POINTS_AMBER = {
 	red: [[0, 120], [50, 160], [105, 128], [145, 215], [190, 230], [255, 255]],
 	green: [[0, 50], [40, 60], [80, 102], [122, 148], [185, 185], [255, 210]],
 	blue: [[0, 0], [22, 60], [125, 180], [255, 255]]
@@ -312,7 +312,7 @@ var CONTROL_POINTS_TOASTER = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step6/Valencia-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_VALENCIA = {
+var CONTROL_POINTS_PAELLA = {
 	red: [[0, 20], [50, 80], [85, 120], [128, 162], [228, 224], [255, 240]],
 	green: [[0, 20], [42, 62], [80, 104], [124, 144], [170, 182], [220, 210], [255, 230]],
 	blue: [[0, 0], [18, 12], [60, 70], [104, 128], [148, 178], [212, 224], [255, 255]]
@@ -322,7 +322,7 @@ var CONTROL_POINTS_VALENCIA = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step16/Walden-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_WALDEN = {
+var CONTROL_POINTS_EXPANSE = {
 	red: [[0, 12], [40, 44], [85, 125], [122, 180], [170, 220], [255, 255]],
 	green: [[0, 85], [85, 150], [130, 170], [165, 185], [255, 220]],
 	blue: [[0, 35], [40, 78], [90, 140], [130, 188], [175, 215], [255, 245]]
@@ -332,7 +332,7 @@ var CONTROL_POINTS_WALDEN = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step9/Willow-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_WILLOW = {
+var CONTROL_POINTS_ORCHID = {
 	red: [[0, 30], [68, 105], [95, 145], [175, 215], [255, 240]],
 	green: [[0, 30], [40, 70], [112, 165], [195, 215], [255, 288]],
 	blue: [[0, 30], [55, 85], [105, 160], [198, 210], [255, 230]],
@@ -343,7 +343,7 @@ var CONTROL_POINTS_WILLOW = {
  * http://www.instructables.com/id/How-to-make-Instagram-Filters-in-Photoshop/step7/X-Pro-II-Filter/
  * @type {Object}
  */
-var CONTROL_POINTS_XPRO_II = {
+var CONTROL_POINTS_AUREUS = {
 	red: [[0, 0], [42, 28], [105, 100], [148, 160], [185, 208], [255, 255]],
 	green: [[0, 30], [40, 58], [82, 90], [125, 125], [170, 160], [235, 210], [255, 222]],
 	blue: [[0, 0], [40, 25], [85, 75], [125, 130], [165, 180], [212, 230], [255, 255]]

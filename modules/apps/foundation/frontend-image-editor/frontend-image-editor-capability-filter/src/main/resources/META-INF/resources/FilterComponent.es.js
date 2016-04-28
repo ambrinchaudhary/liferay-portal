@@ -194,7 +194,7 @@ FilterComponent.STATE = {
 	 */
 	filters: {
 		validator: core.isArray,
-		value: ['none', '1977', 'amaro', 'brannan', 'earlybird', 'hefe', 'hudson', 'inkwell', 'kelvin', 'lofi', 'mayfair', 'nashville', 'rise', 'sierra', 'sutro', 'toaster', 'valencia', 'xpro2', 'walden', 'willow']
+		value: ['none', 'ruby', 'absinthe', 'chroma', 'atari', 'tripel', 'ailis', 'flatfoot', 'pyrexia', 'umbra', 'rouge', 'idyll', 'glimmer', 'elysium', 'nucleus', 'amber', 'paella', 'aureus', 'expanse', 'orchid']
 	},
 
 	/**
