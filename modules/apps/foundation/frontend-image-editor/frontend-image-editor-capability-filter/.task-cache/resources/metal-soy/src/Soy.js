@@ -169,6 +169,10 @@ define(['exports', 'metal/src/metal', 'metal-component/src/all/component', 'html
 		};
 
 		Soy.prototype.shouldUpdate = function shouldUpdate(changes) {
+			if (!_IncrementalDomRender.prototype.shouldUpdate.call(this, changes)) {
+				return false;
+			}
+
 			var fn = this.component_.constructor.TEMPLATE;
 			var params = fn ? _SoyAop2.default.getOriginalFn(fn).params : [];
 			for (var i = 0; i < params.length; i++) {

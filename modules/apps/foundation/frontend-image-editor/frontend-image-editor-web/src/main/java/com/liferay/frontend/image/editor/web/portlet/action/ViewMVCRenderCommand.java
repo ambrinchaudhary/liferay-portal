@@ -92,6 +92,9 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 			strings.put(key, LanguageUtil.get(resourceBundle, key));
 		}
 
+		System.out.println("STRINGS");
+		System.out.println(strings);
+
 		template.put("strings", strings);
 
 		return "ImageEditor";

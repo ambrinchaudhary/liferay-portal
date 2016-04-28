@@ -115,6 +115,13 @@ define(['exports', 'metal/src/metal', 'metal-dom/src/all/dom', './ComponentRegis
 			_this.wasRendered = false;
 
 			/**
+    * This holds information passed down from ancestors through
+    * `getChildContext`.
+    * @type {!Object}
+    */
+			_this.context = {};
+
+			/**
     * The component's element will be appended to the element this variable is
     * set to, unless the user specifies another parent when calling `render` or
     * `attach`.
@@ -192,7 +199,9 @@ define(['exports', 'metal/src/metal', 'metal-dom/src/all/dom', './ComponentRegis
 				}
 				this.components[key] = new ConstructorFn(opt_data, false);
 			}
-			return this.components[key];
+			var comp = this.components[key];
+			comp.context = _metal.object.mixin({}, this.context, this.getChildContext());
+			return comp;
 		};
 
 		Component.prototype.created = function created() {};
@@ -284,6 +293,10 @@ define(['exports', 'metal/src/metal', 'metal-dom/src/all/dom', './ComponentRegis
 				}
 				fn.call(this, opt_change.newVal, opt_change.prevVal);
 			}
+		};
+
+		Component.prototype.getChildContext = function getChildContext() {
+			return {};
 		};
 
 		Component.prototype.getRenderer = function getRenderer() {
@@ -489,7 +502,7 @@ define(['exports', 'metal/src/metal', 'metal-dom/src/all/dom', './ComponentRegis
   * A list with state key names that will automatically be rejected as invalid.
   * @type {!Array<string>}
   */
-	Component.INVALID_KEYS = ['components'];
+	Component.INVALID_KEYS = ['components', 'context', 'wasRendered'];
 
 	exports.default = Component;
 });
