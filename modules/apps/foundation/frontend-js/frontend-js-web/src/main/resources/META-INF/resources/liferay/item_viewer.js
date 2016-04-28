@@ -49,6 +49,8 @@ AUI.add(
 
 		var TPL_EDIT_ICON = '<a class="lfr-item-viewer-icon-info-link" href="{editItemUrl}" style="right: 60px;"><span class="' + CSS_ICON_MONOSPACED + ' lfr-item-viewer-icon-info">' + Liferay.Util.getLexiconIconTpl('pencil') + '</span></a>';
 
+		var TPL_EDIT_DIALOG_TITLE = '{edit} {title} ({copy})';
+
 		var TPL_INFO_ICON = '<a class="lfr-item-viewer-icon-info-link" data-content=".image-viewer-focused" data-target=".image-viewer-sidenav" data-toggle="sidenav" data-type="fixed-push" href=""><span class="' + CSS_ICON_MONOSPACED + ' lfr-item-viewer-icon-info">' + Liferay.Util.getLexiconIconTpl('info-circle') + '</span></a>';
 
 		var TPL_INFO_TAB_BODY = '<div class="{className} fade in tab-pane" id="{tabId}">{content}</div>';
@@ -428,91 +430,36 @@ AUI.add(
 								editIconEl.on('click', function(event) {
 									event.preventDefault();
 
-									var zIndex = instance.get('zIndex');
+									var item = instance.get('links').item(instance.get('currentIndex'));
+									var itemTitle = item.getAttribute('title');
+									var itemURL = item.getAttribute('url');
 
-									var portletURL = new Liferay.PortletURL.createURL(instance.get('editItemUrl'));
-
-									var imageUrl = instance.get('links').item(instance.get('currentIndex')).getAttribute('data-value');
-
-									portletURL.setParameter('image_editor_url', imageUrl);
-
-									Liferay.Util.openWindow(
+									var editDialogTitle = Lang.sub(
+										TPL_EDIT_DIALOG_TITLE,
 										{
-											id: /*eventName +*/ 'editImageWindow',
-											dialog: {
-												zIndex: 10000,
-												'toolbars.footer': [
-													{
-														cssClass: 'btn-lg btn-primary',
-														id: 'saveButton',
-														label: /*strings.save*/'save',
-														on: {
-															click: function() {
-																//move this logic out of here eventually
-																var dialog = Liferay.Util.getWindow(/*eventName +*/ 'editImageWindow');
-
-																var dialogDoc = dialog.iframe.node.get('contentWindow').get('document');
-
-																var canvasElement = dialogDoc.one('canvas')._node;
-
-																canvasElement.toBlob(function(imageBlob) {
-																	imageBlob.name = 'file_' + Date.now();
-																	imageBlob.lastModifiedDate = new Date();
-																	imageBlob.type = 'image/jpeg';
-
-																	var formData = new FormData();
-
-																	formData.append('imageSelectorFileName', imageBlob);
-
-																	var url = new Liferay.PortletURL.createURL(instance.get('uploadItemUrl'), {
-																		title: 'file_' + Date.now()
-																	});
-
-																	$.ajax({
-																		contentType: false,
-																		data: formData,
-																		processData: false,
-																		success: A.bind('_onSaveEditSuccess', instance),
-																		type: 'POST',
-																		url: url.toString(),
-																		xhr: function() {
-																		    var xhr = new window.XMLHttpRequest();
-
-																		    //Upload progress
-																		    xhr.upload.addEventListener("progress", function(evt) {
-																		      if (evt.lengthComputable) {
-																		        var percentComplete = evt.loaded / evt.total;
-																		        //Do something with upload progress
-																		        console.log(percentComplete);
-																		      }
-																		    }, false);
-
-																		    return xhr;
-																		}
-																	});
-																}, 'image/jpeg');
-															}
-														},
-														render: true
-													},
-													{
-														cssClass: 'btn-lg btn-link close-modal',
-														id: 'cancelButton',
-														label: /*strings.cancel*/'cancel',
-														on: {
-															click: function() {
-																var dialog = Liferay.Util.getWindow(/*eventName +*/ 'editImageWindow');
-
-																dialog.hide();
-															}
-														}
-													}
-												]
-											},
-											uri: portletURL.toString(),
-											stack: false,
-											title: Liferay.Language.get('Edit Image')
+											copy: Liferay.Language.get('copy'),
+											edit: Liferay.Language.get('edit'),
+											title: itemTitle
 										}
+									);
+
+									Liferay.Util.editEntity(
+										{
+											dialog: {
+												destroyOnHide: true,
+												zIndex: 100000
+											},
+											id: 'itemViewer',
+											stack: false,
+											uri: instance.get('editItemUrl'),
+											urlParams: {
+												entity: itemURL,
+												saveParamName: 'imageSelectorFileName',
+												saveURL: instance.get('uploadItemUrl')
+											},
+											title: editDialogTitle
+										},
+										A.bind('_onSaveEditSuccess', instance)
 									);
 								});
 
@@ -523,17 +470,11 @@ AUI.add(
 						}
 					},
 
-
-					_onSaveEditSuccess: function(data) {
+					_onSaveEditSuccess: function(event) {
 						var instance = this;
 
-						var dialog = Liferay.Util.getWindow(/*eventName +*/ 'editImageWindow');
-
-						instance.appendNewLink(data);
-
-						instance.updateCurrentImage(data);
-
-						dialog.hide();
+						instance.appendNewLink(event.data);
+						instance.updateCurrentImage(event.data);
 					},
 
 					appendNewLink: function(imageData) {
@@ -571,7 +512,6 @@ AUI.add(
 						instance.set('links', links);
 
 						instance.set('currentIndex', links.size() - 1);
-
 					},
 
 					_renderSidenav: function() {
