@@ -228,7 +228,7 @@ define("frontend-image-editor-web@1.0.0/ImageEditor.soy", ['exports', 'metal-com
       ie_open('div', null, null, 'class', 'filters ' + (opt_data.selectedControl && opt_data.selectedControl.label == opt_data.control.label ? 'open' : ''));
       ie_open('div', null, null, 'class', 'col-md-2 col-sm-2 col-xs-2 btn-space');
       ie_open('button', null, null, 'class', 'btn btn-link', 'data-onclick', 'accept');
-      itext('Apply');
+      itext((goog.asserts.assert(opt_data.strings['apply'] != null), opt_data.strings['apply']));
       ie_close('a');
       ie_close('div');
       ie_open('div', null, null, 'class', 'col-md-8 col-sm-8 col-xs-8 filters-list');
@@ -238,7 +238,7 @@ define("frontend-image-editor-web@1.0.0/ImageEditor.soy", ['exports', 'metal-com
       ie_close('div');
       ie_open('div', null, null, 'class', 'col-md-2 col-sm-2 col-xs-2 btn-space');
       ie_open('button', null, null, 'class', 'btn btn-link', 'data-onclick', 'discard');
-      itext('Cancel');
+      itext((goog.asserts.assert(opt_data.strings['cancel'] != null), opt_data.strings['cancel']));
       ie_close('a');
       ie_close('div');
       ie_close('div');
@@ -270,23 +270,23 @@ define("frontend-image-editor-web@1.0.0/ImageEditor.soy", ['exports', 'metal-com
      * @return {void}
      * @suppress {checkTypes}
      */
-    function __deltemplate_s101_266044fb(opt_data, opt_ignored, opt_ijData) {}
-    exports.__deltemplate_s101_266044fb = __deltemplate_s101_266044fb;
+    function __deltemplate_s105_266044fb(opt_data, opt_ignored, opt_ijData) {}
+    exports.__deltemplate_s105_266044fb = __deltemplate_s105_266044fb;
     if (goog.DEBUG) {
-      __deltemplate_s101_266044fb.soyTemplateName = 'ImageEditor.__deltemplate_s101_266044fb';
+      __deltemplate_s105_266044fb.soyTemplateName = 'ImageEditor.__deltemplate_s105_266044fb';
     }
-    soy.$$registerDelegateFn(soy.$$getDelTemplateId('ImageEditor.Controls.idom'), '', 0, __deltemplate_s101_266044fb);
+    soy.$$registerDelegateFn(soy.$$getDelTemplateId('ImageEditor.Controls.idom'), '', 0, __deltemplate_s105_266044fb);
 
-    exports.render.params = ["capabilities", "history", "id", "image", "selectedControl", "selectedTool", "pathThemeImages", "getEditorCanvas", "getEditorImageData", "requestEditorEdit", "requestEditorPreview"];
-    exports.render.types = { "capabilities": "any", "history": "any", "id": "any", "image": "any", "selectedControl": "any", "selectedTool": "any", "pathThemeImages": "any", "getEditorCanvas": "any", "getEditorImageData": "any", "requestEditorEdit": "any", "requestEditorPreview": "any" };
+    exports.render.params = ["capabilities", "history", "id", "image", "selectedControl", "selectedTool", "pathThemeImages", "strings", "getEditorCanvas", "getEditorImageData", "requestEditorEdit", "requestEditorPreview"];
+    exports.render.types = { "capabilities": "any", "history": "any", "id": "any", "image": "any", "selectedControl": "any", "selectedTool": "any", "pathThemeImages": "any", "strings": "any", "getEditorCanvas": "any", "getEditorImageData": "any", "requestEditorEdit": "any", "requestEditorPreview": "any" };
     exports.tools.params = ["capabilities", "selectedTool"];
     exports.tools.types = { "capabilities": "any", "selectedTool": "any" };
     exports.tool.params = ["pathThemeImages", "tool", "toolIndex"];
     exports.tool.types = { "pathThemeImages": "any", "tool": "any", "toolIndex": "any" };
     exports.tool_dropdown.params = ["pathThemeImages", "requestEditorEdit", "tool", "toolIndex"];
     exports.tool_dropdown.types = { "pathThemeImages": "any", "requestEditorEdit": "any", "tool": "any", "toolIndex": "any" };
-    exports.tool_control.params = ["control", "selectedControl"];
-    exports.tool_control.types = { "control": "any", "selectedControl": "any" };
+    exports.tool_control.params = ["control", "selectedControl", "strings"];
+    exports.tool_control.types = { "control": "any", "selectedControl": "any", "strings": "any" };
     exports.active_controls.params = ["id", "variant"];
     exports.active_controls.types = { "id": "any", "variant": "any" };
     exports.templates = templates = exports;
