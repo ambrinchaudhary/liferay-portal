@@ -47,6 +47,10 @@ AUI.add(
 
 		var TPL_CLOSE = '<button class="close image-viewer-base-control image-viewer-close lfr-item-viewer-close" type="button"><span class="' + CSS_ICON_MONOSPACED + '">' + Liferay.Util.getLexiconIconTpl('angle-left') + '</span><span class="lfr-item-viewer-close-text truncate-text">{0}</span></button>';
 
+		var TPL_EDIT_ICON = '<a class="lfr-item-viewer-icon-info-link" href="{editItemUrl}" style="right: 60px;"><span class="' + CSS_ICON_MONOSPACED + ' lfr-item-viewer-icon-info">' + Liferay.Util.getLexiconIconTpl('pencil') + '</span></a>';
+
+		var TPL_EDIT_DIALOG_TITLE = '{edit} {title} ({copy})';
+
 		var TPL_INFO_ICON = '<a class="lfr-item-viewer-icon-info-link" data-content=".image-viewer-focused" data-target=".image-viewer-sidenav" data-toggle="sidenav" data-type="fixed-push" href=""><span class="' + CSS_ICON_MONOSPACED + ' lfr-item-viewer-icon-info">' + Liferay.Util.getLexiconIconTpl('info-circle') + '</span></a>';
 
 		var TPL_INFO_TAB_BODY = '<div class="{className} fade in tab-pane" id="{tabId}">{content}</div>';
@@ -65,6 +69,11 @@ AUI.add(
 
 					circular: {
 						value: true
+					},
+
+					editItemUrl: {
+						validator: Lang.isString,
+						value: ''
 					},
 
 					infoTemplate: {
@@ -92,6 +101,11 @@ AUI.add(
 
 					showPlayer: {
 						value: false
+					},
+
+					uploadItemUrl: {
+						validator: Lang.isString,
+						value: '',
 					},
 
 					zIndex: {
@@ -402,7 +416,102 @@ AUI.add(
 
 								instance._infoIconEl = infoIconEl;
 							}
+
+							if (instance.get('editItemUrl')) {
+								var editIconEl = A.Node.create(
+									Lang.sub(
+										TPL_EDIT_ICON,
+										{
+											editItemUrl: instance.get('editItemUrl')
+										}
+									)
+								);
+
+								editIconEl.on('click', function(event) {
+									event.preventDefault();
+
+									var item = instance.get('links').item(instance.get('currentIndex'));
+									var itemTitle = item.getAttribute('title');
+									var itemURL = item.getAttribute('url');
+
+									var editDialogTitle = Lang.sub(
+										TPL_EDIT_DIALOG_TITLE,
+										{
+											copy: Liferay.Language.get('copy'),
+											edit: Liferay.Language.get('edit'),
+											title: itemTitle
+										}
+									);
+
+									Liferay.Util.editEntity(
+										{
+											dialog: {
+												destroyOnHide: true,
+												zIndex: 100000
+											},
+											id: 'itemViewer',
+											stack: false,
+											uri: instance.get('editItemUrl'),
+											urlParams: {
+												entity: itemURL,
+												saveParamName: 'imageSelectorFileName',
+												saveURL: instance.get('uploadItemUrl')
+											},
+											title: editDialogTitle
+										},
+										A.bind('_onSaveEditSuccess', instance)
+									);
+								});
+
+								container.append(editIconEl);
+
+								instance._editIconEl = editIconEl;
+							}
 						}
+					},
+
+					_onSaveEditSuccess: function(event) {
+						var instance = this;
+
+						instance.appendNewLink(event.data);
+						instance.updateCurrentImage(event.data);
+					},
+
+					appendNewLink: function(imageData) {
+						var instance = this;
+
+						var links = instance.get('links');
+
+						var linkContainer = links.last().ancestor();
+
+						var newLinkContainer = linkContainer.clone();
+
+						var newLink = newLinkContainer.one('.item-preview');
+
+						newLink.setAttribute('data-href', imageData.file.url);
+						newLink.setAttribute('data-title', imageData.file.url);
+						newLink.setAttribute('data-value', imageData.file.url);
+						newLink.setAttribute('data-url', imageData.file.url);
+
+						newLink.all('[style]').each(
+							function(node) {
+								var styleAttr = node.getAttribute('style');
+
+								if (styleAttr) {
+									styleAttr = styleAttr.replace(/\burl\s*\(\s*["']?http:\/\/((?:[^"'\r\n\/,]+)\/?)+["']?\s*\)/i, 'url("' + imageData.file.url + '")');
+
+									node.setAttribute('style', styleAttr);
+								}
+							}
+						);
+
+						linkContainer.placeAfter(newLinkContainer);
+
+						links.push(newLink);
+
+						instance.set('links', links);
+
+						instance.set('currentIndex', links.size() - 1);
 					},
 
 					_renderSidenav: function() {
@@ -476,6 +585,6 @@ AUI.add(
 	},
 	'',
 	{
-		requires: ['aui-component', 'aui-image-viewer']
+		requires: ['aui-component', 'aui-image-viewer', 'liferay-portlet-url']
 	}
 );
