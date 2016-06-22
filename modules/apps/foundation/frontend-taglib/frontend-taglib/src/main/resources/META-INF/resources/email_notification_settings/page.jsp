@@ -67,9 +67,11 @@ boolean showSubject = GetterUtil.getBoolean(request.getAttribute("liferay-fronte
 				/>
 			</c:when>
 			<c:otherwise>
-				<liferay-ui:input-editor contents="<%= emailBody %>" editorName='<%= PropsUtil.get("editor.wysiwyg.portal-web.docroot.html.taglib.ui.email_notification_settings.jsp") %>' name="<%= emailParam %>" />
+				<div class="form-group">
+					<liferay-ui:input-editor contents="<%= emailBody %>" cssClass="form-control" editorName="alloyeditor" name="<%= emailParam %>" />
 
-				<aui:input name='<%= fieldPrefix + fieldPrefixSeparator + emailParam + "Body" + fieldPrefixSeparator %>' type="hidden" />
+					<aui:input name='<%= fieldPrefix + fieldPrefixSeparator + emailParam + "Body" + fieldPrefixSeparator %>' type="hidden" />
+				</div>
 			</c:otherwise>
 		</c:choose>
 	</aui:field-wrapper>
