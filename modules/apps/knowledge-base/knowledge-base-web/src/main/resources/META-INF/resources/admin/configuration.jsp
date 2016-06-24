@@ -135,6 +135,7 @@ kbGroupServiceConfiguration = ParameterMapUtil.setParameterMap(KBGroupServiceCon
 					emailEnabled="<%= kbGroupServiceConfiguration.emailKBArticleAddedEnabled() %>"
 					emailParam="emailKBArticleAdded"
 					emailSubject="<%= kbGroupServiceConfiguration.emailKBArticleAddedSubject() %>"
+					showsInTabName="article-added-email"
 				/>
 			</aui:fieldset-group>
 		</liferay-ui:section>
@@ -147,6 +148,7 @@ kbGroupServiceConfiguration = ParameterMapUtil.setParameterMap(KBGroupServiceCon
 					emailEnabled="<%= kbGroupServiceConfiguration.emailKBArticleUpdatedEnabled() %>"
 					emailParam="emailKBArticleUpdated"
 					emailSubject="<%= kbGroupServiceConfiguration.emailKBArticleUpdatedSubject() %>"
+					showsInTabName="article-updated-email"
 				/>
 			</aui:fieldset-group>
 		</liferay-ui:section>
@@ -171,6 +173,7 @@ kbGroupServiceConfiguration = ParameterMapUtil.setParameterMap(KBGroupServiceCon
 					emailEnabled="<%= kbGroupServiceConfiguration.emailKBArticleSuggestionReceivedEnabled() %>"
 					emailParam="emailKBArticleSuggestionReceived"
 					emailSubject="<%= kbGroupServiceConfiguration.emailKBArticleSuggestionReceivedSubject() %>"
+					showsInTabName="suggestion-received-email"
 				/>
 			</aui:fieldset-group>
 		</liferay-ui:section>
@@ -183,6 +186,7 @@ kbGroupServiceConfiguration = ParameterMapUtil.setParameterMap(KBGroupServiceCon
 					emailEnabled="<%= kbGroupServiceConfiguration.emailKBArticleSuggestionInProgressEnabled() %>"
 					emailParam="emailKBArticleSuggestionInProgress"
 					emailSubject="<%= kbGroupServiceConfiguration.emailKBArticleSuggestionInProgressSubject() %>"
+					showsInTabName="suggestion-in-progress-email"
 				/>
 			</aui:fieldset-group>
 		</liferay-ui:section>
@@ -195,6 +199,7 @@ kbGroupServiceConfiguration = ParameterMapUtil.setParameterMap(KBGroupServiceCon
 					emailEnabled="<%= kbGroupServiceConfiguration.emailKBArticleSuggestionResolvedEnabled() %>"
 					emailParam="emailKBArticleSuggestionResolved"
 					emailSubject="<%= kbGroupServiceConfiguration.emailKBArticleSuggestionResolvedSubject() %>"
+					showsInTabName="suggestion-resolved-email"
 				/>
 			</aui:fieldset-group>
 		</liferay-ui:section>
