@@ -84,6 +84,7 @@
 					emailEnabled="<%= dlGroupServiceSettings.isEmailFileEntryAddedEnabled() %>"
 					emailParam="emailFileEntryAdded"
 					emailSubject="<%= dlGroupServiceSettings.getEmailFileEntryAddedSubjectXml() %>"
+					showsInTabName="document-added-email"
 				/>
 			</aui:fieldset-group>
 		</liferay-ui:section>
@@ -96,6 +97,7 @@
 					emailEnabled="<%= dlGroupServiceSettings.isEmailFileEntryUpdatedEnabled() %>"
 					emailParam="emailFileEntryUpdated"
 					emailSubject="<%= dlGroupServiceSettings.getEmailFileEntryUpdatedSubjectXml() %>"
+					showsInTabName="document-updated-email"
 				/>
 			</aui:fieldset-group>
 		</liferay-ui:section>
