@@ -69,7 +69,7 @@ String showsInTabName = (String)request.getAttribute("liferay-frontend:email-not
 			</c:when>
 			<c:otherwise>
 				<div class="form-group">
-					<liferay-ui:input-editor contents="<%= emailBody %>" cssClass="form-control" editorName="alloyeditor" name="<%= emailParam %>" />
+					<liferay-ui:input-editor autoCreate="<%= Validator.isNull(showsInTabName) %>" contents="<%= emailBody %>" cssClass="form-control" editorName="alloyeditor" name="<%= emailParam %>" />
 
 					<aui:input name='<%= fieldPrefix + fieldPrefixSeparator + emailParam + "Body" + fieldPrefixSeparator %>' type="hidden" />
 				</div>
@@ -100,3 +100,24 @@ String showsInTabName = (String)request.getAttribute("liferay-frontend:email-not
 		</dl>
 	</aui:fieldset>
 </c:if>
+
+<aui:script>
+	<c:if test="<%= Validator.isNotNull(showsInTabName) %>">
+		var afterShowTab = function(event) {
+			if (event.id === '<%= showsInTabName %>') {
+				window['<%= namespace + emailParam %>'].create();
+			}
+		};
+
+		Liferay.after('showTab', afterShowTab);
+
+		var onDestroyPortlet = function(event) {
+			if (event.portletId === '<%= portletDisplay.getRootPortletId() %>') {
+				Liferay.detach('showTab', afterShowTab);
+				Liferay.detach('destroyPortlet', onDestroyPortlet);
+			}
+		};
+
+		Liferay.on('destroyPortlet', onDestroyPortlet);
+	</c:if>
+</aui:script>
