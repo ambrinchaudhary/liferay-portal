@@ -28,6 +28,7 @@ String fieldPrefixSeparator = (String)request.getAttribute("liferay-frontend:ema
 String helpMessage = (String)request.getAttribute("liferay-frontend:email-notification-settings:helpMessage");
 boolean showEmailEnabled = GetterUtil.getBoolean(request.getAttribute("liferay-frontend:email-notification-settings:showEmailEnabled"));
 boolean showSubject = GetterUtil.getBoolean(request.getAttribute("liferay-frontend:email-notification-settings:showSubject"));
+String showsInTabName = (String)request.getAttribute("liferay-frontend:email-notification-settings:showsInTabName");
 %>
 
 <aui:fieldset markupView="lexicon">

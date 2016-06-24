@@ -35,6 +35,10 @@ public class EmailNotificationSettingsTag extends IncludeTag {
 		return EVAL_BODY_INCLUDE;
 	}
 
+	public String getShowsInTabName() {
+		return _showsInTabName;
+	}
+
 	public void setBodyLabel(String bodyLabel) {
 		_bodyLabel = bodyLabel;
 	}
@@ -98,6 +102,10 @@ public class EmailNotificationSettingsTag extends IncludeTag {
 
 	public void setShowSubject(boolean showSubject) {
 		_showSubject = showSubject;
+	}
+
+	public void setShowsInTabName(String showsInTabName) {
+		_showsInTabName = showsInTabName;
 	}
 
 	@Override
@@ -194,6 +202,8 @@ public class EmailNotificationSettingsTag extends IncludeTag {
 		request.setAttribute(
 			"liferay-frontend:email-notification-settings:showSubject",
 			_showSubject);
+		request.setAttribute(
+			"liferay-frontend:email-notification-settings:showsInTabName", _showsInTabName);
 	}
 
 	private static final boolean _CLEAN_UP_SET_ATTRIBUTES = true;
@@ -213,5 +223,6 @@ public class EmailNotificationSettingsTag extends IncludeTag {
 	private String _helpMessage;
 	private boolean _showEmailEnabled = true;
 	private boolean _showSubject = true;
+	private String _showsInTabName;
 
 }
