@@ -29,6 +29,9 @@ String helpMessage = (String)request.getAttribute("liferay-frontend:email-notifi
 boolean showEmailEnabled = GetterUtil.getBoolean(request.getAttribute("liferay-frontend:email-notification-settings:showEmailEnabled"));
 boolean showSubject = GetterUtil.getBoolean(request.getAttribute("liferay-frontend:email-notification-settings:showSubject"));
 String showsInTabName = (String)request.getAttribute("liferay-frontend:email-notification-settings:showsInTabName");
+
+String editorName = PropsUtil.get("editor.wysiwyg.portal-web.docroot.html.taglib.ui.email_notification_settings.jsp");
+boolean autoCreateEditor = !(Validator.isNotNull(showsInTabName) && editorName.equals("alloyeditor"));
 %>
 
 <aui:fieldset markupView="lexicon">
@@ -58,7 +61,7 @@ String showsInTabName = (String)request.getAttribute("liferay-frontend:email-not
 		<c:choose>
 			<c:when test="<%= Validator.isNotNull(emailBody) && Validator.isXml(emailBody) %>">
 				<liferay-ui:input-localized
-					editorName='<%= PropsUtil.get("editor.wysiwyg.portal-web.docroot.html.taglib.ui.email_notification_settings.jsp") %>'
+					editorName="<%= editorName %>"
 					fieldPrefix="<%= fieldPrefix %>"
 					fieldPrefixSeparator="<%= fieldPrefixSeparator %>"
 					name='<%= emailParam + "Body" %>'
@@ -69,7 +72,7 @@ String showsInTabName = (String)request.getAttribute("liferay-frontend:email-not
 			</c:when>
 			<c:otherwise>
 				<div class="form-group">
-					<liferay-ui:input-editor autoCreate="<%= Validator.isNull(showsInTabName) %>" contents="<%= emailBody %>" cssClass="form-control" editorName='<%= PropsUtil.get("editor.wysiwyg.portal-web.docroot.html.taglib.ui.email_notification_settings.jsp") %>' name="<%= emailParam %>" />
+					<liferay-ui:input-editor autoCreate="<%= autoCreateEditor %>" contents="<%= emailBody %>" cssClass="form-control" editorName='<%= editorName %>' name="<%= emailParam %>" />
 
 					<aui:input name='<%= fieldPrefix + fieldPrefixSeparator + emailParam + "Body" + fieldPrefixSeparator %>' type="hidden" />
 				</div>
@@ -102,7 +105,7 @@ String showsInTabName = (String)request.getAttribute("liferay-frontend:email-not
 </c:if>
 
 <aui:script>
-	<c:if test="<%= Validator.isNotNull(showsInTabName) %>">
+	<c:if test="<%= !autoCreateEditor %>">
 		var afterShowTab = function(event) {
 			if (event.id === '<%= showsInTabName %>') {
 				window['<%= namespace + emailParam %>'].create();
