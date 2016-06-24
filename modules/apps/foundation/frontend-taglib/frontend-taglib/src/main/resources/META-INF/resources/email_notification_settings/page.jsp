@@ -69,7 +69,7 @@ String showsInTabName = (String)request.getAttribute("liferay-frontend:email-not
 			</c:when>
 			<c:otherwise>
 				<div class="form-group">
-					<liferay-ui:input-editor autoCreate="<%= Validator.isNull(showsInTabName) %>" contents="<%= emailBody %>" cssClass="form-control" editorName="alloyeditor" name="<%= emailParam %>" />
+					<liferay-ui:input-editor autoCreate="<%= Validator.isNull(showsInTabName) %>" contents="<%= emailBody %>" cssClass="form-control" editorName='<%= PropsUtil.get("editor.wysiwyg.portal-web.docroot.html.taglib.ui.email_notification_settings.jsp") %>' name="<%= emailParam %>" />
 
 					<aui:input name='<%= fieldPrefix + fieldPrefixSeparator + emailParam + "Body" + fieldPrefixSeparator %>' type="hidden" />
 				</div>
