@@ -98,6 +98,7 @@ BlogsGroupServiceOverriddenConfiguration blogsGroupServiceOverriddenConfiguratio
 					emailEnabled="<%= blogsGroupServiceSettings.isEmailEntryAddedEnabled() %>"
 					emailParam="emailEntryAdded"
 					emailSubject="<%= blogsGroupServiceSettings.getEmailEntryAddedSubjectXml() %>"
+					showsInTabName="entry-added-email"
 				/>
 			</aui:fieldset-group>
 		</liferay-ui:section>
@@ -110,6 +111,7 @@ BlogsGroupServiceOverriddenConfiguration blogsGroupServiceOverriddenConfiguratio
 					emailEnabled="<%= blogsGroupServiceSettings.isEmailEntryUpdatedEnabled() %>"
 					emailParam="emailEntryUpdated"
 					emailSubject="<%= blogsGroupServiceSettings.getEmailEntryUpdatedSubjectXml() %>"
+					showsInTabName="entry-updated-email"
 				/>
 			</aui:fieldset-group>
 		</liferay-ui:section>
