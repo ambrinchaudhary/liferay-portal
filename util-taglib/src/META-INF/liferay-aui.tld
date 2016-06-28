@@ -666,6 +666,13 @@
 		<tag-class>com.liferay.taglib.aui.InputTag</tag-class>
 		<body-content>JSP</body-content>
 		<attribute>
+			<description><![CDATA[Whether to create the input component by default.]]></description>
+			<name>autoCreate</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
 			<description><![CDATA[Whether to focus on the input component by default.]]></description>
 			<name>autoFocus</name>
 			<required>false</required>

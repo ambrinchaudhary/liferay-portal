@@ -37,6 +37,8 @@ public class InputLocalizedTag extends IncludeTag {
 		return _availableLocales;
 	}
 
+	public void setAutoCreate(boolean autoCreate) { _autoCreate = autoCreate; }
+
 	public void setAutoFocus(boolean autoFocus) {
 		_autoFocus = autoFocus;
 	}
@@ -119,6 +121,7 @@ public class InputLocalizedTag extends IncludeTag {
 
 	@Override
 	protected void cleanUp() {
+		_autoCreate = true;
 		_autoFocus = false;
 		_autoSize = false;
 		_cssClass = null;
@@ -169,6 +172,8 @@ public class InputLocalizedTag extends IncludeTag {
 		}
 
 		request.setAttribute(
+			"liferay-ui:input-localized:autoCreate", String.valueOf(_autoCreate));
+		request.setAttribute(
 			"liferay-ui:input-localized:autoFocus", String.valueOf(_autoFocus));
 		request.setAttribute(
 			"liferay-ui:input-localized:autoSize", String.valueOf(_autoSize));
@@ -215,6 +220,7 @@ public class InputLocalizedTag extends IncludeTag {
 	private static final String _PAGE =
 		"/html/taglib/ui/input_localized/page.jsp";
 
+	private boolean _autoCreate = true;
 	private boolean _autoFocus;
 	private boolean _autoSize;
 	private Set<Locale> _availableLocales;

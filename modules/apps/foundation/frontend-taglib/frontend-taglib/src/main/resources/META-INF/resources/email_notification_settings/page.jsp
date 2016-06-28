@@ -61,6 +61,7 @@ boolean autoCreateEditor = !(Validator.isNotNull(showsInTabName) && editorName.e
 		<c:choose>
 			<c:when test="<%= Validator.isNotNull(emailBody) && Validator.isXml(emailBody) %>">
 				<liferay-ui:input-localized
+					autoCreate="<%= autoCreateEditor %>"
 					editorName="<%= editorName %>"
 					fieldPrefix="<%= fieldPrefix %>"
 					fieldPrefixSeparator="<%= fieldPrefixSeparator %>"

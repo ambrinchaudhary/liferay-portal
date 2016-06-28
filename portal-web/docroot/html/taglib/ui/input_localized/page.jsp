@@ -20,6 +20,7 @@
 	<c:choose>
 		<c:when test='<%= type.equals("editor") %>'>
 			<liferay-ui:input-editor
+				autoCreate="<%= autoCreate %>"
 				contents="<%= mainLanguageValue %>"
 				contentsLanguageId="<%= languageId %>"
 				cssClass='<%= \"language-value \" + cssClass %>'
