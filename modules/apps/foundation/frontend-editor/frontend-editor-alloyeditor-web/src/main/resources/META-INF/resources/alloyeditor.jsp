@@ -233,7 +233,7 @@ if (showSource) {
 					cfg: {
 						uploadUrl: '<%= uploadURL %>'
 					},
-					fn: A.Plugin.LiferayBlogsUploader
+					fn: A.Plugin.LiferayEditorImageUploader
 				}
 			);
 		</c:if>
