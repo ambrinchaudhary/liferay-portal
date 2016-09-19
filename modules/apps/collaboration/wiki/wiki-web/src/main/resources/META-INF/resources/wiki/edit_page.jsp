@@ -121,7 +121,7 @@ if (portletTitleBasedNavigation) {
 	<portlet:param name="mvcRenderCommandName" value="/wiki/edit_page" />
 </portlet:renderURL>
 
-<div <%= portletTitleBasedNavigation ? "class=\"container-fluid-1280\"" : StringPool.BLANK %>>
+<div <%= portletTitleBasedNavigation ? "class=\"container-fluid-1280\"" : StringPool.BLANK %> id='<%= renderResponse.getNamespace() + "wikiEditPageContainer" %>'>
 	<aui:form action="<%= editPageActionURL %>" method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + renderResponse.getNamespace() + "savePage();" %>'>
 		<aui:input name="<%= Constants.CMD %>" type="hidden" />
 		<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
@@ -449,6 +449,19 @@ if (portletTitleBasedNavigation) {
 
 		submitForm(form);
 	}
+</aui:script>
+
+<aui:script require="wiki-web/wiki/js/Wiki.es">
+	var wiki = new wikiWebWikiJsWikiEs.default(
+		{
+			namespace: '<portlet:namespace />',
+			rootNode: '#<portlet:namespace/>wikiEditPageContainer'
+		}
+	);
+
+	window.wiki = wiki;
+
+	//wiki.getElement('#selectFilesButton');
 </aui:script>
 
 <%
