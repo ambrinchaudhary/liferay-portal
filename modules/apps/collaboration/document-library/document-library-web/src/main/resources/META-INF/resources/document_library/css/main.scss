@@ -2,6 +2,35 @@
 @import "mixins";
 
 .portlet-document-library, .portlet-document-library-display {
+
+	.mirror-horizontal {
+		@include transform(scale(-1, 1));
+	}
+
+	.rotate-180 {
+		@include transform(rotate(180deg));
+	}
+
+	.mirror-vertical {
+		@include transform(rotate(180deg) scale(-1, 1));
+	}
+
+	.mirror-horizontal-rotate-90-cw {
+		@include transform(rotate(90deg) scale(-1, 1));
+	}
+
+	.rotate-90-cw {
+		@include transform(rotate(90deg));
+	}
+
+	.rotate-270-cw {
+		@include transform(rotate(270deg));
+	}
+
+	.mirror-horizontal-rotate-270-cw {
+		@include transform(rotate(270deg) scale(-1, 1));
+	}
+
 	.file-entry-list-description {
 		font-style: italic;
 		margin-left: 10px;
