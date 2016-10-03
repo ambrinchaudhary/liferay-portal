@@ -2610,13 +2610,13 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  portal.kernel.exception,javax.portlet",com.liferay.portal.kernel.nio.
  charset;version="6.3.0",com.liferay.portal.kernel.nio.intraband;versi
  on="7.0.0",com.liferay.portal.kernel.nio.intraband.blocking;version="
- 6.2.0";uses:="com.liferay.portal.kernel.nio.intraband",com.liferay.po
+ 6.3.0";uses:="com.liferay.portal.kernel.nio.intraband",com.liferay.po
  rtal.kernel.nio.intraband.mailbox;version="6.3.0";uses:="com.liferay.
  portal.kernel.nio.intraband",com.liferay.portal.kernel.nio.intraband.
  messaging;version="6.3.0";uses:="com.liferay.portal.kernel.messaging,
  com.liferay.portal.kernel.nio.intraband,com.liferay.portal.kernel.pro
  cess,com.liferay.portal.kernel.resiliency.spi",com.liferay.portal.ker
- nel.nio.intraband.nonblocking;version="6.2.0";uses:="com.liferay.port
+ nel.nio.intraband.nonblocking;version="6.3.0";uses:="com.liferay.port
  al.kernel.nio.intraband",com.liferay.portal.kernel.nio.intraband.prox
  y;version="1.0.0";uses:="com.liferay.portal.kernel.io,com.liferay.por
  tal.kernel.nio.intraband",com.liferay.portal.kernel.nio.intraband.pro
@@ -3752,7 +3752,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  tal.kernel.bean,com.liferay.portal.kernel.exception,com.liferay.porta
  l.kernel.messaging.proxy,com.liferay.portal.kernel.service,org.aopall
  iance.intercept",com.liferay.portlet.documentlibrary.util;version="1.
- 0.2";uses:="com.liferay.document.library.kernel.exception,com.liferay
+ 1.0";uses:="com.liferay.document.library.kernel.exception,com.liferay
  .document.library.kernel.model,com.liferay.document.library.kernel.se
  rvice,com.liferay.document.library.kernel.service.persistence,com.lif
  eray.document.library.kernel.util,com.liferay.exportimport.kernel.lar
