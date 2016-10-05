@@ -124,7 +124,7 @@
 								<div class="lfr-preview-file-content lfr-preview-image-content" id="<portlet:namespace /><%= randomNamespace %>previewFileContent">
 									<div class="lfr-preview-file-image-current-column">
 										<div class="lfr-preview-file-image-container">
-											<img alt="<liferay-ui:message escapeAttribute="<%= true %>" key="preview" />" class="lfr-preview-file-image-current" src="<%= previewFileURL %>" />
+											<img alt="<liferay-ui:message escapeAttribute="<%= true %>" key="preview" />" class="lfr-preview-file-image-current <%= _getCssClassOrientation(fileVersion) %>" src="<%= previewFileURL %>" />
 										</div>
 									</div>
 								</div>
@@ -189,3 +189,51 @@
 		</c:otherwise>
 	</c:choose>
 </div>
+
+<%!
+private String _getCssClassOrientation(FileVersion fileVersion) throws PortalException {
+	ImageOrientationHelper imageOrientationHelper =
+		new ImageOrientationHelper();
+
+	Map<Locale, String> orientationMetadata =
+		imageOrientationHelper.getOrientationMetadata(fileVersion);
+
+	for (Locale locale : orientationMetadata.keySet()) {
+		String orientation = orientationMetadata.get(locale);
+
+		if (orientation.equals(ImageOrientationHelper.MIRROR_HORIZONTAL)) {
+			return "mirror-horizontal";
+		}
+		else if (orientation.equals(ImageOrientationHelper.ROTATE_180)) {
+			return "rotate-180";
+		}
+		else if (orientation.equals(
+			ImageOrientationHelper.MIRROR_VERTICAL)) {
+
+			return "mirror-vertical";
+		}
+		else if (orientation.equals(
+			ImageOrientationHelper.
+				MIRROR_HORIZONTAL_ROTATE_90_CW)) {
+
+			return "mirror-horizontal-rotate-90-cw";
+		}
+		else if (orientation.equals(ImageOrientationHelper.ROTATE_90_CW)) {
+			return "rotate-90-cw";
+		}
+		else if (orientation.equals(
+			ImageOrientationHelper.
+				MIRROR_HORIZONTAL_ROTATE_270_CW)) {
+
+			return "mirror-horizontal-rotate-270-cw";
+		}
+		else if (orientation.equals(
+			ImageOrientationHelper.ROTATE_270_CW)) {
+
+			return "rotate-270-cw";
+		}
+	}
+
+	return StringPool.BLANK;
+}
+%>

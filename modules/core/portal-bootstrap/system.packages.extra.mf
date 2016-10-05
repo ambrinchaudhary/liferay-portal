@@ -3752,7 +3752,7 @@ Export-Package: com.liferay.ibm.icu;version="4.0.1",com.liferay.ibm.ic
  tal.kernel.bean,com.liferay.portal.kernel.exception,com.liferay.porta
  l.kernel.messaging.proxy,com.liferay.portal.kernel.service,org.aopall
  iance.intercept",com.liferay.portlet.documentlibrary.util;version="1.
- 0.2";uses:="com.liferay.document.library.kernel.exception,com.liferay
+ 1.0";uses:="com.liferay.document.library.kernel.exception,com.liferay
  .document.library.kernel.model,com.liferay.document.library.kernel.se
  rvice,com.liferay.document.library.kernel.service.persistence,com.lif
  eray.document.library.kernel.util,com.liferay.exportimport.kernel.lar
