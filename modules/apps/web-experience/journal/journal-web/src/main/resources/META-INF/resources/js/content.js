@@ -156,7 +156,7 @@ AUI.add(
 
 						if (translationManager) {
 							eventHandles.push(
-								translationManager.after('editingLocaleChange', instance._afterEditingLocaleChange, instance)
+								translationManager.on('editingLocaleChanged', instance._afterEditingLocaleChange.bind(instance))
 							);
 						}
 

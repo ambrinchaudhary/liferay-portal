@@ -18,12 +18,15 @@
 
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/ddm" prefix="liferay-ddm" %><%@
+taglib uri="http://liferay.com/tld/soy" prefix="soy" %><%@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
 <%@ page import="com.liferay.portal.kernel.servlet.taglib.ui.BreadcrumbEntry" %><%@
 page import="com.liferay.portal.kernel.util.Constants" %><%@
+page import="java.util.Map" %><%@
+page import="java.util.HashMap" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.site.navigation.breadcrumb.web.internal.display.context.SiteNavigationBreadcrumbDisplayContext" %>
 

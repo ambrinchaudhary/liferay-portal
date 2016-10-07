@@ -16,6 +16,17 @@
 
 <%@ include file="/init.jsp" %>
 
+<%
+Map<String, Object> context = new HashMap<>();
+
+context.put("visible", true);
+%>
+
+<soy:template-renderer
+	context="<%= context %>"
+	templateNamespace="Modal.render"
+/>
+
 <liferay-ui:breadcrumb
 	ddmTemplateGroupId="<%= siteNavigationBreadcrumbDisplayContext.getDisplayStyleGroupId() %>"
 	ddmTemplateKey="<%= siteNavigationBreadcrumbDisplayContext.getDDMTemplateKey() %>"
