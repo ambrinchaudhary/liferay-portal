@@ -9,6 +9,10 @@ AUI.add(
 
 		var STR_CHANGE = 'change';
 
+		var STR_URL_TITLE = '#urlTitle';
+
+		var STR_MATCH_URL_TITLE = '#matchURLTitleOptions';
+
 		var STR_CLICK = 'click';
 
 		var STR_SUFFIX = '...';
@@ -105,6 +109,18 @@ AUI.add(
 						instance._syncDescriptionEditorUI();
 					},
 
+					updateUrlTitle: function(newTitle) {
+						var instance = this, urlTitleInput = instance.one(STR_URL_TITLE), oldTitle = urlTitleInput.val();
+
+						if ((instance._originalTitle || !oldTitle) && instance._shouldMatchUrlAndTitle()) {
+							urlTitleInput.val(Liferay.Util.normalizeWithPeriodsAndSlashes(newTitle));
+						}
+
+						if (!instance._originalTitle) {
+							instance._originalTitle = newTitle;
+						}
+					},
+
 					_bindUI: function() {
 						var instance = this;
 
@@ -138,6 +154,11 @@ AUI.add(
 								customAbstractOptions.delegate(STR_CHANGE, instance._configureAbstract, 'input[type="radio"]', instance)
 							);
 						}
+
+						var matchURLTitle = instance.one(STR_MATCH_URL_TITLE);
+						eventHandles.push(
+							matchURLTitle.delegate(STR_CHANGE, instance._configureMatchURLTitle, 'input[type="radio"]', instance)
+						);
 
 						instance._eventHandles = eventHandles;
 					},
@@ -180,6 +201,21 @@ AUI.add(
 						instance._setDescriptionReadOnly(instance._shortenDescription);
 
 						instance.setDescription(description);
+					},
+
+					_configureMatchURLTitle: function() {
+						var instance = this, urlTitleInput = instance.one(STR_URL_TITLE);
+
+						if (instance._shouldMatchUrlAndTitle()) {
+							instance._lastCustomURLTitle = urlTitleInput.val();
+							var title = window[instance.ns('titleEditor')].getText();
+							instance.updateUrlTitle(title);
+							urlTitleInput.setAttribute('disabled', true);
+						}
+						else {
+							urlTitleInput.val(instance._lastCustomURLTitle || urlTitleInput.val());
+							urlTitleInput.removeAttribute('disabled');
+						}
 					},
 
 					_getPrincipalForm: function(formName) {
@@ -244,6 +280,7 @@ AUI.add(
 						var description = window[instance.ns('descriptionEditor')].getHTML();
 						var subtitle = window[instance.ns('subtitleEditor')].getHTML();
 						var title = window[instance.ns('titleEditor')].getText();
+						var urlTitle = instance.one(STR_URL_TITLE).val();
 
 						var form = instance._getPrincipalForm();
 
@@ -280,6 +317,7 @@ AUI.add(
 										'referringPortletResource': instance.one('#referringPortletResource').val(),
 										'subtitle': subtitle,
 										'title': title,
+										'urlTitle': urlTitle,
 										'workflowAction': constants.ACTION_SAVE_DRAFT
 									}
 								);
@@ -394,6 +432,10 @@ AUI.add(
 						}
 
 						return text;
+					},
+
+					_shouldMatchUrlAndTitle: function() {
+						return this.one(STR_MATCH_URL_TITLE).one("input:checked").val() === 'true';
 					},
 
 					_showCaption: function() {

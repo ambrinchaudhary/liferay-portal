@@ -156,7 +156,7 @@ if (portletTitleBasedNavigation) {
 
 					<div class="col-md-8 col-md-offset-2">
 						<div class="entry-title">
-							<h1><liferay-ui:input-editor contents="<%= HtmlUtil.escape(title) %>" editorName="alloyeditor" name="titleEditor" placeholder="title" showSource="<%= false %>" /></h1>
+							<h1><liferay-ui:input-editor contents="<%= HtmlUtil.escape(title) %>" editorName="alloyeditor" name="titleEditor" onChangeMethod="OnChangeTitle" placeholder="title" showSource="<%= false %>" /></h1>
 						</div>
 
 						<aui:input name="title" type="hidden" />
@@ -196,7 +196,31 @@ if (portletTitleBasedNavigation) {
 					String friendlyURLPrefix = StringUtil.shorten("/-/" + portlet.getFriendlyURLMapping(), 40) + StringPool.SLASH;
 					%>
 
-					<aui:input cssClass="input-medium" data-customUrl="<%= false %>" helpMessage='<%= LanguageUtil.format(resourceBundle, "for-example-x", "<em>one-day-in-the-life-of-marion-cotillard</em>") %>' ignoreRequestValue="<%= true %>" label="blog-entry-url" name="urlTitle" prefix="<%= friendlyURLPrefix %>" type="text" value="<%= urlTitle %>" />
+					<div class="clearfix form-group">
+
+						<%
+						boolean shouldMatchURLTitle;
+
+						if (entry == null) {
+							shouldMatchURLTitle = Validator.isNull(urlTitle);
+						}
+						else {
+							shouldMatchURLTitle = BlogsEntryLocalServiceUtil.getUniqueUrlTitle(entry).equals(urlTitle);
+						}
+						%>
+
+						<h4>
+							<liferay-ui:message key="url" />
+						</h4>
+
+						<div class="form-group" id="<portlet:namespace />matchURLTitleOptions">
+							<aui:input checked="<%= shouldMatchURLTitle %>" helpMessage="the-url-will-be-based-on-the-entry-title" label="automatic" name="matchURLTitle" type="radio" value="<%= true %>" />
+
+							<aui:input checked="<%= !shouldMatchURLTitle %>" label="custom" name="matchURLTitle" type="radio" value="<%= false %>" />
+						</div>
+
+						<aui:input cssClass="input-medium" data-customUrl="<%= false %>" disabled="<%= shouldMatchURLTitle %>" helpMessage='<%= LanguageUtil.format(resourceBundle, "for-example-x", "<em>one-day-in-the-life-of-marion-cotillard</em>") %>' ignoreRequestValue="<%= true %>" label="blog-entry-url" name="urlTitle" prefix="<%= friendlyURLPrefix %>" type="text" value="<%= urlTitle %>" />
+					</div>
 
 					<div class="clearfix form-group">
 						<label><liferay-ui:message key="abstract" /> <liferay-ui:icon-help message="an-abstract-is-a-brief-summary-of-a-blog-entry" /></label>
@@ -350,6 +374,14 @@ if (portletTitleBasedNavigation) {
 </portlet:actionURL>
 
 <aui:script>
+	function <portlet:namespace />OnChangeTitle(newTitle) {
+		var blogs = Liferay.component('<portlet:namespace />Blogs');
+
+		if (blogs) {
+			blogs.updateUrlTitle(newTitle);
+		}
+	}
+
 	function <portlet:namespace />OnChangeEditor(html) {
 		var blogs = Liferay.component('<portlet:namespace />Blogs');
 
@@ -431,15 +463,6 @@ if (portletTitleBasedNavigation) {
 	}
 
 	var form = A.one('#<portlet:namespace />fm');
-
-	var urlTitleInput = form.one('#<portlet:namespace />urlTitle');
-
-	urlTitleInput.on(
-		'input',
-		function(event) {
-			event.currentTarget.setAttribute('data-customUrl', urlTitleInput.val() != '');
-		}
-	);
 
 	Liferay.on('destroyPortlet', clearSaveDraftHandle);
 </aui:script>
