@@ -18,6 +18,8 @@
 
 <%
 ItemSelectorUploadViewDisplayContext itemSelectorUploadViewDisplayContext = (ItemSelectorUploadViewDisplayContext)request.getAttribute(ItemSelectorUploadView.ITEM_SELECTOR_UPLOAD_VIEW_DISPLAY_CONTEXT);
+
+String[] mimeTypes = itemSelectorUploadViewDisplayContext.getMimeTypes();
 %>
 
 <div class="container-fluid-1280 lfr-item-viewer" id="itemSelectorUploadContainer">
@@ -32,7 +34,7 @@ ItemSelectorUploadViewDisplayContext itemSelectorUploadViewDisplayContext = (Ite
 			<p>
 				<label class="btn btn-default" for="<portlet:namespace />inputFile"><liferay-ui:message key="select-file" /></label>
 
-				<input class="hide" id="<portlet:namespace />inputFile" type="file" />
+				<input accept="<%= ArrayUtil.isEmpty(mimeTypes) ? "*" : StringUtil.merge(mimeTypes) %>" class="hide" id="<portlet:namespace />inputFile" type="file" />
 			</p>
 		</div>
 	</div>
@@ -45,6 +47,7 @@ ItemSelectorUploadViewDisplayContext itemSelectorUploadViewDisplayContext = (Ite
 		{
 			closeCaption: '<%= itemSelectorUploadViewDisplayContext.getTitle(locale) %>',
 			maxFileSize: '<%= itemSelectorUploadViewDisplayContext.getMaxFileSize() %>',
+			mimeTypes: '<%= ArrayUtil.isEmpty(mimeTypes) ? "*" : StringUtil.merge(mimeTypes) %>',
 			on: {
 				selectedItem: function(event) {
 					Liferay.Util.getOpener().Liferay.fire('<%= itemSelectorUploadViewDisplayContext.getItemSelectedEventName() %>', event);

@@ -153,7 +153,8 @@ public class BlogsContentEditorConfigContributor
 			new UploadItemSelectorCriterion(
 				uploadURL.toString(),
 				LanguageUtil.get(themeDisplay.getLocale(), "blog-images"),
-				PropsValues.BLOGS_IMAGE_MAX_SIZE);
+				PropsValues.BLOGS_IMAGE_MAX_SIZE,
+				PropsValues.MIME_TYPES_WEB_IMAGES);
 
 		List<ItemSelectorReturnType> uploadDesiredItemSelectorReturnTypes =
 			new ArrayList<>();
