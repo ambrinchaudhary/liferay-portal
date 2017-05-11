@@ -24,6 +24,24 @@
 	</aui:nav>
 </aui:nav-bar>
 
+<%
+int subscriptionsCount = SubscriptionLocalServiceUtil.getUserSubscriptionsCount(user.getUserId());
+%>
+
+<liferay-frontend:management-bar
+	disabled="<%= subscriptionsCount <= 0 %>"
+	includeCheckBox="<%= true %>"
+	searchContainerId="subscriptions"
+>
+	<liferay-frontend:management-bar-filters>
+		<liferay-frontend:management-bar-navigation
+			navigationKeys='<%= new String[] {"all"} %>'
+			navigationParam="entriesNavigation"
+			portletURL="<%= renderResponse.createRenderURL() %>"
+		/>
+	</liferay-frontend:management-bar-filters>
+</liferay-frontend:management-bar>
+
 <div class="container-fluid-1280">
 	<aui:form action="<%= unsubscribeURL %>" method="get" name="fm" onSubmit='<%= "event.preventDefault(); " + renderResponse.getNamespace() + "unsubscribe();" %>'>
 		<liferay-portlet:renderURLParams varImpl="portletURL" />
@@ -37,12 +55,18 @@
 		<aui:fieldset>
 			<liferay-portlet:renderURL varImpl="iteratorURL" />
 
+			<liferay-ui:categorization-filter
+				assetType="entries"
+				portletURL="<%= iteratorURL %>"
+			/>
+
 			<liferay-ui:search-container
 				deltaConfigurable="<%= true %>"
 				emptyResultsMessage="no-subscriptions-were-found"
+				id="subscriptions"
 				iteratorURL="<%= iteratorURL %>"
 				rowChecker="<%= new EmptyOnClickRowChecker(renderResponse) %>"
-				total="<%= SubscriptionLocalServiceUtil.getUserSubscriptionsCount(user.getUserId()) %>"
+				total="<%= subscriptionsCount %>"
 			>
 				<liferay-ui:search-container-results
 					results="<%= SubscriptionLocalServiceUtil.getUserSubscriptions(user.getUserId(), searchContainer.getStart(), searchContainer.getEnd(), new SubscriptionClassNameIdComparator(true)) %>"
