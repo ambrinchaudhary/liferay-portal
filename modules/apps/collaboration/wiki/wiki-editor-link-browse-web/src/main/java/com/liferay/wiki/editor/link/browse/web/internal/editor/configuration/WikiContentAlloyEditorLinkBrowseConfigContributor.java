@@ -24,8 +24,13 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.wiki.constants.WikiPortletKeys;
 import com.liferay.wiki.item.selector.criterion.WikiAttachmentItemSelectorCriterion;
+import com.liferay.wiki.item.selector.criterion.WikiPageItemSelectorCriterion;
+import com.liferay.wiki.item.selector.criterion.WikiPageItemSelectorReturnType;
+import com.liferay.wiki.model.WikiPage;
+import com.liferay.wiki.service.WikiPageLocalService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +79,13 @@ public class WikiContentAlloyEditorLinkBrowseConfigContributor
 			return;
 		}
 
+		WikiPage page = _wikiPageLocalService.fetchPage(
+			wikiPageResourcePrimKey);
+
+		if (page == null) {
+			return;
+		}
+
 		String documentBrowseLinkUrl = jsonObject.getString(
 			"documentBrowseLinkUrl");
 
@@ -98,6 +110,7 @@ public class WikiContentAlloyEditorLinkBrowseConfigContributor
 
 			itemSelectorURL = _itemSelector.getItemSelectorURL(
 				requestBackedPortletURLFactory, name + "selectItem",
+				getWikiPageItemSelectorCriterion(page.getNodeId()),
 				getWikiAttachmentItemSelectorCriterion(
 					wikiPageResourcePrimKey));
 		}
@@ -109,7 +122,9 @@ public class WikiContentAlloyEditorLinkBrowseConfigContributor
 				_itemSelector.getItemSelectedEventName(documentBrowseLinkUrl);
 
 			itemSelectorCriteria.add(
-				0,
+				0, getWikiPageItemSelectorCriterion(page.getNodeId()));
+			itemSelectorCriteria.add(
+				1,
 				getWikiAttachmentItemSelectorCriterion(
 					wikiPageResourcePrimKey));
 
@@ -139,7 +154,29 @@ public class WikiContentAlloyEditorLinkBrowseConfigContributor
 		return itemSelectorCriterion;
 	}
 
+	protected WikiPageItemSelectorCriterion
+		getWikiPageItemSelectorCriterion(long nodeId) {
+
+		WikiPageItemSelectorCriterion itemSelectorCriterion =
+			new WikiPageItemSelectorCriterion(
+				nodeId, WorkflowConstants.STATUS_APPROVED);
+
+		List<ItemSelectorReturnType> desiredItemSelectorReturnTypes =
+			new ArrayList<>();
+
+		desiredItemSelectorReturnTypes.add(
+			new WikiPageItemSelectorReturnType());
+
+		itemSelectorCriterion.setDesiredItemSelectorReturnTypes(
+			desiredItemSelectorReturnTypes);
+
+		return itemSelectorCriterion;
+	}
+
 	@Reference
 	private ItemSelector _itemSelector;
+
+	@Reference
+	private WikiPageLocalService _wikiPageLocalService;
 
 }
