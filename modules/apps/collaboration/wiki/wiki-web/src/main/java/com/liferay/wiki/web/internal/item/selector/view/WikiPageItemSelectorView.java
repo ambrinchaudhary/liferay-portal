@@ -16,9 +16,12 @@ package com.liferay.wiki.web.internal.item.selector.view;
 
 import com.liferay.item.selector.ItemSelectorReturnType;
 import com.liferay.item.selector.ItemSelectorView;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.AggregateResourceBundleLoader;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.ResourceBundleLoader;
+import com.liferay.portal.kernel.util.ResourceBundleUtil;
+import com.liferay.portal.language.LanguageResources;
 import com.liferay.wiki.item.selector.constants.WikiItemSelectorViewConstants;
 import com.liferay.wiki.item.selector.criterion.WikiPageItemSelectorCriterion;
 import com.liferay.wiki.item.selector.criterion.WikiPageItemSelectorReturnType;
@@ -30,6 +33,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.portlet.PortletURL;
 
@@ -74,7 +78,10 @@ public class WikiPageItemSelectorView
 
 	@Override
 	public String getTitle(Locale locale) {
-		return LanguageUtil.get(locale, "wiki-pages");
+		ResourceBundle resourceBundle =
+			_resourceBundleLoader.loadResourceBundle(locale);
+
+		return ResourceBundleUtil.getString(resourceBundle, "wiki-pages");
 	}
 
 	@Override
@@ -120,6 +127,16 @@ public class WikiPageItemSelectorView
 		_servletContext = servletContext;
 	}
 
+	@Reference(
+		target = "(bundle.symbolic.name=com.liferay.wiki.web)", unbind = "-"
+	)
+	protected void setResourceBundleLoader(
+		ResourceBundleLoader resourceBundleLoader) {
+
+		_resourceBundleLoader = new AggregateResourceBundleLoader(
+			resourceBundleLoader, LanguageResources.RESOURCE_BUNDLE_LOADER);
+	}
+
 	@Reference(unbind = "-")
 	protected void setWikiNodeLocalService(
 		WikiNodeLocalService wikiNodeLocalService) {
@@ -134,6 +151,7 @@ public class WikiPageItemSelectorView
 					new WikiPageItemSelectorReturnType()
 				}));
 
+	private ResourceBundleLoader _resourceBundleLoader;
 	private ServletContext _servletContext;
 	private WikiNodeLocalService _wikiNodeLocalService;
 
