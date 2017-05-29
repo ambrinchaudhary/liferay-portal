@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Deactivate;
  */
 @Component(service = ItemSelectorCriterionHandler.class)
 public class WikiPageItemSelectorCriterionHandler
-	extends BaseItemSelectorCriterionHandler <WikiPageItemSelectorCriterion> {
+	extends BaseItemSelectorCriterionHandler<WikiPageItemSelectorCriterion> {
 
 	@Override
 	public Class<WikiPageItemSelectorCriterion>
