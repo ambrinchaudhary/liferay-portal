@@ -1,6 +1,8 @@
 AUI.add(
 	'liferay-document-library',
 	function(A) {
+		var doc = $(document);
+
 		var Lang = A.Lang;
 
 		var WIN = A.config.win;
@@ -43,6 +45,8 @@ AUI.add(
 
 						var documentLibraryContainer = instance.byId('documentLibraryContainer');
 
+						instance._sidenavContainer = documentLibraryContainer.one('.sidenav-container');
+
 						instance._documentLibraryContainer = documentLibraryContainer;
 
 						instance._eventDataRequest = instance.ns('dataRequest');
@@ -74,6 +78,12 @@ AUI.add(
 							config.appViewEntryTemplates = instance.byId('appViewEntryTemplates');
 
 							eventHandles.push(A.getDoc().once('dragenter', instance._plugUpload, instance, config));
+						}
+
+						var sidebarPanel = Liferay.component(instance.ns('SidebarPanel'));
+
+						if (sidebarPanel) {
+							eventHandles.push(sidebarPanel.on('contentUpdated', instance._onSidebarContentUpdated, instance));
 						}
 
 						instance._eventHandles = eventHandles;
@@ -139,6 +149,14 @@ AUI.add(
 						var instance = this;
 
 						instance._processAction('move_to_trash', instance.get('editEntryUrl'));
+					},
+
+					_onSidebarContentUpdated: function(event) {
+						var instance = this;
+
+						if (instance._sidenavContainer.hasClass('open')) {
+							doc.trigger('screenChange.lexicon.sidenav');
+						};
 					},
 
 					_openDocument: function(event) {

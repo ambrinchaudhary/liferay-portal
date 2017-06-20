@@ -72,6 +72,8 @@ AUI.add(
 										var response = xhr.responseText;
 
 										instance.get('targetNode').setContent(response);
+
+										instance.fire('contentUpdated');
 									}
 								}
 							}
