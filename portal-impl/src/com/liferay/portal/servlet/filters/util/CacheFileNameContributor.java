@@ -12,25 +12,22 @@
  * details.
  */
 
-package com.liferay.vulcan.functions;
+package com.liferay.portal.servlet.filters.util;
 
-import java.util.Objects;
-import java.util.function.Function;
+import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.spring.osgi.OSGiBeanProperties;
+import com.liferay.portal.kernel.util.Function;
+import com.liferay.portal.kernel.util.KeyValuePair;
+import com.liferay.portal.kernel.util.LocaleUtil;
+
+import java.util.Locale;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author Alejandro Hernández
+ * @author Carlos Sierra Andrés
  */
-@FunctionalInterface
-public interface OctaFunction<A, B, C, D, E, F, G, H, R> {
-
-	public default <V> OctaFunction<A, B, C, D, E, F, G, H, V> andThen(
-		Function<? super R, ? extends V> after) {
-
-		Objects.requireNonNull(after);
-		return (A a, B b, C c, D d, E e, F f, G g, H h) -> after.apply(
-			apply(a, b, c, d, e, f, g, h));
-	}
-
-	public R apply(A a, B b, C c, D d, E e, F f, G g, H h);
-
+public interface CacheFileNameContributor
+	extends Function<HttpServletRequest, KeyValuePair> {
 }
