@@ -630,6 +630,22 @@ if (portletTitleBasedNavigation) {
 			<portlet:namespace />updateRowsChecked($(event.currentTarget));
 		}
 	);
+
+	if (Liferay.Browser.isIphone()) {
+		$('#<portlet:namespace />url').on(
+			'click',
+			function(event) {
+				this.setSelectionRange(0, 9999);
+			}
+		);
+
+		$('#<portlet:namespace />webDavURL').on(
+			'click',
+			function(event) {
+				this.setSelectionRange(0, 9999);
+			}
+		);
+	}
 </aui:script>
 
 <%
