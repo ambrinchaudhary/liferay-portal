@@ -3,6 +3,7 @@ import PortletBase from 'frontend-js-web/liferay/PortletBase.es';
 import Soy from 'metal-soy';
 import templates from './Flags.soy';
 import {Config} from 'metal-state';
+import ClayButton from 'clay-button';
 
 /**
  * It opens a dialog where the user can flag the page.
@@ -234,7 +235,7 @@ Flags.STATE = {
 	 * @type {String}
 	 */
 
-	message: Config.string().required(),
+	message: Config.string(),
 
 	/**
 	 * Path to Terms of Use.
@@ -291,15 +292,6 @@ Flags.STATE = {
 	 */
 
 	signedIn: Config.bool().required(),
-
-	/**
-	 * Title to show in the Modal.
-	 * @instance
-	 * @memberof Flags
-	 * @type {String}
-	 */
-
-	title: Config.string().required(),
 
 	/**
 	 * Uri to send the report fetch request.
