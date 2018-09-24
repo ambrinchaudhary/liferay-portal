@@ -16,6 +16,10 @@
 
 <%@ include file="/dynamic_section/init.jsp" %>
 
+<%
+JSONArray collaboratorsJSONArray = JSONFactoryUtil.createJSONArray();
+%>
+
 <div class="autofit-row sidebar-panel widget-metadata">
 	<div class="autofit-col inline-item-before">
 
@@ -40,6 +44,12 @@
 			List<User> sharingEntryToUsers = (List<User>)request.getAttribute("info_panel_file_entry.jsp-sharingEntryToUsers");
 
 			for (User sharingEntryToUser : sharingEntryToUsers) {
+				JSONObject userJSONObject = JSONFactoryUtil.createJSONObject();
+
+				userJSONObject.put("id", sharingEntryToUser.getUserId());
+				userJSONObject.put("imageSrc", sharingEntryToUser.getPortraitURL(themeDisplay));
+				userJSONObject.put("name", sharingEntryToUser.getFullName());
+				collaboratorsJSONArray.put(userJSONObject);
 			%>
 
 				<div class="autofit-col">
@@ -70,3 +80,39 @@
 		</div>
 	</div>
 </div>
+
+<clay:button
+	id='<%= liferayPortletResponse.getNamespace() + "manageCollaboratorsButton" %>'
+	label='<%= LanguageUtil.get(resourceBundle, "manage-collaborators") %>'
+	style="link"
+/>
+
+<%
+PortletURL manageCollaboratorsActionURL = PortletProviderUtil.getPortletURL(request, SharingEntry.class.getName(), PortletProvider.Action.MANAGE);
+
+manageCollaboratorsActionURL.setParameter("classNameId", String.valueOf(ClassNameLocalServiceUtil.getClassNameId(DLFileEntry.class.getName())));
+manageCollaboratorsActionURL.setParameter("classPK", String.valueOf(fileEntry.getFileEntryId()));
+
+manageCollaboratorsActionURL.setWindowState(LiferayWindowState.POP_UP);
+%>
+
+<aui:script>
+	var button = document.getElementById('<portlet:namespace/>manageCollaboratorsButton');
+
+	button.addEventListener(
+		'click',
+		function() {
+			Liferay.Util.openWindow(
+				{
+					dialog: {
+						height: 450,
+						width: 560
+					},
+					id: '<portlet:namespace />manageCollaboratorsDialog',
+					title: '<%= LanguageUtil.get(resourceBundle, "manage-collaborators") %>',
+					uri: '<%= manageCollaboratorsActionURL.toString() %>'
+				}
+			);
+		}
+	);
+</aui:script>
