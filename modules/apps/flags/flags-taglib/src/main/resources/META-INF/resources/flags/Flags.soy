@@ -15,8 +15,8 @@
 	{@param portletNamespace: string}
 	{@param reasons: ?}
 	{@param signedIn: bool}
-	{@param title: string}
 	{@param? _handleCloseDialogClick: any}
+	{@param? _handleFlagButtonClick: any}
 	{@param? _handleReasonChange: any}
 	{@param? _handleReportButtonClick: any}
 	{@param? _reportDialogOpen: bool}
@@ -34,15 +34,17 @@
 		"
 
 		id="{$id}"
-		title="{$title}"
 	{/let}
+
+	{let $spritemap: $pathThemeImages + '/lexicon/icons.svg' /}
 
 	<div {$containerAttributes}>
 		{call .flagIcon}
+			{param _handleFlagButtonClick: $_handleFlagButtonClick /}
 			{param enabled: $enabled /}
 			{param label: $label /}
 			{param message: $message /}
-			{param pathThemeImages: $pathThemeImages /}
+			{param spritemap: $spritemap /}
 		{/call}
 
 		{if $_reportDialogOpen}
@@ -61,6 +63,7 @@
 				{param reasons: $reasons /}
 				{param reporterEmailAddress: $reporterEmailAddress /}
 				{param signedIn: $signedIn /}
+				{param spritemap: $spritemap /}
 			{/call}
 		{/if}
 	</div>
@@ -70,10 +73,11 @@
  * Prints the flag icon and the text message.
  */
 {template .flagIcon}
+	{@param? _handleFlagButtonClick: any}
+	{@param? enabled: bool}
 	{@param label: bool}
 	{@param message: string}
-	{@param pathThemeImages: string}
-	{@param? enabled: bool}
+	{@param spritemap: string}
 
 	{let $wrapperAttributes kind="attributes"}
 		{if not $label and $message != ''}
@@ -83,29 +87,18 @@
 	{/let}
 
 	<span {$wrapperAttributes}>
-		{let $icon kind="html"}
-			<svg class="lexicon-icon">
-				<use xlink:href="{$pathThemeImages}/lexicon/icons.svg#flag-empty"></use>
-			</svg>
-		{/let}
-
-		{if $enabled}
-			<button aria-label="{$message}" class="btn btn-monospaced btn-outline-borderless btn-outline-secondary btn-sm" data-onclick="_handleFlagButtonClick" type="button">
-				{$icon}
-			</button>
-		{else}
-			{$icon}
-		{/if}
-
-		{let $spanAttributes kind="attributes"}
-			class="taglib-text
-				{if not $label}
-					{sp}hide-accessible
-				{/if}
-			"
-		{/let}
-
-		<span {$spanAttributes}>{$message}</span>
+		{call ClayButton.render}
+			{param ariaLabel: $message /}
+			{param elementClasses: 'btn-outline-borderless btn-outline-secondary' /}
+			{param events: ['click': $_handleFlagButtonClick] /}
+			{param disabled: not $enabled /}
+			{param icon: 'flag-empty' /}
+			{param label: $label ? $message : null /}
+			{param monospaced: not $label /}
+			{param size: 'sm' /}
+			{param spritemap: $spritemap /}
+			{param type: 'button' /}
+		{/call}
 	</span>
 {/template}
 
@@ -120,6 +113,7 @@
 	{@param portletNamespace: string}
 	{@param reasons: ?}
 	{@param signedIn: bool}
+	{@param spritemap: string}
 	{@param? _handleCloseDialogClick: any}
 	{@param? _handleReasonChange: any}
 	{@param? _handleReportButtonClick: any}
@@ -173,7 +167,7 @@
 
 		{param ref: 'modal' /}
 
-		{param spritemap: $pathThemeImages + '/lexicon/icons.svg' /}
+		{param spritemap: $spritemap /}
 	{/call}
 {/template}
 

@@ -62,6 +62,8 @@ public class UserFacetPortletSharedSearchContributor
 		userFacetBuilder.setFrequencyThreshold(
 			userFacetPortletPreferences.getFrequencyThreshold());
 		userFacetBuilder.setMaxTerms(userFacetPortletPreferences.getMaxTerms());
+		userFacetBuilder.setPortletId(
+			portletSharedSearchSettings.getPortletId());
 		userFacetBuilder.setSearchContext(
 			portletSharedSearchSettings.getSearchContext());
 

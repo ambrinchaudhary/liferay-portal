@@ -81,7 +81,6 @@ public class FlagsTag extends ComponentRendererTag {
 
 			String message = GetterUtil.getString(
 				context.get("message"), LanguageUtil.get(request, "flag"));
-
 			putValue("message", message);
 
 			putValue(
@@ -104,17 +103,6 @@ public class FlagsTag extends ComponentRendererTag {
 				putValue("reporterEmailAddress", user.getEmailAddress());
 			}
 
-			String title = message;
-
-			if (!enabled) {
-				title = LanguageUtil.get(
-					request,
-					"flags-are-disabled-because-this-entry-is-in-the-recycle-" +
-						"bin");
-			}
-
-			putValue("title", title);
-
 			putValue("uri", _getURI());
 
 			putValue("reasons", _getReasons(themeDisplay.getCompanyId()));
@@ -130,7 +118,7 @@ public class FlagsTag extends ComponentRendererTag {
 
 	@Override
 	public String getModule() {
-		return "flags-taglib/flags/Flags.es";
+		return "flags-taglib@4.0.0/flags/Flags.es";
 	}
 
 	public void setClassName(String className) {

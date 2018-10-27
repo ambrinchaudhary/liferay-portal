@@ -245,7 +245,7 @@ public class StructuredContentApioTestBundleActivator
 		}
 	}
 
-	private DDMStructure _getDDMStructureWithNestedField(Group group)
+	private DDMStructure _getDDMStructure(Group group, String fileName)
 		throws Exception {
 
 		DDMStructureTestHelper ddmStructureTestHelper =
@@ -255,8 +255,8 @@ public class StructuredContentApioTestBundleActivator
 		return ddmStructureTestHelper.addStructure(
 			PortalUtil.getClassNameId(JournalArticle.class), null,
 			StructuredContentApioTestBundleActivator.SITE_NAME,
-			deserialize(_read("test-journal-structured-nested-fields.json")),
-			StorageType.JSON.getValue(), DDMStructureConstants.TYPE_DEFAULT);
+			deserialize(_read(fileName)), StorageType.JSON.getValue(),
+			DDMStructureConstants.TYPE_DEFAULT);
 	}
 
 	private void _prepareDataForLocalizationTests(User user, Group group)
@@ -272,13 +272,14 @@ public class StructuredContentApioTestBundleActivator
 			titleMap1, user.getUserId(), group.getGroupId(), LocaleUtil.SPAIN,
 			true, true);
 
-		DDMStructure ddmStructure = _getDDMStructureWithNestedField(group);
+		DDMStructure ddmStructure = _getDDMStructure(
+			group, "test-journal-all-fields-structure.json");
 
 		DDMTemplate ddmTemplate = DDMTemplateTestUtil.addTemplate(
 			group.getGroupId(), ddmStructure.getStructureId(),
 			PortalUtil.getClassNameId(JournalArticle.class),
 			TemplateConstants.LANG_TYPE_VM,
-			_read("test-journal-template-nested-fields.xsl"), LocaleUtil.US);
+			_read("test-journal-all-fields-template.xsl"), LocaleUtil.US);
 
 		Map<Locale, String> titleMap2 = new HashMap<Locale, String>() {
 			{
@@ -289,7 +290,7 @@ public class StructuredContentApioTestBundleActivator
 
 		_addJournalArticle(
 			titleMap2, user.getUserId(), group.getGroupId(),
-			_read("test-journal-content-nested-fields.xml"), ddmStructure,
+			_read("test-journal-all-fields-content.xml"), ddmStructure,
 			ddmTemplate);
 	}
 

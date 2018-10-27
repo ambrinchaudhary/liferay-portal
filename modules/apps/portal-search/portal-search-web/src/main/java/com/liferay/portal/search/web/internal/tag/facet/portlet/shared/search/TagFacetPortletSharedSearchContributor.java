@@ -63,6 +63,8 @@ public class TagFacetPortletSharedSearchContributor
 			tagFacetPortletPreferences.getFrequencyThreshold());
 		assetTagsFacetBuilder.setMaxTerms(
 			tagFacetPortletPreferences.getMaxTerms());
+		assetTagsFacetBuilder.setPortletId(
+			portletSharedSearchSettings.getPortletId());
 		assetTagsFacetBuilder.setSearchContext(
 			portletSharedSearchSettings.getSearchContext());
 

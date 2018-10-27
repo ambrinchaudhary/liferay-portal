@@ -72,6 +72,8 @@ public class TypeFacetPortletSharedSearchContributor
 
 		assetEntriesFacetBuilder.setFrequencyThreshold(
 			typeFacetPortletPreferences.getFrequencyThreshold());
+		assetEntriesFacetBuilder.setPortletId(
+			portletSharedSearchSettings.getPortletId());
 		assetEntriesFacetBuilder.setSearchContext(
 			portletSharedSearchSettings.getSearchContext());
 

@@ -67,6 +67,8 @@ public class CategoryFacetPortletSharedSearchContributor
 			categoryFacetPortletPreferences.getFrequencyThreshold());
 		assetCategoriesFacetBuilder.setMaxTerms(
 			categoryFacetPortletPreferences.getMaxTerms());
+		assetCategoriesFacetBuilder.setPortletId(
+			portletSharedSearchSettings.getPortletId());
 		assetCategoriesFacetBuilder.setSearchContext(
 			portletSharedSearchSettings.getSearchContext());
 

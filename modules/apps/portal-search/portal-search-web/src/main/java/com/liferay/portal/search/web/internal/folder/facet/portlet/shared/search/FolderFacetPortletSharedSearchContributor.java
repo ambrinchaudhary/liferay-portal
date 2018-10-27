@@ -68,6 +68,8 @@ public class FolderFacetPortletSharedSearchContributor
 			folderFacetPortletPreferences.getFrequencyThreshold());
 		folderFacetBuilder.setMaxTerms(
 			folderFacetPortletPreferences.getMaxTerms());
+		folderFacetBuilder.setPortletId(
+			portletSharedSearchSettings.getPortletId());
 		folderFacetBuilder.setSearchContext(
 			portletSharedSearchSettings.getSearchContext());
 

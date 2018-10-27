@@ -63,6 +63,8 @@ public class SiteFacetPortletSharedSearchContributor
 			siteFacetPortletPreferences.getFrequencyThreshold());
 		scopeFacetBuilder.setMaxTerms(
 			siteFacetPortletPreferences.getMaxTerms());
+		scopeFacetBuilder.setPortletId(
+			portletSharedSearchSettings.getPortletId());
 		scopeFacetBuilder.setSearchContext(
 			portletSharedSearchSettings.getSearchContext());
 
