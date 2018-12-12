@@ -106,6 +106,7 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.staging.StagingGroupHelper;
 import com.liferay.staging.StagingGroupHelperUtil;
+import com.liferay.taglib.security.PermissionsURLTag;
 import com.liferay.trash.TrashHelper;
 
 import java.io.Serializable;
@@ -118,6 +119,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.portlet.ActionRequest;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
@@ -528,6 +530,139 @@ public class JournalDisplayContext {
 								folder.getFolderId());
 							dropdownItem.setLabel(
 								LanguageUtil.get(_request, "edit"));
+						});
+
+					add(
+						dropdownItem -> {
+							dropdownItem.setHref(
+								_liferayPortletResponse.createRenderURL(),
+								"mvcPath", "/move_entries.jsp", "redirect",
+								_themeDisplay.getURLCurrent(),
+								"rowIdsJournalFolder", folder.getFolderId());
+							dropdownItem.setLabel(
+								LanguageUtil.get(_request, "move"));
+						});
+				}
+
+				if (JournalFolderPermission.contains(
+						_themeDisplay.getPermissionChecker(), folder,
+						ActionKeys.ADD_FOLDER)) {
+
+					add(
+						dropdownItem -> {
+							dropdownItem.setHref(
+								_liferayPortletResponse.createRenderURL(),
+								"mvcPath", "/edit_folder.jsp", "redirect",
+								_themeDisplay.getURLCurrent(), "groupId",
+								folder.getGroupId(), "parentFolderId",
+								folder.getFolderId());
+							dropdownItem.setLabel(
+								LanguageUtil.get(_request, "add-subfolder"));
+						});
+				}
+
+				if (JournalFolderPermission.contains(
+						_themeDisplay.getPermissionChecker(), folder,
+						ActionKeys.PERMISSIONS)) {
+
+					try {
+						String permissionsURL = PermissionsURLTag.doTag(
+							StringPool.BLANK, JournalFolder.class.getName(),
+							folder.getName(), null,
+							String.valueOf(folder.getPrimaryKey()),
+							LiferayWindowState.POP_UP.toString(), null,
+							_request);
+
+						add(
+							dropdownItem -> {
+								dropdownItem.putData("action", "permissions");
+								dropdownItem.putData(
+									"permissionsURL", permissionsURL);
+								dropdownItem.setLabel(
+									LanguageUtil.get(_request, "permissions"));
+							});
+					}
+					catch (Exception e) {
+					}
+				}
+
+				if (JournalFolderPermission.contains(
+						_themeDisplay.getPermissionChecker(), folder,
+						ActionKeys.DELETE)) {
+
+					String redirect = _themeDisplay.getURLCurrent();
+
+					long currentFolderId = ParamUtil.getLong(
+						_request, "folderId");
+
+					if (currentFolderId == folder.getFolderId()) {
+						PortletURL redirectURL =
+							_liferayPortletResponse.createRenderURL();
+
+						redirectURL.setParameter(
+							"groupId", String.valueOf(folder.getGroupId()));
+						redirectURL.setParameter(
+							"folderId",
+							String.valueOf(folder.getParentFolderId()));
+
+						redirect = redirectURL.toString();
+					}
+
+					PortletURL deleteFolderURL =
+						_liferayPortletResponse.createActionURL();
+
+					String actionName = "deleteFolder";
+					String key = "delete";
+
+					if (_trashHelper.isTrashEnabled(
+							_themeDisplay.getScopeGroupId())) {
+
+						actionName = "moveFolderToTrash";
+						key = "move-to-trash";
+					}
+
+					deleteFolderURL.setParameter(
+						ActionRequest.ACTION_NAME, actionName);
+
+					deleteFolderURL.setParameter("redirect", redirect);
+					deleteFolderURL.setParameter(
+						"groupId", String.valueOf(folder.getGroupId()));
+					deleteFolderURL.setParameter(
+						"folderId", String.valueOf(folder.getFolderId()));
+
+					String label = LanguageUtil.get(_request, key);
+
+					add(
+						dropdownItem -> {
+							dropdownItem.putData("action", "delete");
+							dropdownItem.putData(
+								"deleteFolderURL", deleteFolderURL.toString());
+							dropdownItem.setLabel(label);
+						});
+				}
+
+				Group group = _themeDisplay.getScopeGroup();
+
+				if (isShowPublishFolderAction(folder) && !group.isLayout()) {
+					PortletURL publishFolderURL =
+						_liferayPortletResponse.createActionURL();
+
+					publishFolderURL.setParameter(
+						ActionRequest.ACTION_NAME, "/journal/publish_folder");
+
+					publishFolderURL.setParameter(
+						"backURL", _themeDisplay.getURLCurrent());
+					publishFolderURL.setParameter(
+						"folderId", String.valueOf(folder.getFolderId()));
+
+					add(
+						dropdownItem -> {
+							dropdownItem.putData("action", "publishToLive");
+							dropdownItem.putData(
+								"publishFolderURL",
+								publishFolderURL.toString());
+							dropdownItem.setLabel(
+								LanguageUtil.get(_request, "publish-to-live"));
 						});
 				}
 			}
