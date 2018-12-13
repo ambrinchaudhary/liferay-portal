@@ -144,7 +144,9 @@ if (Validator.isNotNull(title)) {
 </div>
 
 <aui:script use="liferay-journal-navigation">
-	var journalNavigation = new Liferay.Portlet.JournalNavigation(
+	Liferay.component(
+		'<portlet:namespace />JournalNavigation',
+		new Liferay.Portlet.JournalNavigation(
 		{
 			editEntryUrl: '<portlet:actionURL />',
 			form: {
@@ -154,16 +156,10 @@ if (Validator.isNotNull(title)) {
 			moveEntryUrl: '<portlet:renderURL><portlet:param name="mvcPath" value="/move_entries.jsp" /><portlet:param name="redirect" value="<%= currentURL %>" /></portlet:renderURL>',
 			namespace: '<portlet:namespace />',
 			searchContainerId: 'articles'
+		},
+		{
+			destroyOnNavigate: true,
+			portletId: '<%= HtmlUtil.escapeJS(portletId) %>'
 		}
 	);
-
-	var clearJournalNavigationHandles = function(event) {
-		if (event.portletId === '<%= portletDisplay.getRootPortletId() %>') {
-			journalNavigation.destroy();
-
-			Liferay.detach('destroyPortlet', clearJournalNavigationHandles);
-		}
-	};
-
-	Liferay.on('destroyPortlet', clearJournalNavigationHandles);
 </aui:script>
