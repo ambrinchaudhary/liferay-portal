@@ -1,8 +1,10 @@
 @import "bourbon";
-@import "document_library_preview";
 @import "mixins";
 
 .portlet-document-library, .portlet-document-library-display {
+	@import "document_library_preview";
+	@import "floating_bar";
+
 	.file-entry-list-description {
 		font-style: italic;
 		margin-left: 10px;
