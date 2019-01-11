@@ -1,6 +1,14 @@
+$transition-time: 300ms;
+
 .preview-file {
 	margin: 1.5rem auto;
 	position: relative;
+
+	&:hover .preview-toolbar-container {
+		opacity: 1;
+		transition: visibility 0s linear 0s, opacity $transition-time;
+		visibility: visible;
+	}
 
 	.preview-file-container {
 		overflow: auto;
@@ -22,8 +30,11 @@
 	.preview-toolbar-container {
 		bottom: 0;
 		margin-bottom: 1.5rem;
+		opacity: 0;
 		position: absolute;
 		text-align: center;
+		transition: visibility 0s linear $transition-time, opacity $transition-time;
+		visibility: hidden;
 		width: 100%;
 	}
 }
