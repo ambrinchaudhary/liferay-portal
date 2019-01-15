@@ -65,6 +65,22 @@ String navigation = ParamUtil.getString(request, "navigation");
 
 		<liferay-util:include page="/document_library/toolbar.jsp" servletContext="<%= application %>" />
 
+		<%
+		BulkSelectionRunner bulkSelectionRunner = (BulkSelectionRunner)request.getAttribute(BulkSelectionRunner.class.getName());
+
+		Map<String, Object> context = new HashMap<>();
+
+		context.put("bulkInProgress", bulkSelectionRunner.isBusy(user));
+		context.put("portletNamespace", liferayPortletResponse.getNamespace());
+		%>
+
+		<soy:component-renderer
+			componentId='<%= liferayPortletResponse.getNamespace() + "bulkStatusContainer" %>'
+			context="<%= context %>"
+			module="document-library-web/document_library/bulk/BulkStatus.es"
+			templateNamespace="com.liferay.document.library.web.BulkStatus.render"
+		/>
+
 		<div id="<portlet:namespace />documentLibraryContainer">
 
 			<%
