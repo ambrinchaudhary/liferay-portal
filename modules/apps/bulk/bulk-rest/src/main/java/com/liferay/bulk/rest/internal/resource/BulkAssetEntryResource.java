@@ -49,6 +49,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.ws.rs.Consumes;
@@ -98,18 +99,19 @@ public class BulkAssetEntryResource {
 
 			Stream<AssetEntry> stream = assetEntryBulkSelection.stream();
 
-			Set<AssetCategory> commonCategories = stream.map(
+			Stream<AssetCategory> commonCategoriesStream = stream.map(
 				_getAssetEntryCategoriesFunction(
 					PermissionCheckerFactoryUtil.create(user))
 			).reduce(
 				SetUtil::intersect
 			).orElse(
 				Collections.emptySet()
-			);
+			).stream();
 
 			return new BulkAssetEntryCommonCategoriesModel(
 				bulkSelection.describe(locale),
-				new ArrayList<>(commonCategories));
+				commonCategoriesStream.collect(
+					Collectors.groupingBy(AssetCategory::getVocabularyId)));
 		}
 		catch (Exception e) {
 			return new BulkAssetEntryCommonCategoriesModel(e);
