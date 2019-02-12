@@ -14,6 +14,8 @@
 
 package com.liferay.site.navigation.menu.web.internal.upgrade.v1_0_1;
 
+import com.liferay.portal.kernel.util.LoggingTimer;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.site.navigation.menu.web.internal.constants.SiteNavigationMenuPortletKeys;
 
 import java.util.HashMap;
@@ -41,6 +43,41 @@ public class RenameUpgradePortletPreferences
 	@Override
 	protected Map<String, String> getPreferenceNamesMap() {
 		return _preferenceNamesMap;
+	}
+
+	@Override
+	protected void updatePortletPreferences() throws Exception {
+		try (LoggingTimer loggingTimer = new LoggingTimer()) {
+			String whereClause = getUpdatePortletPreferencesWhereClause();
+
+			updatePortletPreferencesWithOwnerType(
+				PortletKeys.PREFS_OWNER_TYPE_ARCHIVED, whereClause, "ownerId",
+				"PortletItem", "portletItemId");
+
+			updatePortletPreferencesWithOwnerType(
+				PortletKeys.PREFS_OWNER_TYPE_COMPANY, whereClause, "ownerId",
+				"Company", "companyId");
+
+			updatePortletPreferencesWithOwnerType(
+				PortletKeys.PREFS_OWNER_TYPE_GROUP, whereClause, "ownerId",
+				"Group_", "groupId");
+
+			updatePortletPreferencesWithOwnerType(
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, whereClause, "plid",
+				"Layout", "plid");
+
+			updatePortletPreferencesWithOwnerType(
+				PortletKeys.PREFS_OWNER_TYPE_LAYOUT, whereClause, "plid",
+				"LayoutRevision", "layoutRevisionId");
+
+			updatePortletPreferencesWithOwnerType(
+				PortletKeys.PREFS_OWNER_TYPE_ORGANIZATION, whereClause,
+				"ownerId", "Organization_", "organizationId");
+
+			updatePortletPreferencesWithOwnerType(
+				PortletKeys.PREFS_OWNER_TYPE_USER, whereClause, "ownerId",
+				"User_", "userId");
+		}
 	}
 
 	private final Map<String, String> _preferenceNamesMap = new HashMap<>();

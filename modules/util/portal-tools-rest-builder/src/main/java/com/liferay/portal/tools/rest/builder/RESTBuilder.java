@@ -125,12 +125,22 @@ public class RESTBuilder {
 				context.put("schemaName", schemaName);
 				context.put(
 					"schemaPath", CamelCaseUtil.fromCamelCase(schemaName));
+				context.put(
+					"schemaVarName",
+					StringUtil.lowerCaseFirstLetter(schemaName));
 
 				_createBaseResourceImplFile(
 					context, schemaName, versionDirName);
 				_createPropertiesFile(context, schemaName, versionDirName);
 				_createResourceFile(context, schemaName, versionDirName);
 				_createResourceImplFile(context, schemaName, versionDirName);
+
+				if (Validator.isNotNull(_configYAML.getTestDir())) {
+					_createBaseResourceTestCaseFile(
+						context, schemaName, versionDirName);
+					_createResourceTestFile(
+						context, schemaName, versionDirName);
+				}
 			}
 
 			Queue<Map<String, Schema>> schemasMapsQueue = new LinkedList<>();
@@ -154,6 +164,9 @@ public class RESTBuilder {
 					context.put("schemaName", schemaName);
 					context.put(
 						"schemaPath", CamelCaseUtil.fromCamelCase(schemaName));
+					context.put(
+						"schemaVarName",
+						StringUtil.lowerCaseFirstLetter(schemaName));
 
 					_createDTOFile(context, schemaName, versionDirName);
 
@@ -166,6 +179,10 @@ public class RESTBuilder {
 		FileUtil.deleteFiles(_configYAML.getImplDir(), _files);
 		FileUtil.deleteFiles(
 			_configYAML.getImplDir() + "/../resources/OSGI-INF/", _files);
+
+		if (Validator.isNotNull(_configYAML.getTestDir())) {
+			FileUtil.deleteFiles(_configYAML.getTestDir(), _files);
+		}
 	}
 
 	private void _createApplicationFile(Map<String, Object> context)
@@ -226,6 +243,36 @@ public class RESTBuilder {
 			file,
 			FreeMarkerUtil.processTemplate(
 				_copyrightFileName, "base_resource_impl", context));
+	}
+
+	private void _createBaseResourceTestCaseFile(
+			Map<String, Object> context, String schemaName,
+			String versionDirName)
+		throws Exception {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(_configYAML.getTestDir());
+		sb.append("/");
+
+		String apiPackagePath = _configYAML.getApiPackagePath();
+
+		sb.append(apiPackagePath.replace('.', '/'));
+
+		sb.append("/resource/");
+		sb.append(versionDirName);
+		sb.append("/test/Base");
+		sb.append(schemaName);
+		sb.append("ResourceTestCase.java");
+
+		File file = new File(sb.toString());
+
+		_files.add(file);
+
+		FileUtil.write(
+			file,
+			FreeMarkerUtil.processTemplate(
+				_copyrightFileName, "base_resource_test_case", context));
 	}
 
 	private void _createDTOFile(
@@ -341,6 +388,40 @@ public class RESTBuilder {
 			file,
 			FreeMarkerUtil.processTemplate(
 				_copyrightFileName, "resource_impl", context));
+	}
+
+	private void _createResourceTestFile(
+			Map<String, Object> context, String schemaName,
+			String versionDirName)
+		throws Exception {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(_configYAML.getTestDir());
+		sb.append("/");
+
+		String apiPackagePath = _configYAML.getApiPackagePath();
+
+		sb.append(apiPackagePath.replace('.', '/'));
+
+		sb.append("/resource/");
+		sb.append(versionDirName);
+		sb.append("/test/");
+		sb.append(schemaName);
+		sb.append("ResourceTest.java");
+
+		File file = new File(sb.toString());
+
+		_files.add(file);
+
+		if (file.exists()) {
+			return;
+		}
+
+		FileUtil.write(
+			file,
+			FreeMarkerUtil.processTemplate(
+				_copyrightFileName, "resource_test", context));
 	}
 
 	private final File _configDir;

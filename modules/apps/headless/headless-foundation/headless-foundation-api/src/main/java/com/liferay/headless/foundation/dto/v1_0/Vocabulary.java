@@ -60,10 +60,6 @@ public class Vocabulary {
 		return _name;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public Category[] getVocabularyCategories() {
 		return _vocabularyCategories;
 	}
@@ -104,10 +100,6 @@ public class Vocabulary {
 		_name = name;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setVocabularyCategories(Category[] vocabularyCategories) {
 		_vocabularyCategories = vocabularyCategories;
 	}
@@ -124,7 +116,6 @@ public class Vocabulary {
 	private String _description;
 	private Long _id;
 	private String _name;
-	private String _self;
 	private Category[] _vocabularyCategories;
 	private Long[] _vocabularyCategoriesIds;
 

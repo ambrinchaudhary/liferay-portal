@@ -42,10 +42,6 @@ public class ImageObject {
 		return _id;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public Number getSizeInBytes() {
 		return _sizeInBytes;
 	}
@@ -70,10 +66,6 @@ public class ImageObject {
 		_id = id;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setSizeInBytes(Number sizeInBytes) {
 		_sizeInBytes = sizeInBytes;
 	}
@@ -86,7 +78,6 @@ public class ImageObject {
 	private String _encodingFormat;
 	private String _fileExtension;
 	private Long _id;
-	private String _self;
 	private Number _sizeInBytes;
 	private String _title;
 

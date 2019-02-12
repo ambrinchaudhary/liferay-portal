@@ -5,11 +5,11 @@
 */
 {template .render}
 	{@param spritemap: string}
-	{@param? _handleSelectPageCheckboxChanged: any}
+	{@param? _handleClearSelectionButtonClicked: any}
 	{@param? _handleFilterLabelCloseClicked: any }
 	{@param? _handleInfoButtonClicked: any }
-	{@param? _handleDeselectAllClicked: any}
-	{@param? _handleSelectAllClicked: any}
+	{@param? _handleSelectAllButtonClicked: any}
+	{@param? _handleSelectPageCheckboxChanged: any}
 	{@param? actionItems: list<[
 		disabled: bool,
 		href: string,
@@ -19,7 +19,9 @@
 		separator: bool,
 		type: string
 	]>}
+	{@param? checkboxStatus: string}
 	{@param? clearResultsURL: string}
+	{@param? clearSelectionURL: string}
 	{@param? contentRenderer: string}
 	{@param? creationMenu: [
 		caption: string,
@@ -28,6 +30,7 @@
 		maxSecondaryItems: int,
 		maxTotalItems: int,
 		primaryItems: list<[
+			data: any,
 			disabled: bool,
 			href: string,
 			icon: string,
@@ -35,10 +38,12 @@
 			separator: bool
 		]>,
 		secondaryItems: list<[
+			data: any,
 			disabled: bool,
 			href: string,
 			icon: string,
 			items: list<[
+				data: any,
 				disabled: bool,
 				href: string,
 				icon: string,
@@ -85,14 +90,18 @@
 	{@param? searchInputName: string}
 	{@param? searchValue: string}
 	{@param? selectable: bool}
+	{@param? selectAllURL: string}
 	{@param? selectedItems: number}
 	{@param? showAdvancedSearch: bool}
 	{@param? showCreationMenu: bool}
 	{@param? showFiltersDoneButton: bool}
 	{@param? showInfoButton: bool}
+	{@param? showResultsBar: bool}
 	{@param? showSearch: bool}
+	{@param? showSelectAllButton: bool}
 	{@param? sortingOrder: string}
 	{@param? sortingURL: string}
+	{@param? supportsBulkActions: bool}
 	{@param? totalItems: number}
 	{@param? viewTypes: list<[
 		active: bool,
@@ -105,7 +114,9 @@
 	{call ClayManagementToolbar.render}
 		{param defaultEventHandler: $defaultEventHandler /}
 		{param actionItems: $actionItems /}
+		{param checkboxStatus: $checkboxStatus /}
 		{param clearResultsURL: $clearResultsURL /}
+		{param clearSelectionURL: $clearSelectionURL /}
 		{param contentRenderer: $contentRenderer /}
 		{param creationMenu: $creationMenu /}
 		{param customData: [
@@ -114,11 +125,11 @@
 		{param disabled: $disabled /}
 		{param elementClasses: $elementClasses /}
 		{param events: [
-			'deselectAllClicked': $_handleDeselectAllClicked,
+			'clearSelectionButtonClicked': $_handleClearSelectionButtonClicked,
 			'filterLabelCloseClicked': $_handleFilterLabelCloseClicked,
 			'infoButtonClicked': $_handleInfoButtonClicked,
 			'selectPageCheckboxChanged': $_handleSelectPageCheckboxChanged,
-			'selectAllClicked': $_handleSelectAllClicked
+			'selectAllButtonClicked': $_handleSelectAllButtonClicked
 		 ] /}
 		{param filterItems: $filterItems /}
 		{param filterLabels: $filterLabels /}
@@ -130,15 +141,19 @@
 		{param searchInputName: $searchInputName /}
 		{param searchValue: $searchValue /}
 		{param selectable: $selectable /}
+		{param selectAllURL: $selectAllURL /}
 		{param selectedItems: $selectedItems /}
 		{param showAdvancedSearch: $showAdvancedSearch /}
 		{param showCreationMenu: $showCreationMenu /}
 		{param showFiltersDoneButton: $showFiltersDoneButton /}
 		{param showInfoButton: $showInfoButton /}
+		{param showResultsBar: $showResultsBar /}
 		{param showSearch: $showSearch /}
+		{param showSelectAllButton: $showSelectAllButton /}
 		{param sortingOrder: $sortingOrder /}
 		{param sortingURL: $sortingURL /}
 		{param spritemap: $spritemap /}
+		{param supportsBulkActions: $supportsBulkActions /}
 		{param totalItems: $totalItems /}
 		{param viewTypes: $viewTypes /}
 	{/call}

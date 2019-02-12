@@ -42,10 +42,6 @@ public class HoursAvailable {
 		return _opens;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public void setCloses(String closes) {
 		_closes = closes;
 	}
@@ -62,14 +58,9 @@ public class HoursAvailable {
 		_opens = opens;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	private String _closes;
 	private String _dayOfWeek;
 	private Long _id;
 	private String _opens;
-	private String _self;
 
 }

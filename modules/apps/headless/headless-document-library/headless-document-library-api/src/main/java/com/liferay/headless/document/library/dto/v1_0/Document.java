@@ -80,10 +80,6 @@ public class Document {
 		return _keywords;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public Number getSizeInBytes() {
 		return _sizeInBytes;
 	}
@@ -144,10 +140,6 @@ public class Document {
 		_keywords = keywords;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setSizeInBytes(Number sizeInBytes) {
 		_sizeInBytes = sizeInBytes;
 	}
@@ -169,7 +161,6 @@ public class Document {
 	private Long _folderId;
 	private Long _id;
 	private String[] _keywords;
-	private String _self;
 	private Number _sizeInBytes;
 	private String _title;
 

@@ -19,8 +19,8 @@ import com.liferay.document.library.kernel.service.DLAppService;
 import com.liferay.headless.document.library.dto.v1_0.Folder;
 import com.liferay.headless.document.library.resource.v1_0.FolderResource;
 import com.liferay.portal.kernel.service.ServiceContext;
-import com.liferay.portal.vulcan.context.Pagination;
-import com.liferay.portal.vulcan.dto.Page;
+import com.liferay.portal.vulcan.pagination.Page;
+import com.liferay.portal.vulcan.pagination.Pagination;
 
 import javax.ws.rs.core.Response;
 
@@ -41,7 +41,7 @@ public class FolderResourceImpl extends BaseFolderResourceImpl {
 	public Response deleteFolder(Long folderId) throws Exception {
 		_dlAppService.deleteFolder(folderId);
 
-		return null;
+		return buildNoContentResponse();
 	}
 
 	@Override
@@ -130,6 +130,8 @@ public class FolderResourceImpl extends BaseFolderResourceImpl {
 
 		return new Folder() {
 			{
+				setDateCreated(folder.getCreateDate());
+				setDateModified(folder.getModifiedDate());
 				setDescription(folder.getDescription());
 				setDocumentsRepositoryId(folder.getGroupId());
 				setId(folder.getFolderId());

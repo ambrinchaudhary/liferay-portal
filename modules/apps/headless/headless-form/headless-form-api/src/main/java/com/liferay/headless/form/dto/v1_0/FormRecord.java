@@ -64,10 +64,6 @@ public class FormRecord {
 		return _id;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public void setCreator(Creator creator) {
 		_creator = creator;
 	}
@@ -104,10 +100,6 @@ public class FormRecord {
 		_id = id;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	private Creator _creator;
 	private Date _dateCreated;
 	private Date _dateModified;
@@ -117,6 +109,5 @@ public class FormRecord {
 	private Form _form;
 	private Long _formId;
 	private Long _id;
-	private String _self;
 
 }

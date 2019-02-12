@@ -42,10 +42,6 @@ public class AdaptedMedia {
 		return _resolutionName;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public Number getSizeInBytes() {
 		return _sizeInBytes;
 	}
@@ -70,10 +66,6 @@ public class AdaptedMedia {
 		_resolutionName = resolutionName;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setSizeInBytes(Number sizeInBytes) {
 		_sizeInBytes = sizeInBytes;
 	}
@@ -86,7 +78,6 @@ public class AdaptedMedia {
 	private Number _height;
 	private Long _id;
 	private String _resolutionName;
-	private String _self;
 	private Number _sizeInBytes;
 	private Number _width;
 

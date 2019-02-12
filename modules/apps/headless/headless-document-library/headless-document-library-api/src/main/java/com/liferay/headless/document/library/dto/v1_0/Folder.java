@@ -64,10 +64,6 @@ public class Folder {
 		return _name;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public Folder[] getSubFolders() {
 		return _subFolders;
 	}
@@ -108,10 +104,6 @@ public class Folder {
 		_name = name;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setSubFolders(Folder[] subFolders) {
 		_subFolders = subFolders;
 	}
@@ -125,7 +117,6 @@ public class Folder {
 	private Long _documentsRepositoryId;
 	private Long _id;
 	private String _name;
-	private String _self;
 	private Folder[] _subFolders;
 
 }

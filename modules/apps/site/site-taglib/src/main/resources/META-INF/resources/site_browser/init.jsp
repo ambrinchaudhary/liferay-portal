@@ -24,17 +24,15 @@ taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/theme" prefix="liferay-theme" %><%@
 taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 
-<%@ page import="com.liferay.petra.string.StringPool" %><%@
-page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
-page import="com.liferay.portal.kernel.model.Group" %><%@
+<%@ page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.util.ArrayUtil" %><%@
 page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
-page import="com.liferay.portal.kernel.util.Validator" %><%@
-page import="com.liferay.site.taglib.internal.display.context.SiteBrowserDisplayContext" %>
+page import="com.liferay.site.taglib.internal.display.context.SiteBrowserDisplayContext" %><%@
+page import="com.liferay.site.taglib.internal.display.context.SiteBrowserManagementToolbarDisplayContext" %><%@
+page import="com.liferay.site.taglib.internal.servlet.taglib.clay.SiteVerticalCard" %>
 
 <%@ page import="java.util.HashMap" %><%@
-page import="java.util.List" %><%@
 page import="java.util.Map" %><%@
 page import="java.util.Objects" %>
 
@@ -42,6 +40,8 @@ page import="java.util.Objects" %>
 
 <liferay-theme:defineObjects />
 
+<portlet:defineObjects />
+
 <%
-SiteBrowserDisplayContext siteBrowserDisplayContext = new SiteBrowserDisplayContext(request);
+SiteBrowserDisplayContext siteBrowserDisplayContext = new SiteBrowserDisplayContext(request, renderRequest);
 %>

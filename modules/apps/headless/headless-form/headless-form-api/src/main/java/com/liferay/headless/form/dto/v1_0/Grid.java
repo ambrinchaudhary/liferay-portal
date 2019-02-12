@@ -38,10 +38,6 @@ public class Grid {
 		return _rows;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public void setColumns(Columns columns) {
 		_columns = columns;
 	}
@@ -54,13 +50,8 @@ public class Grid {
 		_rows = rows;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	private Columns _columns;
 	private Long _id;
 	private Rows _rows;
-	private String _self;
 
 }

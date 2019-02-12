@@ -60,10 +60,6 @@ public class Role {
 		return _roleType;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public void setAvailableLanguages(String[] availableLanguages) {
 		_availableLanguages = availableLanguages;
 	}
@@ -96,10 +92,6 @@ public class Role {
 		_roleType = roleType;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	private String[] _availableLanguages;
 	private UserAccount _creator;
 	private Date _dateCreated;
@@ -108,6 +100,5 @@ public class Role {
 	private Long _id;
 	private String _name;
 	private String _roleType;
-	private String _self;
 
 }

@@ -42,10 +42,6 @@ public class Phone {
 		return _phoneType;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public void setExtension(String extension) {
 		_extension = extension;
 	}
@@ -62,14 +58,9 @@ public class Phone {
 		_phoneType = phoneType;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	private String _extension;
 	private Long _id;
 	private String _phoneNumber;
 	private String _phoneType;
-	private String _self;
 
 }

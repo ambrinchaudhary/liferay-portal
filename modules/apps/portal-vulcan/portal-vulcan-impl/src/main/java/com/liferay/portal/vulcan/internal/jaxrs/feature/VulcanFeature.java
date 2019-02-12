@@ -25,8 +25,9 @@ import com.liferay.portal.vulcan.internal.jaxrs.context.provider.SortContextProv
 import com.liferay.portal.vulcan.internal.jaxrs.exception.mapper.NoSuchModelExceptionMapper;
 import com.liferay.portal.vulcan.internal.jaxrs.exception.mapper.PortalExceptionMapper;
 import com.liferay.portal.vulcan.internal.jaxrs.exception.mapper.PrincipalExceptionMapper;
-import com.liferay.portal.vulcan.internal.jaxrs.json.JSONMessageBodyReader;
-import com.liferay.portal.vulcan.internal.jaxrs.json.JSONMessageBodyWriter;
+import com.liferay.portal.vulcan.internal.jaxrs.message.body.JSONMessageBodyReader;
+import com.liferay.portal.vulcan.internal.jaxrs.message.body.JSONMessageBodyWriter;
+import com.liferay.portal.vulcan.internal.jaxrs.message.body.MultipartBodyMessageBodyReader;
 
 import javax.ws.rs.core.Feature;
 import javax.ws.rs.core.FeatureContext;
@@ -59,6 +60,7 @@ public class VulcanFeature implements Feature {
 	public boolean configure(FeatureContext featureContext) {
 		featureContext.register(JSONMessageBodyReader.class);
 		featureContext.register(JSONMessageBodyWriter.class);
+		featureContext.register(MultipartBodyMessageBodyReader.class);
 		featureContext.register(NoSuchModelExceptionMapper.class);
 		featureContext.register(PaginationContextProvider.class);
 		featureContext.register(PortalExceptionMapper.class);

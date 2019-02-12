@@ -23,8 +23,9 @@ import com.liferay.headless.web.experience.dto.v1_0.StructuredContent;
 import com.liferay.oauth2.provider.scope.RequiresScope;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
-import com.liferay.portal.vulcan.context.Pagination;
-import com.liferay.portal.vulcan.dto.Page;
+import com.liferay.portal.vulcan.multipart.MultipartBody;
+import com.liferay.portal.vulcan.pagination.Page;
+import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.util.Date;
 
@@ -36,6 +37,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.HEAD;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.OPTIONS;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -58,36 +60,55 @@ import javax.ws.rs.core.Response;
 public interface StructuredContentResource {
 
 	@GET
-	@Path("/content-space/{content-space-id}/structured-contents")
+	@Path("/content-space/{content-space-id}/content-structure/{content-structure-id}/structured-content")
 	@Produces("application/json")
 	@RequiresScope("everything.read")
-	public Page<StructuredContent> getContentSpaceStructuredContentsPage( @PathParam("content-space-id") Long contentSpaceId , @Context Filter filter , @Context Pagination pagination , @Context Sort[] sorts ) throws Exception;
+	public Page<StructuredContent> getContentSpaceContentStructureStructuredContentPage( @PathParam("content-space-id") Long contentSpaceId , @PathParam("content-structure-id") Long contentStructureId , @Context Filter filter , @Context Pagination pagination , @Context Sort[] sorts ) throws Exception;
+
+	@GET
+	@Path("/content-space/{content-space-id}/structured-content")
+	@Produces("application/json")
+	@RequiresScope("everything.read")
+	public Page<StructuredContent> getContentSpaceStructuredContentPage( @PathParam("content-space-id") Long contentSpaceId , @Context Filter filter , @Context Pagination pagination , @Context Sort[] sorts ) throws Exception;
+
+	@Consumes("application/json")
+	@PATCH
+	@Path("/content-space/{content-space-id}/structured-content")
+	@Produces("application/json")
+	@RequiresScope("everything.read")
+	public StructuredContent patchContentSpaceStructuredContent( @PathParam("content-space-id") Long contentSpaceId , StructuredContent structuredContent ) throws Exception;
 
 	@Consumes("application/json")
 	@POST
-	@Path("/content-space/{content-space-id}/structured-contents")
+	@Path("/content-space/{content-space-id}/structured-content")
 	@Produces("application/json")
 	@RequiresScope("everything.read")
 	public StructuredContent postContentSpaceStructuredContent( @PathParam("content-space-id") Long contentSpaceId , StructuredContent structuredContent ) throws Exception;
 
 	@Consumes("application/json")
 	@POST
-	@Path("/content-space/{content-space-id}/structured-contents/batch-create")
+	@Path("/content-space/{content-space-id}/structured-content/batch-create")
 	@Produces("application/json")
 	@RequiresScope("everything.write")
-	public StructuredContent postContentSpaceStructuredContentsBatchCreate( @PathParam("content-space-id") Long contentSpaceId , StructuredContent structuredContent ) throws Exception;
+	public StructuredContent postContentSpaceStructuredContentBatchCreate( @PathParam("content-space-id") Long contentSpaceId , StructuredContent structuredContent ) throws Exception;
 
-	@GET
-	@Path("/structured-contents/{structured-contents-id}")
+	@DELETE
+	@Path("/structured-content/{structured-content-id}")
 	@Produces("application/json")
 	@RequiresScope("everything.read")
-	public StructuredContent getStructuredContent( @PathParam("structured-contents-id") Long structuredContentsId ) throws Exception;
+	public Response deleteStructuredContent( @PathParam("structured-content-id") Long structuredContentId ) throws Exception;
+
+	@GET
+	@Path("/structured-content/{structured-content-id}")
+	@Produces("application/json")
+	@RequiresScope("everything.read")
+	public StructuredContent getStructuredContent( @PathParam("structured-content-id") Long structuredContentId ) throws Exception;
 
 	@Consumes("application/json")
 	@PUT
-	@Path("/structured-contents/{structured-contents-id}")
+	@Path("/structured-content/{structured-content-id}")
 	@Produces("application/json")
 	@RequiresScope("everything.read")
-	public StructuredContent putStructuredContent( @PathParam("structured-contents-id") Long structuredContentsId , StructuredContent structuredContent ) throws Exception;
+	public StructuredContent putStructuredContent( @PathParam("structured-content-id") Long structuredContentId , StructuredContent structuredContent ) throws Exception;
 
 }

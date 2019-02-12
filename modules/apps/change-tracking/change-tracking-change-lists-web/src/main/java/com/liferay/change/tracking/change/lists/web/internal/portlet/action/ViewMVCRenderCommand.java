@@ -14,14 +14,22 @@
 
 package com.liferay.change.tracking.change.lists.web.internal.portlet.action;
 
+import com.liferay.change.tracking.CTEngineManager;
 import com.liferay.change.tracking.constants.CTPortletKeys;
+import com.liferay.change.tracking.model.CTCollection;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
+
+import java.util.Optional;
 
 import javax.portlet.PortletException;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Máté Thurzó
@@ -41,7 +49,33 @@ public class ViewMVCRenderCommand implements MVCRenderCommand {
 			RenderRequest renderRequest, RenderResponse renderResponse)
 		throws PortletException {
 
-		return "/view.jsp";
+		boolean select = ParamUtil.getBoolean(renderRequest, "select");
+
+		if (select) {
+			return "/view.jsp";
+		}
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
+
+		Optional<CTCollection> activeCTCollectionOptional =
+			_ctEngineManager.getActiveCTCollectionOptional(
+				themeDisplay.getUserId());
+
+		if (!activeCTCollectionOptional.isPresent()) {
+			return "/view.jsp";
+		}
+
+		CTCollection activeCTCollection = activeCTCollectionOptional.get();
+
+		if (activeCTCollection.isProduction()) {
+			return "/view.jsp";
+		}
+
+		return "/overview.jsp";
 	}
+
+	@Reference
+	private CTEngineManager _ctEngineManager;
 
 }

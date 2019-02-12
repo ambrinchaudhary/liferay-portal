@@ -30,10 +30,6 @@ public class WebUrl {
 		return _id;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public String getUrl() {
 		return _url;
 	}
@@ -46,10 +42,6 @@ public class WebUrl {
 		_id = id;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setUrl(String url) {
 		_url = url;
 	}
@@ -59,7 +51,6 @@ public class WebUrl {
 	}
 
 	private Long _id;
-	private String _self;
 	private String _url;
 	private String _urlType;
 

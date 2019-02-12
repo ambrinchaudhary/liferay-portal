@@ -30,6 +30,7 @@ import com.liferay.portal.vulcan.yaml.openapi.OpenAPIYAML;
 import com.liferay.portal.vulcan.yaml.openapi.Operation;
 import com.liferay.portal.vulcan.yaml.openapi.Options;
 import com.liferay.portal.vulcan.yaml.openapi.Parameter;
+import com.liferay.portal.vulcan.yaml.openapi.Patch;
 import com.liferay.portal.vulcan.yaml.openapi.PathItem;
 import com.liferay.portal.vulcan.yaml.openapi.Post;
 import com.liferay.portal.vulcan.yaml.openapi.Put;
@@ -107,6 +108,9 @@ public class JavaTool {
 		else if (Options.class.isInstance(operation)) {
 			return "options";
 		}
+		else if (Patch.class.isInstance(operation)) {
+			return "patch";
+		}
 		else if (Post.class.isInstance(operation)) {
 			return "post";
 		}
@@ -160,7 +164,7 @@ public class JavaTool {
 		String returnType = _getReturnType(openAPIYAML, operation);
 
 		return new JavaSignature(
-			_getJavaParameters(operation, returnType, schemaName),
+			_getJavaParameters(operation),
 			_getMethodAnnotations(operation, pathItem, path),
 			_getMethodName(operation, path, returnType, schemaName),
 			returnType);
@@ -195,6 +199,10 @@ public class JavaTool {
 
 		if (pathItem.getOptions() != null) {
 			operations.add(pathItem.getOptions());
+		}
+
+		if (pathItem.getPatch() != null) {
+			operations.add(pathItem.getPatch());
 		}
 
 		if (pathItem.getPost() != null) {
@@ -235,9 +243,7 @@ public class JavaTool {
 		return StringUtil.upperCaseFirstLetter(type);
 	}
 
-	private List<JavaParameter> _getJavaParameters(
-		Operation operation, String returnType, String schemaName) {
-
+	private List<JavaParameter> _getJavaParameters(Operation operation) {
 		if ((operation == null) || (operation.getParameters() == null)) {
 			return Collections.emptyList();
 		}
@@ -299,16 +305,35 @@ public class JavaTool {
 			javaParameters.add(javaParameter);
 		}
 
-		String httpMethod = getHTTPMethod(operation);
+		RequestBody requestBody = operation.getRequestBody();
 
-		if ((Objects.equals(httpMethod, "post") ||
-			 Objects.equals(httpMethod, "put")) &&
-			Objects.equals(returnType, schemaName)) {
+		if (requestBody != null) {
+			JavaParameter multipartBodyJavaParameter = null;
 
-			String parameterName = StringUtil.lowerCaseFirstLetter(schemaName);
+			Map<String, Content> contents = requestBody.getContent();
 
-			javaParameters.add(
-				new JavaParameter(null, parameterName, schemaName));
+			for (Map.Entry<String, Content> entry : contents.entrySet()) {
+				if (Objects.equals(entry.getKey(), "multipart/form-data")) {
+					multipartBodyJavaParameter = new JavaParameter(
+						null, "multipartBody", "MultipartBody");
+				}
+			}
+
+			if (multipartBodyJavaParameter == null) {
+				for (Content content : contents.values()) {
+					String schemaName = _getJavaParameterType(
+						null, content.getSchema());
+
+					String parameterName = StringUtil.lowerCaseFirstLetter(
+						schemaName);
+
+					javaParameters.add(
+						new JavaParameter(null, parameterName, schemaName));
+				}
+			}
+			else {
+				javaParameters.add(multipartBodyJavaParameter);
+			}
 		}
 
 		return javaParameters;

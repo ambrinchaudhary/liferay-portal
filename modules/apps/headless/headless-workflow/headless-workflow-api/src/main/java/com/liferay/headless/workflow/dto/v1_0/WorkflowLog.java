@@ -56,10 +56,6 @@ public class WorkflowLog {
 		return _previousState;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public String getState() {
 		return _state;
 	}
@@ -104,10 +100,6 @@ public class WorkflowLog {
 		_previousState = previousState;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setState(String state) {
 		_state = state;
 	}
@@ -131,7 +123,6 @@ public class WorkflowLog {
 	private String _person;
 	private String _previousPerson;
 	private String _previousState;
-	private String _self;
 	private String _state;
 	private WorkflowTask _task;
 	private Long _taskId;

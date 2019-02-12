@@ -14,9 +14,24 @@
 
 package com.liferay.headless.web.experience.internal.resource.v1_0;
 
+import com.liferay.dynamic.data.mapping.model.DDMStructure;
+import com.liferay.dynamic.data.mapping.service.DDMStructureService;
+import com.liferay.headless.web.experience.dto.v1_0.ContentStructure;
+import com.liferay.headless.web.experience.dto.v1_0.Creator;
 import com.liferay.headless.web.experience.resource.v1_0.ContentStructureResource;
+import com.liferay.journal.model.JournalArticle;
+import com.liferay.portal.kernel.model.ClassName;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.ClassNameService;
+import com.liferay.portal.kernel.service.GroupService;
+import com.liferay.portal.kernel.service.UserService;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.vulcan.pagination.Page;
+import com.liferay.portal.vulcan.pagination.Pagination;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
 
 /**
@@ -28,4 +43,78 @@ import org.osgi.service.component.annotations.ServiceScope;
 )
 public class ContentStructureResourceImpl
 	extends BaseContentStructureResourceImpl {
+
+	@Override
+	public Page<ContentStructure> getContentSpaceContentStructuresPage(
+			Long contentSpaceId, Pagination pagination)
+		throws Exception {
+
+		Group group = _groupService.getGroup(contentSpaceId);
+		ClassName className = _classNameService.fetchClassName(
+			JournalArticle.class.getName());
+
+		return Page.of(
+			transform(
+				_ddmStructureService.getStructures(
+					company.getCompanyId(), new long[] {group.getGroupId()},
+					className.getClassNameId(), pagination.getStartPosition(),
+					pagination.getEndPosition(), null),
+				this::_toContentStructure),
+			pagination,
+			_ddmStructureService.getStructuresCount(
+				company.getCompanyId(), new long[] {group.getGroupId()},
+				className.getClassNameId()));
+	}
+
+	private Creator _getCreator(long userId) throws Exception {
+		User user = _userService.getUserById(userId);
+
+		return new Creator() {
+			{
+				setAdditionalName(user.getMiddleName());
+				setAlternateName(user.getScreenName());
+				setEmail(user.getEmailAddress());
+				setFamilyName(user.getLastName());
+				setGivenName(user.getFirstName());
+				setId(user.getUserId());
+				setJobTitle(user.getJobTitle());
+				setName(user.getFullName());
+			}
+		};
+	}
+
+	private ContentStructure _toContentStructure(DDMStructure ddmStructure)
+		throws Exception {
+
+		return new ContentStructure() {
+			{
+				setAvailableLanguages(
+					LocaleUtil.toW3cLanguageIds(
+						ddmStructure.getAvailableLanguageIds()));
+				setContentSpace(ddmStructure.getGroupId());
+				setCreator(_getCreator(ddmStructure.getUserId()));
+				setDateCreated(ddmStructure.getCreateDate());
+				setDateModified(ddmStructure.getModifiedDate());
+				setDescription(
+					ddmStructure.getDescription(
+						acceptLanguage.getPreferredLocale()));
+				setId(ddmStructure.getStructureId());
+				setName(
+					ddmStructure.getName(acceptLanguage.getPreferredLocale()));
+			}
+		};
+	}
+
+	@Reference
+	private ClassNameService _classNameService;
+
+	@Reference
+	private DDMStructureService _ddmStructureService;
+
+	@Reference
+	private GroupService _groupService;
+
+	@Reference
+	private UserService _userService;
+
 }

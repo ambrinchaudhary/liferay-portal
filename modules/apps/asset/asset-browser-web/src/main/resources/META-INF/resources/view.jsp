@@ -17,19 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <clay:management-toolbar
-	clearResultsURL="<%= assetBrowserDisplayContext.getClearResultsURL() %>"
-	componentId="assetBrowserManagementToolbar"
-	creationMenu="<%= Validator.isNotNull(assetBrowserDisplayContext.getAddButtonURL()) ? assetBrowserDisplayContext.getCreationMenu() : null %>"
-	disabled="<%= assetBrowserDisplayContext.isDisabledManagementBar() %>"
-	filterDropdownItems="<%= assetBrowserDisplayContext.getFilterItemsDropdownItems() %>"
-	itemsTotal="<%= assetBrowserDisplayContext.getTotalItems() %>"
-	searchActionURL="<%= assetBrowserDisplayContext.getSearchActionURL() %>"
-	searchContainerId="selectAssetEntries"
-	searchFormName="searchFm"
-	selectable="<%= assetBrowserDisplayContext.isMultipleSelection() %>"
-	sortingOrder="<%= assetBrowserDisplayContext.getOrderByType() %>"
-	sortingURL="<%= assetBrowserDisplayContext.getSortingURL() %>"
-	viewTypeItems="<%= assetBrowserDisplayContext.getViewTypeItems() %>"
+	displayContext="<%= new AssetBrowserManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, assetBrowserDisplayContext) %>"
 />
 
 <aui:form action="<%= assetBrowserDisplayContext.getPortletURL() %>" cssClass="container-fluid-1280" method="post" name="selectAssetFm">
@@ -120,32 +108,9 @@
 					%>
 
 					<liferay-ui:search-container-column-text>
-						<c:choose>
-							<c:when test="<%= Validator.isNotNull(assetRenderer.getThumbnailPath(renderRequest)) %>">
-								<liferay-frontend:vertical-card
-									cssClass="<%= cssClass %>"
-									data="<%= assetBrowserDisplayContext.isMultipleSelection() ? null : data %>"
-									imageUrl="<%= assetRenderer.getThumbnailPath(renderRequest) %>"
-									resultRow="<%= row %>"
-									rowChecker="<%= assetEntriesSearchContainer.getRowChecker() %>"
-									showCheckbox="<%= assetBrowserDisplayContext.isMultipleSelection() %>"
-									subtitle="<%= HtmlUtil.escape(group.getDescriptiveName(locale)) %>"
-									title="<%= assetRenderer.getTitle(locale) %>"
-								/>
-							</c:when>
-							<c:otherwise>
-								<liferay-frontend:icon-vertical-card
-									cssClass="<%= cssClass %>"
-									data="<%= assetBrowserDisplayContext.isMultipleSelection() ? null : data %>"
-									icon="<%= assetRendererFactory.getIconCssClass() %>"
-									resultRow="<%= row %>"
-									rowChecker="<%= assetEntriesSearchContainer.getRowChecker() %>"
-									showCheckbox="<%= assetBrowserDisplayContext.isMultipleSelection() %>"
-									subtitle="<%= HtmlUtil.escape(group.getDescriptiveName(locale)) %>"
-									title="<%= assetRenderer.getTitle(locale) %>"
-								/>
-							</c:otherwise>
-						</c:choose>
+						<clay:vertical-card
+							verticalCard="<%= new AssetEntryVerticalCard(assetEntry, renderRequest, assetBrowserDisplayContext) %>"
+						/>
 					</liferay-ui:search-container-column-text>
 				</c:when>
 				<c:when test='<%= Objects.equals(assetBrowserDisplayContext.getDisplayStyle(), "list") %>'>

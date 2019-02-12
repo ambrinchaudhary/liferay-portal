@@ -21,8 +21,9 @@ import com.liferay.headless.document.library.dto.v1_0.Folder;
 import com.liferay.oauth2.provider.scope.RequiresScope;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
-import com.liferay.portal.vulcan.context.Pagination;
-import com.liferay.portal.vulcan.dto.Page;
+import com.liferay.portal.vulcan.multipart.MultipartBody;
+import com.liferay.portal.vulcan.pagination.Page;
+import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.util.Date;
 
@@ -34,6 +35,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.HEAD;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.OPTIONS;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -93,18 +95,18 @@ public interface DocumentResource {
 	@RequiresScope("everything.read")
 	public Page<Document> getFolderDocumentPage( @PathParam("folder-id") Long folderId , @Context Pagination pagination ) throws Exception;
 
-	@Consumes("application/json")
+	@Consumes("multipart/form-data")
 	@POST
 	@Path("/folder/{folder-id}/document")
 	@Produces("application/json")
 	@RequiresScope("everything.read")
-	public Document postFolderDocument( @PathParam("folder-id") Long folderId , Document document ) throws Exception;
+	public Document postFolderDocument( @PathParam("folder-id") Long folderId , MultipartBody multipartBody ) throws Exception;
 
-	@Consumes("application/json")
+	@Consumes("multipart/form-data")
 	@POST
 	@Path("/folder/{folder-id}/document/batch-create")
 	@Produces("application/json")
 	@RequiresScope("everything.write")
-	public Document postFolderDocumentBatchCreate( @PathParam("folder-id") Long folderId , Document document ) throws Exception;
+	public Document postFolderDocumentBatchCreate( @PathParam("folder-id") Long folderId , MultipartBody multipartBody ) throws Exception;
 
 }

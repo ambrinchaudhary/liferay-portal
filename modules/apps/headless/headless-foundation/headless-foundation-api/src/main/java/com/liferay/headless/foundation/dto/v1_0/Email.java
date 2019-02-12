@@ -34,10 +34,6 @@ public class Email {
 		return _id;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public String getType() {
 		return _type;
 	}
@@ -50,17 +46,12 @@ public class Email {
 		_id = id;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setType(String type) {
 		_type = type;
 	}
 
 	private String _email;
 	private Long _id;
-	private String _self;
 	private String _type;
 
 }

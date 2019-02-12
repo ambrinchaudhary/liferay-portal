@@ -54,10 +54,6 @@ public class ContactInformation {
 		return _jabber;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public String getSkype() {
 		return _skype;
 	}
@@ -114,10 +110,6 @@ public class ContactInformation {
 		_jabber = jabber;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setSkype(String skype) {
 		_skype = skype;
 	}
@@ -153,7 +145,6 @@ public class ContactInformation {
 	private String _facebook;
 	private Long _id;
 	private String _jabber;
-	private String _self;
 	private String _skype;
 	private String _sms;
 	private Phone[] _telephone;

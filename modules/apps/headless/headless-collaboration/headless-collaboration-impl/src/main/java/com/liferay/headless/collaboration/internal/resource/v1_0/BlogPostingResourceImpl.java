@@ -14,6 +14,8 @@
 
 package com.liferay.headless.collaboration.internal.resource.v1_0;
 
+import static com.liferay.portal.vulcan.util.LocalDateTimeUtil.toLocalDateTime;
+
 import com.liferay.blogs.model.BlogsEntry;
 import com.liferay.blogs.service.BlogsEntryService;
 import com.liferay.document.library.kernel.service.DLAppLocalService;
@@ -26,14 +28,11 @@ import com.liferay.portal.kernel.servlet.taglib.ui.ImageSelector;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.vulcan.context.Pagination;
-import com.liferay.portal.vulcan.dto.Page;
-
-import java.sql.Timestamp;
+import com.liferay.portal.vulcan.pagination.Page;
+import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.time.LocalDateTime;
 
-import java.util.Date;
 import java.util.Objects;
 
 import javax.ws.rs.BadRequestException;
@@ -56,7 +55,7 @@ public class BlogPostingResourceImpl extends BaseBlogPostingResourceImpl {
 	public Response deleteBlogPosting(Long blogPostingId) throws Exception {
 		_blogsEntryService.deleteEntry(blogPostingId);
 
-		return null;
+		return buildNoContentResponse();
 	}
 
 	@Override
@@ -86,20 +85,19 @@ public class BlogPostingResourceImpl extends BaseBlogPostingResourceImpl {
 			Long contentSpaceId, BlogPosting blogPosting)
 		throws Exception {
 
-		LocalDateTime localDateTime = _getLocalDateTime(
+		LocalDateTime localDateTime = toLocalDateTime(
 			blogPosting.getDatePublished());
 
-		BlogsEntry blogsEntry = _blogsEntryService.addEntry(
-			blogPosting.getHeadline(), blogPosting.getAlternativeHeadline(),
-			blogPosting.getFriendlyUrlPath(), blogPosting.getDescription(),
-			blogPosting.getArticleBody(), localDateTime.getMonthValue() - 1,
-			localDateTime.getDayOfMonth(), localDateTime.getYear(),
-			localDateTime.getHour(), localDateTime.getMinute(), true, true,
-			new String[0], blogPosting.getCaption(),
-			_getImageSelector(blogPosting), null,
-			_createServiceContext(contentSpaceId, blogPosting));
-
-		return _toBlogPosting(blogsEntry);
+		return _toBlogPosting(
+			_blogsEntryService.addEntry(
+				blogPosting.getHeadline(), blogPosting.getAlternativeHeadline(),
+				blogPosting.getFriendlyUrlPath(), blogPosting.getDescription(),
+				blogPosting.getArticleBody(), localDateTime.getMonthValue() - 1,
+				localDateTime.getDayOfMonth(), localDateTime.getYear(),
+				localDateTime.getHour(), localDateTime.getMinute(), true, true,
+				new String[0], blogPosting.getCaption(),
+				_getImageSelector(blogPosting), null,
+				_createServiceContext(contentSpaceId, blogPosting)));
 	}
 
 	@Override
@@ -107,23 +105,22 @@ public class BlogPostingResourceImpl extends BaseBlogPostingResourceImpl {
 			Long blogPostingId, BlogPosting blogPosting)
 		throws Exception {
 
-		LocalDateTime localDateTime = _getLocalDateTime(
+		LocalDateTime localDateTime = toLocalDateTime(
 			blogPosting.getDatePublished());
 
 		BlogsEntry blogsEntry = _blogsEntryService.getEntry(blogPostingId);
 
-		BlogsEntry updatedBlogsEntry = _blogsEntryService.updateEntry(
-			blogPostingId, blogPosting.getHeadline(),
-			blogPosting.getAlternativeHeadline(),
-			blogPosting.getFriendlyUrlPath(), blogPosting.getDescription(),
-			blogPosting.getArticleBody(), localDateTime.getMonthValue() - 1,
-			localDateTime.getDayOfMonth(), localDateTime.getYear(),
-			localDateTime.getHour(), localDateTime.getMinute(), true, true,
-			new String[0], blogPosting.getCaption(),
-			_getImageSelector(blogPosting), null,
-			_createServiceContext(blogsEntry.getGroupId(), blogPosting));
-
-		return _toBlogPosting(updatedBlogsEntry);
+		return _toBlogPosting(
+			_blogsEntryService.updateEntry(
+				blogPostingId, blogPosting.getHeadline(),
+				blogPosting.getAlternativeHeadline(),
+				blogPosting.getFriendlyUrlPath(), blogPosting.getDescription(),
+				blogPosting.getArticleBody(), localDateTime.getMonthValue() - 1,
+				localDateTime.getDayOfMonth(), localDateTime.getYear(),
+				localDateTime.getHour(), localDateTime.getMinute(), true, true,
+				new String[0], blogPosting.getCaption(),
+				_getImageSelector(blogPosting), null,
+				_createServiceContext(blogsEntry.getGroupId(), blogPosting)));
 	}
 
 	private ServiceContext _createServiceContext(
@@ -166,19 +163,6 @@ public class BlogPostingResourceImpl extends BaseBlogPostingResourceImpl {
 			throw new BadRequestException(
 				"Unable to get file entry " + imageId, e);
 		}
-	}
-
-	private LocalDateTime _getLocalDateTime(Date date) {
-		Timestamp timestamp = null;
-
-		if (date != null) {
-			timestamp = new Timestamp(date.getTime());
-		}
-		else {
-			timestamp = new Timestamp(System.currentTimeMillis());
-		}
-
-		return timestamp.toLocalDateTime();
 	}
 
 	private BlogPosting _toBlogPosting(BlogsEntry blogsEntry) {

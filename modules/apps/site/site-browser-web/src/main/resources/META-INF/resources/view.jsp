@@ -16,38 +16,17 @@
 
 <%@ include file="/init.jsp" %>
 
-<%
-String p_u_i_d = ParamUtil.getString(request, "p_u_i_d");
-String displayStyle = siteBrowserDisplayContext.getDisplayStyle();
-String eventName = ParamUtil.getString(request, "eventName", liferayPortletResponse.getNamespace() + "selectSite");
-String target = ParamUtil.getString(request, "target");
-
-User selUser = PortalUtil.getSelectedUser(request);
-
-GroupSearch groupSearch = siteBrowserDisplayContext.getGroupSearch();
-%>
-
 <clay:navigation-bar
 	navigationItems="<%= siteBrowserDisplayContext.getNavigationItems() %>"
 />
 
 <clay:management-toolbar
-	clearResultsURL="<%= siteBrowserDisplayContext.getClearResultsURL() %>"
-	componentId="siteBrowserWebManagementToolbar"
-	filterDropdownItems="<%= siteBrowserDisplayContext.getFilterDropdownItems() %>"
-	itemsTotal="<%= siteBrowserDisplayContext.getTotalItems() %>"
-	searchActionURL="<%= siteBrowserDisplayContext.getSearchActionURL() %>"
-	searchFormName="searchFm"
-	selectable="<%= false %>"
-	showSearch='<%= !Objects.equals(siteBrowserDisplayContext.getType(), "parent-sites") %>'
-	sortingOrder="<%= siteBrowserDisplayContext.getOrderByType() %>"
-	sortingURL="<%= siteBrowserDisplayContext.getSortingURL() %>"
-	viewTypeItems="<%= siteBrowserDisplayContext.getViewTypeItems() %>"
+	displayContext="<%= new SiteBrowserManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, siteBrowserDisplayContext) %>"
 />
 
 <aui:form action="<%= siteBrowserDisplayContext.getPortletURL() %>" cssClass="container-fluid-1280" method="post" name="selectGroupFm">
 	<liferay-ui:search-container
-		searchContainer="<%= groupSearch %>"
+		searchContainer="<%= siteBrowserDisplayContext.getGroupSearch() %>"
 	>
 		<liferay-ui:search-container-row
 			className="com.liferay.portal.kernel.model.Group"
@@ -63,13 +42,13 @@ GroupSearch groupSearch = siteBrowserDisplayContext.getGroupSearch();
 
 			data.put("entityid", group.getGroupId());
 			data.put("entityname", group.getDescriptiveName(locale));
-			data.put("grouptarget", target);
+			data.put("grouptarget", siteBrowserDisplayContext.getTarget());
 			data.put("grouptype", LanguageUtil.get(request, group.getTypeLabel()));
 			data.put("url", group.getDisplayURL(themeDisplay));
 			%>
 
 			<c:choose>
-				<c:when test='<%= displayStyle.equals("descriptive") %>'>
+				<c:when test='<%= Objects.equals(siteBrowserDisplayContext.getDisplayStyle(), "descriptive") %>'>
 					<liferay-ui:search-container-column-icon
 						icon="sites"
 					/>
@@ -79,7 +58,7 @@ GroupSearch groupSearch = siteBrowserDisplayContext.getGroupSearch();
 					>
 						<h5>
 							<c:choose>
-								<c:when test="<%= Validator.isNull(p_u_i_d) || SiteMembershipPolicyUtil.isMembershipAllowed((selUser != null) ? selUser.getUserId() : 0, group.getGroupId()) %>">
+								<c:when test="<%= siteBrowserDisplayContext.isShowLink(group) %>">
 									<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
 										<%= HtmlUtil.escape(group.getDescriptiveName(locale)) %>
 									</aui:a>
@@ -95,40 +74,25 @@ GroupSearch groupSearch = siteBrowserDisplayContext.getGroupSearch();
 						</h6>
 					</liferay-ui:search-container-column-text>
 				</c:when>
-				<c:when test='<%= displayStyle.equals("icon") %>'>
+				<c:when test='<%= Objects.equals(siteBrowserDisplayContext.getDisplayStyle(), "icon") %>'>
 
 					<%
 					row.setCssClass("entry-card lfr-asset-item " + row.getCssClass());
 					%>
 
 					<liferay-ui:search-container-column-text>
-						<c:choose>
-							<c:when test="<%= Validator.isNull(p_u_i_d) || SiteMembershipPolicyUtil.isMembershipAllowed((selUser != null) ? selUser.getUserId() : 0, group.getGroupId()) %>">
-
-								<%
-								Map<String, Object> urlData = data;
-								%>
-
-								<%@ include file="/site_vertical_card.jspf" %>
-							</c:when>
-							<c:otherwise>
-
-								<%
-								Map<String, Object> urlData = null;
-								%>
-
-								<%@ include file="/site_vertical_card.jspf" %>
-							</c:otherwise>
-						</c:choose>
+						<clay:vertical-card
+							verticalCard="<%= new SiteVerticalCard(group, renderRequest, siteBrowserDisplayContext) %>"
+						/>
 					</liferay-ui:search-container-column-text>
 				</c:when>
-				<c:when test='<%= displayStyle.equals("list") %>'>
+				<c:when test='<%= Objects.equals(siteBrowserDisplayContext.getDisplayStyle(), "list") %>'>
 					<liferay-ui:search-container-column-text
 						name="name"
 						truncate="<%= true %>"
 					>
 						<c:choose>
-							<c:when test="<%= Validator.isNull(p_u_i_d) || SiteMembershipPolicyUtil.isMembershipAllowed((selUser != null) ? selUser.getUserId() : 0, group.getGroupId()) %>">
+							<c:when test="<%= siteBrowserDisplayContext.isShowLink(group) %>">
 								<aui:a cssClass="selector-button" data="<%= data %>" href="javascript:;">
 									<%= HtmlUtil.escape(group.getDescriptiveName(locale)) %>
 								</aui:a>
@@ -148,7 +112,7 @@ GroupSearch groupSearch = siteBrowserDisplayContext.getGroupSearch();
 		</liferay-ui:search-container-row>
 
 		<liferay-ui:search-iterator
-			displayStyle="<%= displayStyle %>"
+			displayStyle="<%= siteBrowserDisplayContext.getDisplayStyle() %>"
 			markupView="lexicon"
 		/>
 	</liferay-ui:search-container>
@@ -166,5 +130,5 @@ GroupSearch groupSearch = siteBrowserDisplayContext.getGroupSearch();
 		}
 	);
 
-	Util.selectEntityHandler('#<portlet:namespace />selectGroupFm', '<%= HtmlUtil.escapeJS(eventName) %>', <%= selUser != null %>);
+	Util.selectEntityHandler('#<portlet:namespace />selectGroupFm', '<%= HtmlUtil.escapeJS(siteBrowserDisplayContext.getEventName()) %>', <%= siteBrowserDisplayContext.getSelUser() != null %>);
 </aui:script>

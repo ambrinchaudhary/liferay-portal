@@ -38,10 +38,6 @@ public class Location {
 		return _id;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public void setAddressCountry(String addressCountry) {
 		_addressCountry = addressCountry;
 	}
@@ -54,13 +50,8 @@ public class Location {
 		_id = id;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	private String _addressCountry;
 	private String _addressRegion;
 	private Long _id;
-	private String _self;
 
 }

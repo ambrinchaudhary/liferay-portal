@@ -34,10 +34,6 @@ public class Rows {
 		return _label;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public String getValue() {
 		return _value;
 	}
@@ -50,17 +46,12 @@ public class Rows {
 		_label = label;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setValue(String value) {
 		_value = value;
 	}
 
 	private Long _id;
 	private String _label;
-	private String _self;
 	private String _value;
 
 }

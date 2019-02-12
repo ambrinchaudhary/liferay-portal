@@ -68,12 +68,8 @@ public class WorkflowTask {
 		return _name;
 	}
 
-	public Object getObject() {
-		return _object;
-	}
-
-	public String getSelf() {
-		return _self;
+	public ObjectReviewed getObjectReviewed() {
+		return _objectReviewed;
 	}
 
 	public String[] getTransitions() {
@@ -120,12 +116,8 @@ public class WorkflowTask {
 		_name = name;
 	}
 
-	public void setObject(Object object) {
-		_object = object;
-	}
-
-	public void setSelf(String self) {
-		_self = self;
+	public void setObjectReviewed(ObjectReviewed objectReviewed) {
+		_objectReviewed = objectReviewed;
 	}
 
 	public void setTransitions(String[] transitions) {
@@ -142,8 +134,7 @@ public class WorkflowTask {
 	private WorkflowLog[] _logs;
 	private Long[] _logsIds;
 	private String _name;
-	private Object _object;
-	private String _self;
+	private ObjectReviewed _objectReviewed;
 	private String[] _transitions;
 
 }

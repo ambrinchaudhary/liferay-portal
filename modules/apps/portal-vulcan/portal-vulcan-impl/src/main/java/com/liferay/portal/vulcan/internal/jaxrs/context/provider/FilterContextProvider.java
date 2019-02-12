@@ -23,8 +23,8 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.filter.ExpressionConvert;
 import com.liferay.portal.odata.filter.FilterParser;
-import com.liferay.portal.vulcan.context.AcceptLanguage;
-import com.liferay.portal.vulcan.internal.context.AcceptLanguageImpl;
+import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.internal.accept.language.AcceptLanguageImpl;
 
 import javax.servlet.http.HttpServletRequest;
 

@@ -88,9 +88,9 @@ class ManagementToolbar extends ClayComponent {
 	 * @private
 	 */
 
-	_handleDeselectAllClicked() {
+	_handleClearSelectionButtonClicked() {
 		if (this._searchContainer) {
-			this._searchContainer.select.toggleAllRows(false);
+			this._searchContainer.select.toggleAllRows(false, true);
 		}
 	}
 
@@ -142,9 +142,9 @@ class ManagementToolbar extends ClayComponent {
 	 * @private
 	 */
 
-	_handleSelectAllClicked(event) {
+	_handleSelectAllButtonClicked() {
 		if (this._searchContainer) {
-			this._searchContainer.select.toggleAllRows(true);
+			this._searchContainer.select.toggleAllRows(true, true);
 		}
 	}
 
@@ -159,7 +159,24 @@ class ManagementToolbar extends ClayComponent {
 	_handleSearchContainerRowToggled(event) {
 		var elements = event.elements;
 
-		this.selectedItems = elements.allSelectedElements.filter(':enabled').size();
+		const currentPageElements = elements.currentPageElements.size();
+		const currentPageSelectedElements = elements.currentPageSelectedElements.size();
+
+		const currentPageSelected = currentPageElements === currentPageSelectedElements;
+
+		const bulkSelection = this.supportsBulkActions && this._searchContainer.select.get('bulkSelection');
+
+		this.selectedItems = bulkSelection ? this.totalItems : elements.allSelectedElements.filter(':enabled').size();
+
+		this.checkboxStatus = 'unchecked';
+
+		if (this.selectedItems !== 0) {
+			this.checkboxStatus = currentPageSelected ? 'checked' : 'indeterminate';
+		}
+
+		if (this.supportsBulkActions) {
+			this.showSelectAllButton = currentPageSelected && !this._searchContainer.select.get('bulkSelection');
+		}
 
 		if (this.actionItems) {
 			this.actionItems = this.actionItems.map(
@@ -213,6 +230,22 @@ ManagementToolbar.STATE = {
 	actionItems: actionItemsValidator,
 
 	/**
+	 * Satus of the select items checkbox. If checkboxStatus is checked or
+	 * indeterminate the toolbar will be in active state.
+	 * @default unchecked
+	 * @instance
+	 * @memberof ManagementToolbar
+	 * @type {?(string|undefined)}
+	 */
+	checkboxStatus: Config.oneOf(
+		[
+			'checked',
+			'indeterminate',
+			'unchecked'
+		]
+	).value('unchecked'),
+
+	/**
 	 * Url for clear results link.
 	 * @default undefined
 	 * @instance
@@ -221,6 +254,15 @@ ManagementToolbar.STATE = {
 	 */
 
 	clearResultsURL: Config.string(),
+
+	/**
+	 * Url for clear selection link.
+	 * @default undefined
+	 * @instance
+	 * @memberof ManagementToolbar
+	 * @type {?(string|undefined)}
+	 */
+	clearSelectionURL: Config.string(),
 
 	/**
 	 * Name of the content renderer to use template variants.
@@ -414,6 +456,15 @@ ManagementToolbar.STATE = {
 	selectable: Config.bool().value(false),
 
 	/**
+	 * Url for select all link.
+	 * @default undefined
+	 * @instance
+	 * @memberof ManagementToolbar
+	 * @type {?(string|undefined)}
+	 */
+	selectAllURL: Config.string(),
+
+	/**
 	 * Number of selected items.
 	 * @default undefined
 	 * @instance
@@ -465,6 +516,15 @@ ManagementToolbar.STATE = {
 	showInfoButton: Config.bool().value(false),
 
 	/**
+	 * Flag to indicate if the results bar should be shown or not.
+	 * @default false
+	 * @instance
+	 * @memberof ManagementToolbar
+	 * @type {?bool}
+	 */
+	showResultsBar: Config.bool().value(false),
+
+	/**
 	 * Flag to indicate if search should be shown or not.
 	 * @default true
 	 * @instance
@@ -473,6 +533,15 @@ ManagementToolbar.STATE = {
 	 */
 
 	showSearch: Config.bool().value(true),
+
+	/**
+	 * Flag to indicate if select all button should be shown or not.
+	 * @default false
+	 * @instance
+	 * @memberof ManagementToolbar
+	 * @type {?bool}
+	 */
+	showSelectAllButton: Config.bool().value(false),
 
 	/**
 	 * Sorting url.
@@ -503,6 +572,17 @@ ManagementToolbar.STATE = {
 	 */
 
 	spritemap: Config.string().required(),
+
+	/**
+	 * Flag to indicate that the toolbar supports bulk selection.
+	 * @default false
+	 * @instance
+	 * @memberof ManagementToolbar
+	 * @review
+	 * @type {boolean}
+	 */
+
+	supportsBulkActions: Config.bool().value(false),
 
 	/**
 	 * Total number of items. If totalItems is 0 most of the elements in the bar

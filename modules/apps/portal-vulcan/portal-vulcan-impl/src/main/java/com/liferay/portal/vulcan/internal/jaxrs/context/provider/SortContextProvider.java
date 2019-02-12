@@ -22,8 +22,8 @@ import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.sort.SortField;
 import com.liferay.portal.odata.sort.SortParser;
-import com.liferay.portal.vulcan.context.AcceptLanguage;
-import com.liferay.portal.vulcan.internal.context.AcceptLanguageImpl;
+import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.internal.accept.language.AcceptLanguageImpl;
 
 import java.util.List;
 

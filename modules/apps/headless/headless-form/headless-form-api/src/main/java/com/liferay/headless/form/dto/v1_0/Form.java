@@ -76,10 +76,6 @@ public class Form {
 		return _name;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public FormStructure getStructure() {
 		return _structure;
 	}
@@ -136,10 +132,6 @@ public class Form {
 		_name = name;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setStructure(FormStructure structure) {
 		_structure = structure;
 	}
@@ -160,7 +152,6 @@ public class Form {
 	private Long[] _formRecordsIds;
 	private Long _id;
 	private String _name;
-	private String _self;
 	private FormStructure _structure;
 	private Long _structureId;
 

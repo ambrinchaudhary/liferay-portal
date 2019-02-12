@@ -52,10 +52,6 @@ public class ImageObjectRepository {
 		return _name;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public void setDateCreated(Date dateCreated) {
 		_dateCreated = dateCreated;
 	}
@@ -80,16 +76,11 @@ public class ImageObjectRepository {
 		_name = name;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	private Date _dateCreated;
 	private Date _dateModified;
 	private Long _id;
 	private ImageObject[] _images;
 	private Long[] _imagesIds;
 	private String _name;
-	private String _self;
 
 }

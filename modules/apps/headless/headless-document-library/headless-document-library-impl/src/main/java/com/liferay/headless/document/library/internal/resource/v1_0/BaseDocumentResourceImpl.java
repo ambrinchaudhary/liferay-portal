@@ -16,15 +16,16 @@ package com.liferay.headless.document.library.internal.resource.v1_0;
 
 import com.liferay.headless.document.library.dto.v1_0.Document;
 import com.liferay.headless.document.library.resource.v1_0.DocumentResource;
+import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.portal.kernel.model.Company;
-import com.liferay.portal.vulcan.context.AcceptLanguage;
-import com.liferay.portal.vulcan.context.Pagination;
-import com.liferay.portal.vulcan.dto.Page;
+import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
+import com.liferay.portal.vulcan.multipart.MultipartBody;
+import com.liferay.portal.vulcan.pagination.Page;
+import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
 import javax.annotation.Generated;
 
@@ -86,7 +87,8 @@ public abstract class BaseDocumentResourceImpl implements DocumentResource {
 	}
 
 	@Override
-	public Document postFolderDocument(Long folderId, Document document)
+	public Document postFolderDocument(
+			Long folderId, MultipartBody multipartBody)
 		throws Exception {
 
 		return new Document();
@@ -94,16 +96,22 @@ public abstract class BaseDocumentResourceImpl implements DocumentResource {
 
 	@Override
 	public Document postFolderDocumentBatchCreate(
-			Long folderId, Document document)
+			Long folderId, MultipartBody multipartBody)
 		throws Exception {
 
 		return new Document();
 	}
 
-	protected <T, R> List<R> transform(
-		List<T> list, Function<T, R> transformFunction) {
+	protected Response buildNoContentResponse() {
+		Response.ResponseBuilder responseBuilder = Response.noContent();
 
-		return TransformUtil.transform(list, transformFunction);
+		return responseBuilder.build();
+	}
+
+	protected <T, R> List<R> transform(
+		List<T> list, UnsafeFunction<T, R, Exception> unsafeFunction) {
+
+		return TransformUtil.transform(list, unsafeFunction);
 	}
 
 	@Context

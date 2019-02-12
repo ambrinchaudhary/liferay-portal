@@ -42,10 +42,6 @@ public class FieldValues {
 		return _name;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public String getValue() {
 		return _value;
 	}
@@ -66,10 +62,6 @@ public class FieldValues {
 		_name = name;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setValue(String value) {
 		_value = value;
 	}
@@ -78,7 +70,6 @@ public class FieldValues {
 	private Long _documentId;
 	private Long _id;
 	private String _name;
-	private String _self;
 	private String _value;
 
 }

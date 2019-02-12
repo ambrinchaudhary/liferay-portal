@@ -68,10 +68,6 @@ public class Category {
 		return _name;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public Category[] getSubcategories() {
 		return _subcategories;
 	}
@@ -124,10 +120,6 @@ public class Category {
 		_name = name;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setSubcategories(Category[] subcategories) {
 		_subcategories = subcategories;
 	}
@@ -150,7 +142,6 @@ public class Category {
 	private String _description;
 	private Long _id;
 	private String _name;
-	private String _self;
 	private Category[] _subcategories;
 	private Vocabulary _vocabulary;
 	private Long _vocabularyId;

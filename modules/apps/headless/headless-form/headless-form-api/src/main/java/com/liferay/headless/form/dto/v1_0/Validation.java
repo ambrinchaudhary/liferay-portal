@@ -38,10 +38,6 @@ public class Validation {
 		return _id;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public void setErrorMessage(String errorMessage) {
 		_errorMessage = errorMessage;
 	}
@@ -54,13 +50,8 @@ public class Validation {
 		_id = id;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	private String _errorMessage;
 	private String _expression;
 	private Long _id;
-	private String _self;
 
 }

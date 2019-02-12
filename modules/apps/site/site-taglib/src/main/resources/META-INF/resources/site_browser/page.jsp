@@ -17,36 +17,18 @@
 <%@ include file="/site_browser/init.jsp" %>
 
 <%
-String emptyResultsMessage = GetterUtil.getString(request.getAttribute("liferay-site:site-browser:emptyResultsMessage"));
 String eventName = GetterUtil.getString(request.getAttribute("liferay-site:site-browser:eventName"));
-List<Group> groups = (List<Group>)request.getAttribute("liferay-site:site-browser:groups");
-int groupsCount = GetterUtil.getInteger(request.getAttribute("liferay-site:site-browser:groupsCount"));
 long[] selectedGroupIds = GetterUtil.getLongValues(request.getAttribute("liferay-site:site-browser:selectedGroupIds"));
-boolean showSearch = GetterUtil.getBoolean(request.getAttribute("liferay-site:site-browser:showSearch"));
 %>
 
 <clay:management-toolbar
-	clearResultsURL="<%= siteBrowserDisplayContext.getClearResultsURL() %>"
-	filterDropdownItems="<%= siteBrowserDisplayContext.getFilterDropdownItems() %>"
-	itemsTotal="<%= groupsCount %>"
-	searchActionURL="<%= siteBrowserDisplayContext.getSearchActionURL() %>"
-	selectable="<%= false %>"
-	showSearch="<%= showSearch %>"
-	sortingOrder="<%= siteBrowserDisplayContext.getOrderByType() %>"
-	sortingURL="<%= siteBrowserDisplayContext.getSortingURL() %>"
-	viewTypeItems="<%= siteBrowserDisplayContext.getViewTypeItems() %>"
+	displayContext="<%= new SiteBrowserManagementToolbarDisplayContext(liferayPortletRequest, liferayPortletResponse, request, siteBrowserDisplayContext) %>"
 />
 
 <aui:form action="<%= siteBrowserDisplayContext.getPortletURL() %>" cssClass="container-fluid-1280" method="post" name="selectGroupFm">
 	<liferay-ui:search-container
-		emptyResultsMessage="<%= emptyResultsMessage %>"
-		iteratorURL="<%= siteBrowserDisplayContext.getPortletURL() %>"
-		total="<%= groupsCount %>"
+		searchContainer="<%= siteBrowserDisplayContext.getSearchContainer() %>"
 	>
-		<liferay-ui:search-container-results
-			results="<%= groups %>"
-		/>
-
 		<liferay-ui:search-container-row
 			className="com.liferay.portal.kernel.model.Group"
 			escapedModel="<%= true %>"
@@ -99,39 +81,12 @@ boolean showSearch = GetterUtil.getBoolean(request.getAttribute("liferay-site:si
 
 					<%
 					row.setCssClass("entry-card lfr-asset-item " + row.getCssClass());
-
-					Map<String, Object> linkData = new HashMap<String, Object>();
-
-					linkData.put("prevent-selection", true);
 					%>
 
 					<liferay-ui:search-container-column-text>
-						<div <%= !ArrayUtil.contains(selectedGroupIds, group.getGroupId()) ? "role='button'" : StringPool.BLANK %>>
-							<c:choose>
-								<c:when test="<%= Validator.isNotNull(group.getLogoURL(themeDisplay, false)) %>">
-									<liferay-frontend:vertical-card
-										cssClass='<%= ArrayUtil.contains(selectedGroupIds, group.getGroupId()) ? "text-muted" : "selector-button" %>'
-										data="<%= data %>"
-										imageUrl="<%= group.getLogoURL(themeDisplay, false) %>"
-										resultRow="<%= row %>"
-										rowChecker="<%= searchContainer.getRowChecker() %>"
-										showCheckbox="<%= false %>"
-										title="<%= group.getDescriptiveName(locale) %>"
-									/>
-								</c:when>
-								<c:otherwise>
-									<liferay-frontend:icon-vertical-card
-										cssClass='<%= ArrayUtil.contains(selectedGroupIds, group.getGroupId()) ? "text-muted" : "selector-button" %>'
-										data="<%= data %>"
-										icon="sites"
-										resultRow="<%= row %>"
-										rowChecker="<%= searchContainer.getRowChecker() %>"
-										showCheckbox="<%= false %>"
-										title="<%= group.getDescriptiveName(locale) %>"
-									/>
-								</c:otherwise>
-							</c:choose>
-						</div>
+						<clay:vertical-card
+							verticalCard="<%= new SiteVerticalCard(group, renderRequest, selectedGroupIds) %>"
+						/>
 					</liferay-ui:search-container-column-text>
 				</c:when>
 				<c:when test='<%= Objects.equals(siteBrowserDisplayContext.getDisplayStyle(), "list") %>'>

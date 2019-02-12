@@ -38,10 +38,6 @@ public class SuccessPage {
 		return _id;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public void setDescription(String description) {
 		_description = description;
 	}
@@ -54,13 +50,8 @@ public class SuccessPage {
 		_id = id;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	private String _description;
 	private String _headline;
 	private Long _id;
-	private String _self;
 
 }

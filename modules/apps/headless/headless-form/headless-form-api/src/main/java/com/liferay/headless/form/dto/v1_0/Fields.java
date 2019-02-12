@@ -54,6 +54,10 @@ public class Fields {
 		return _id;
 	}
 
+	public Boolean getImmutable() {
+		return _immutable;
+	}
+
 	public Boolean getInline() {
 		return _inline;
 	}
@@ -100,10 +104,6 @@ public class Fields {
 
 	public Boolean getRequired() {
 		return _required;
-	}
-
-	public String getSelf() {
-		return _self;
 	}
 
 	public Boolean getShowAsSwitcher() {
@@ -158,6 +158,10 @@ public class Fields {
 		_id = id;
 	}
 
+	public void setImmutable(Boolean immutable) {
+		_immutable = immutable;
+	}
+
 	public void setInline(Boolean inline) {
 		_inline = inline;
 	}
@@ -206,10 +210,6 @@ public class Fields {
 		_required = required;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setShowAsSwitcher(Boolean showAsSwitcher) {
 		_showAsSwitcher = showAsSwitcher;
 	}
@@ -241,6 +241,7 @@ public class Fields {
 	private Grid _grid;
 	private Boolean _hasFormRules;
 	private Long _id;
+	private Boolean _immutable;
 	private Boolean _inline;
 	private String _inputControl;
 	private String _label;
@@ -253,7 +254,6 @@ public class Fields {
 	private Boolean _readOnly;
 	private Boolean _repeatable;
 	private Boolean _required;
-	private String _self;
 	private Boolean _showAsSwitcher;
 	private Boolean _showLabel;
 	private String _style;

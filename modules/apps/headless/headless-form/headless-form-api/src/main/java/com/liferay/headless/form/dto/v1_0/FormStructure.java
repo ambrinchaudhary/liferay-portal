@@ -64,10 +64,6 @@ public class FormStructure {
 		return _name;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public SuccessPage getSuccessPage() {
 		return _successPage;
 	}
@@ -108,10 +104,6 @@ public class FormStructure {
 		_name = name;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setSuccessPage(SuccessPage successPage) {
 		_successPage = successPage;
 	}
@@ -125,7 +117,6 @@ public class FormStructure {
 	private FormPages _formPages;
 	private Long _id;
 	private String _name;
-	private String _self;
 	private SuccessPage _successPage;
 
 }

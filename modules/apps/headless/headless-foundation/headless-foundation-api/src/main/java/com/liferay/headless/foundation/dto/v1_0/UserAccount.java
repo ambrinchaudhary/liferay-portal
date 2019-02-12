@@ -104,10 +104,6 @@ public class UserAccount {
 		return _rolesIds;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public String[] getTasksAssignedToMe() {
 		return _tasksAssignedToMe;
 	}
@@ -192,10 +188,6 @@ public class UserAccount {
 		_rolesIds = rolesIds;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setTasksAssignedToMe(String[] tasksAssignedToMe) {
 		_tasksAssignedToMe = tasksAssignedToMe;
 	}
@@ -223,7 +215,6 @@ public class UserAccount {
 	private String _profileURL;
 	private Role[] _roles;
 	private Long[] _rolesIds;
-	private String _self;
 	private String[] _tasksAssignedToMe;
 	private String[] _tasksAssignedToMyRoles;
 

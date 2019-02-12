@@ -56,10 +56,6 @@ public class Keyword {
 		return _name;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public void setContentSpace(Long contentSpace) {
 		_contentSpace = contentSpace;
 	}
@@ -88,10 +84,6 @@ public class Keyword {
 		_name = name;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	private Long _contentSpace;
 	private UserAccount _creator;
 	private Date _dateCreated;
@@ -99,6 +91,5 @@ public class Keyword {
 	private Long _id;
 	private Number _keywordUsageCount;
 	private String _name;
-	private String _self;
 
 }

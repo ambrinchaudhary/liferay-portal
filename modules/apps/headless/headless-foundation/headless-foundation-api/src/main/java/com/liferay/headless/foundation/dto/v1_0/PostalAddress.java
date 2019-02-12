@@ -50,10 +50,6 @@ public class PostalAddress {
 		return _postalCode;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public String getStreetAddressLine1() {
 		return _streetAddressLine1;
 	}
@@ -90,10 +86,6 @@ public class PostalAddress {
 		_postalCode = postalCode;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setStreetAddressLine1(String streetAddressLine1) {
 		_streetAddressLine1 = streetAddressLine1;
 	}
@@ -112,7 +104,6 @@ public class PostalAddress {
 	private String _addressType;
 	private Long _id;
 	private String _postalCode;
-	private String _self;
 	private String _streetAddressLine1;
 	private String _streetAddressLine2;
 	private String _streetAddressLine3;

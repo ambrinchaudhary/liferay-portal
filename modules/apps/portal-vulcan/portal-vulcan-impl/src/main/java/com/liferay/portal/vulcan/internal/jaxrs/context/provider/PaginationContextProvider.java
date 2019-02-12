@@ -15,7 +15,7 @@
 package com.liferay.portal.vulcan.internal.jaxrs.context.provider;
 
 import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.vulcan.context.Pagination;
+import com.liferay.portal.vulcan.pagination.Pagination;
 
 import javax.servlet.http.HttpServletRequest;
 

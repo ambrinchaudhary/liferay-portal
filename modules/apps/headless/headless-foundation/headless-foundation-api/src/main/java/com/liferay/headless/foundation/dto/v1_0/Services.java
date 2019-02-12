@@ -34,10 +34,6 @@ public class Services {
 		return _id;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public String getServiceType() {
 		return _serviceType;
 	}
@@ -50,17 +46,12 @@ public class Services {
 		_id = id;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	public void setServiceType(String serviceType) {
 		_serviceType = serviceType;
 	}
 
 	private HoursAvailable _hoursAvailable;
 	private Long _id;
-	private String _self;
 	private String _serviceType;
 
 }

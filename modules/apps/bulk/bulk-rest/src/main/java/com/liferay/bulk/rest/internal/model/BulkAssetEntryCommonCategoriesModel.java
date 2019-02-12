@@ -15,9 +15,13 @@
 package com.liferay.bulk.rest.internal.model;
 
 import com.liferay.asset.kernel.model.AssetCategory;
+import com.liferay.asset.kernel.model.AssetVocabulary;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -31,17 +35,22 @@ public class BulkAssetEntryCommonCategoriesModel {
 	}
 
 	public BulkAssetEntryCommonCategoriesModel(
-		String description, List<AssetCategory> assetCategories) {
+		String description,
+		Map<AssetVocabulary, List<AssetCategory>> assetVocabularyMap) {
 
 		_description = description;
 
-		_categories = new ArrayList<>();
+		Set<Map.Entry<AssetVocabulary, List<AssetCategory>>> entries =
+			assetVocabularyMap.entrySet();
 
-		for (AssetCategory assetCategory : assetCategories) {
-			_categories.add(
-				new AssetCategoryModel(
-					assetCategory.getCategoryId(), assetCategory.getName()));
-		}
+		Stream<Map.Entry<AssetVocabulary, List<AssetCategory>>> entryStream =
+			entries.stream();
+
+		_vocabularies = entryStream.map(
+			entry -> _toAssetVocabularyModel(entry.getKey(), entry.getValue())
+		).collect(
+			Collectors.toList()
+		);
 
 		_status = "success";
 	}
@@ -49,11 +58,6 @@ public class BulkAssetEntryCommonCategoriesModel {
 	public BulkAssetEntryCommonCategoriesModel(Throwable throwable) {
 		_description = throwable.getMessage();
 		_status = "error";
-		_categories = null;
-	}
-
-	public List<AssetCategoryModel> getCategories() {
-		return _categories;
 	}
 
 	public String getDescription() {
@@ -64,8 +68,8 @@ public class BulkAssetEntryCommonCategoriesModel {
 		return _status;
 	}
 
-	public void setCategories(List<AssetCategoryModel> categories) {
-		_categories = categories;
+	public List<AssetVocabularyModel> getVocabularies() {
+		return _vocabularies;
 	}
 
 	public void setDescription(String description) {
@@ -74,6 +78,10 @@ public class BulkAssetEntryCommonCategoriesModel {
 
 	public void setStatus(String status) {
 		_status = status;
+	}
+
+	public void setVocabularies(List<AssetVocabularyModel> vocabularies) {
+		_vocabularies = vocabularies;
 	}
 
 	public class AssetCategoryModel {
@@ -104,8 +112,76 @@ public class BulkAssetEntryCommonCategoriesModel {
 
 	}
 
-	private List<AssetCategoryModel> _categories;
+	public class AssetVocabularyModel {
+
+		public AssetVocabularyModel(
+			AssetVocabulary assetVocabulary,
+			List<AssetCategoryModel> categories) {
+
+			_categories = categories;
+			_multiValued = assetVocabulary.isMultiValued();
+			_name = assetVocabulary.getName();
+			_vocabularyId = assetVocabulary.getVocabularyId();
+		}
+
+		public List<AssetCategoryModel> getCategories() {
+			return _categories;
+		}
+
+		public String getName() {
+			return _name;
+		}
+
+		public long getVocabularyId() {
+			return _vocabularyId;
+		}
+
+		public boolean isMultiValued() {
+			return _multiValued;
+		}
+
+		public void setCategories(List<AssetCategoryModel> categories) {
+			_categories = categories;
+		}
+
+		public void setName(String name) {
+			_name = name;
+		}
+
+		public void setVocabularyId(long vocabularyId) {
+			_vocabularyId = vocabularyId;
+		}
+
+		private List<AssetCategoryModel> _categories;
+		private final boolean _multiValued;
+		private String _name;
+		private long _vocabularyId;
+
+	}
+
+	private AssetCategoryModel _toAssetCategoryModel(
+		AssetCategory assetCategory) {
+
+		return new AssetCategoryModel(
+			assetCategory.getCategoryId(), assetCategory.getName());
+	}
+
+	private AssetVocabularyModel _toAssetVocabularyModel(
+		AssetVocabulary assetVocabulary, List<AssetCategory> assetCategories) {
+
+		Stream<AssetCategory> assetCategoryStream = assetCategories.stream();
+
+		return new AssetVocabularyModel(
+			assetVocabulary,
+			assetCategoryStream.map(
+				this::_toAssetCategoryModel
+			).collect(
+				Collectors.toList()
+			));
+	}
+
 	private String _description;
 	private String _status;
+	private List<AssetVocabularyModel> _vocabularies;
 
 }

@@ -112,10 +112,6 @@ public class BlogPosting {
 		return _repositoryId;
 	}
 
-	public String getSelf() {
-		return _self;
-	}
-
 	public void setAggregateRating(AggregateRating aggregateRating) {
 		_aggregateRating = aggregateRating;
 	}
@@ -200,10 +196,6 @@ public class BlogPosting {
 		_repositoryId = repositoryId;
 	}
 
-	public void setSelf(String self) {
-		_self = self;
-	}
-
 	private AggregateRating _aggregateRating;
 	private String _alternativeHeadline;
 	private String _articleBody;
@@ -225,6 +217,5 @@ public class BlogPosting {
 	private String[] _keywords;
 	private ImageObjectRepository _repository;
 	private Long _repositoryId;
-	private String _self;
 
 }

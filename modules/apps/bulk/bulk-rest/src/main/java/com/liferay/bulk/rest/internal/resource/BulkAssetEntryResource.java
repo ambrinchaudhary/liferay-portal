@@ -16,8 +16,10 @@ package com.liferay.bulk.rest.internal.resource;
 
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetEntry;
+import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.kernel.service.AssetTagLocalService;
+import com.liferay.asset.kernel.service.AssetVocabularyLocalService;
 import com.liferay.bulk.rest.internal.model.BulkActionResponseModel;
 import com.liferay.bulk.rest.internal.model.BulkAssetEntryActionModel;
 import com.liferay.bulk.rest.internal.model.BulkAssetEntryCommonCategoriesModel;
@@ -45,10 +47,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.ws.rs.Consumes;
@@ -109,7 +113,7 @@ public class BulkAssetEntryResource {
 
 			return new BulkAssetEntryCommonCategoriesModel(
 				bulkSelection.describe(locale),
-				new ArrayList<>(commonCategories));
+				_groupByAssetVocabulary(commonCategories));
 		}
 		catch (Exception e) {
 			return new BulkAssetEntryCommonCategoriesModel(e);
@@ -284,11 +288,26 @@ public class BulkAssetEntryResource {
 		};
 	}
 
+	private Map<AssetVocabulary, List<AssetCategory>> _groupByAssetVocabulary(
+		Set<AssetCategory> commonCategories) {
+
+		Stream<AssetCategory> assetCategoryStream = commonCategories.stream();
+
+		return assetCategoryStream.collect(
+			Collectors.groupingBy(
+				assetCategory ->
+					_assetVocabularyLocalService.fetchAssetVocabulary(
+						assetCategory.getVocabularyId())));
+	}
+
 	@Reference
 	private AssetCategoryLocalService _assetCategoryLocalService;
 
 	@Reference
 	private AssetTagLocalService _assetTagLocalService;
+
+	@Reference
+	private AssetVocabularyLocalService _assetVocabularyLocalService;
 
 	@Reference
 	private BulkSelectionFactoryRegistry _bulkSelectionFactoryRegistry;
