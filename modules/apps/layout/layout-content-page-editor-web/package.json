@@ -17,6 +17,7 @@
 	"dependencies": {
 		"clay-checkbox": "^2.6.0",
 		"clay-dropdown": "^2.5.1",
+		"clay-modal": "^2.6.0",
 		"metal": "^2.16.5",
 		"metal-component": "^2.16.3",
 		"metal-debounce": "^2.0.0",

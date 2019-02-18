@@ -4,7 +4,7 @@
  * SegmentSelector
  */
 {template .render}
-	{@param defaultSegmentId: string}
+	{@param defaultExperienceId: string}
 	{@param? _handleSegmentChange: any}
 	{@param? availableSegments: list<[
 		segmentId: string,
@@ -26,7 +26,7 @@
 			>
 				{foreach $segment in $availableSegments}
 					{if $segment.segmentId == $segmentId
-						or ($segment.segmentId == $defaultSegmentId and $defaultSegmentId != $segmentId)
+						or ($segment.segmentId == $defaultExperienceId and $defaultExperienceId != $segmentId)
 					}
 						<option value="{$segment.segmentId}" selected>{$segment.segmentLabel}</option>
 					{else}

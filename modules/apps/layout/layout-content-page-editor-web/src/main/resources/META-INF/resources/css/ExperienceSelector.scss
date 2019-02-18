@@ -1,0 +1,9 @@
+.experience-selector {
+	position: relative;
+	.dropdown-menu {
+		display: none;
+		&.toggled {
+			display: block;
+		}
+	}
+}

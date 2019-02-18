@@ -6,6 +6,7 @@ import {hideMappingDialogReducer, hideMappingTypeDialogReducer, openAssetTypeDia
 import {languageIdReducer, translationStatusReducer} from './translations.es';
 import {saveChangesReducer} from './changes.es';
 import {segmentIdReducer} from './segments.es';
+import {selectExperienceReducer} from './experiences.es';
 import {updateActiveItemReducer, updateDropTargetReducer, updateHighlightMappingReducer, updateHoveredItemReducer} from './placeholders.es';
 
 /**
@@ -36,7 +37,8 @@ const reducers = [
 	updateEditableValueReducer,
 	updateHighlightMappingReducer,
 	updateHoveredItemReducer,
-	updateSectionConfigReducer
+	updateSectionConfigReducer,
+	selectExperienceReducer
 ];
 
 export {reducers};

@@ -53,6 +53,8 @@ public class ContentPageLayoutEditorDisplayContext
 		soyContext.put(
 			"availableSegments",
 			_getSoyContextAvailableSegmentsEntries(segmentsEntries));
+		soyContext.put(
+			"defaultExperienceId", "experienceId");
 
 		soyContext.put("sidebarPanels", getSidebarPanelSoyContexts(false));
 
@@ -76,6 +78,8 @@ public class ContentPageLayoutEditorDisplayContext
 		soyContext.put(
 			"availableSegments",
 			_getSoyContextAvailableSegmentsEntries(segmentsEntries));
+		soyContext.put(
+			"defaultExperienceId", "experienceId");
 
 		_fragmentsEditorToolbarSoyContext = soyContext;
 

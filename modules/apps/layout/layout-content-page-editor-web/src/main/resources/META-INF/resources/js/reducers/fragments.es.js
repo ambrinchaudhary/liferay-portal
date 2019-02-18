@@ -364,7 +364,7 @@ function updateEditableValueReducer(state, actionType, payload) {
 					editableId,
 					editableValue,
 					editableValueId,
-					editableValueSegmentId
+					editableValueExperienceId
 				} = payload;
 
 				const {editableValues} = nextState.fragmentEntryLinks[payload.fragmentEntryLinkId];
@@ -372,7 +372,7 @@ function updateEditableValueReducer(state, actionType, payload) {
 				const keysTreeArray = editableValueSegmentId ? [
 					EDITABLE_FRAGMENT_ENTRY_PROCESSOR,
 					editableId,
-					editableValueSegmentId,
+					editableValueExperienceId,
 					editableValueId
 				] : [
 					EDITABLE_FRAGMENT_ENTRY_PROCESSOR,

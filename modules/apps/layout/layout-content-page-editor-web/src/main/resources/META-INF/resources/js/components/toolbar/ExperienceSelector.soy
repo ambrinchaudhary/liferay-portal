@@ -1,0 +1,69 @@
+{namespace com.liferay.layout.content.page.editor.web.ExperienceSelector}
+
+/**
+ * ExperienceSelector
+ */
+{template .render}
+	{@param? activeExperienceLabel: string }
+	{@param? experiences: list<[
+		experienceId: string,
+		experienceLabel: string
+	]>}
+	{@param? openDropdown: bool}
+	{@param? modal: bool}
+	<div>
+	{if $experiences and length($experiences) > 0}
+		<div
+			class="experience-selector"
+			tabindex="0"
+		>
+			<button
+				class="btn btn-sm btn-outline-light mr-2"
+				onClick="_handleButtonClick"
+				onBlur="_handleButtonBlur"
+				type="button"
+			>
+				{$activeExperienceLabel}
+			</button>
+			<div
+				class="dropdown-menu {if $openDropdown}toggled{/if}"
+				onFocus="_handleDropdownFocus"
+				onBlur="_handleButtonBlur"
+				tabindex="-1"
+			>
+				<ul class="list-unstyled">
+					{foreach $experience in $experiences}
+						<li
+							class="dropdown-item"
+							data-onclick="_handleExperienceClick"
+							data-experience-id="{$experience.experienceId}"
+						>
+							{$experience.experienceLabel}
+						</li>
+					{/foreach}
+						<li
+							class="dropdown-item"
+						>
+							<button
+								class="btn btn-sm btn-secondary"
+								data-onclick="_createExperience"
+							>
+								Create Experience
+							</button>
+						</li>
+				</ul>
+			</div>
+		</div>
+		{if $modal}
+			{call ClayModal.render}
+				{param body kind="html"}
+					<h4>Modal Body</h4>
+				{/param}
+
+				{param size: 'sm' /}
+				{param title: 'Modal Title' /}
+			{/call}
+		{/if}
+	{/if}
+	</div>
+{/template}
