@@ -47,8 +47,7 @@
 			span {
 				&.title {
 					font-weight: 600;
-					width: 14em;
-					max-width: 100%;
+					max-width: 14em;
 					@extend %ellipsed;
 				}
 				&.audience {

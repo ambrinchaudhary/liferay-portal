@@ -73,7 +73,7 @@ function createExperienceReducer(state, actionType, payload) {
 										experienceId,
 										experienceLabel,
 										active: false,
-										experiencePriority,
+										priority: experiencePriority,
 										segmentId,
 									}
 								}

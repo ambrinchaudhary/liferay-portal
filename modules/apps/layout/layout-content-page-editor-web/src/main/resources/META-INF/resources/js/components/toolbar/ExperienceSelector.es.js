@@ -65,20 +65,29 @@ class ExperienceSelector extends Component {
 		let innerState = setIn(
 			state,
 			['availableExperiences'],
-			Object.values(state.availableExperiences).map(experience => {
-				return Object.assign(
-					{},
-					experience,
-					{
-						segmentLabel: Object.values(state.availableSegments).find(
-								segment => {
-									debugger;
-									return segment.segmentId === experience.segmentId
-								}
-							).segmentLabel
+			Object.values(state.availableExperiences)
+				.sort((a, b) => {
+					if (a.priority > b.priority) {
+						return -1;
 					}
-				);
-			})
+					if (a.priority < b.priority) {
+						return 1;
+					}
+					return 0;
+				})
+				.map(experience => {
+					return Object.assign(
+						{},
+						experience,
+						{
+							segmentLabel: Object.values(state.availableSegments).find(
+									segment => {
+										return segment.segmentId === experience.segmentId
+									}
+								).segmentLabel
+						}
+					);
+				})
 		);
 
 		innerState = setIn(

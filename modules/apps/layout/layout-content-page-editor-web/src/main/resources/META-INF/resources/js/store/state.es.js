@@ -173,13 +173,15 @@ const INITIAL_STATE = {
 		.value({
 			'experienceId': {
 				experienceId: 'experienceId',
-				experienceLabel: 'Default Experience',
-				segmentId: 'segment-id-38501'
+				experienceLabel: 'Default',
+				segmentId: 'segment-id-38501',
+				priority: 0,
 			},
 			'experienceId-2': {
 				experienceId: 'experienceId-2',
 				experienceLabel: 'Second Experience',
-				segmentId: 'segment-id-36966'
+				segmentId: 'segment-id-36966',
+				priority: 1,
 			}
 		}),
 	
