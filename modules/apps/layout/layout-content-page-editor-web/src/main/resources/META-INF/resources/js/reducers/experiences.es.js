@@ -18,9 +18,7 @@ const fetch = function fakeFetch(
 	console.log('faking fetch', fakeUrl);
 	return new Promise((resolve, reject) => {
 		setTimeout(() => resolve({
-			response: {
-				experienceId: 'fakeExperienceId'
-			}
+			experienceId: 'fakeExperienceId'
 		}), 2000);
 	});
 }
@@ -43,7 +41,6 @@ function createExperienceReducer(state, actionType, payload) {
 	return new Promise(
 		resolve => {
 			let nextState = state;
-
 			if (actionType === CREATE_EXPERIENCE) {
 				const { experienceLabel, segmentId } = payload;
 
@@ -62,23 +59,28 @@ function createExperienceReducer(state, actionType, payload) {
 					return experienceId;
 				})
 				.then((experienceId) => {
-					const experiencePriority = Object.keys(nextState.experiences).length;
+					const experiencePriority = Object.keys(nextState.availableExperiences).length;
 
-					nextState = setIn(
+					nextState = Object.assign(
+						{},
 						nextState,
-						[
-							'experiences',
-							experienceId
-						],
 						{
-							experienceId,
-							experienceLabel,
-							active: false,
-							experiencePriority,
-							segmentId,
+							availableExperiences: Object.assign(
+								{},
+								nextState.availableExperiences,
+								{
+									[experienceId]: {
+										experienceId,
+										experienceLabel,
+										active: false,
+										experiencePriority,
+										segmentId,
+									}
+								}
+							)
 						}
 					);
-
+					debugger;
 					resolve(nextState);
 				})
 				nextState = setIn(nextState, ['segmentId'], payload.segmentId);

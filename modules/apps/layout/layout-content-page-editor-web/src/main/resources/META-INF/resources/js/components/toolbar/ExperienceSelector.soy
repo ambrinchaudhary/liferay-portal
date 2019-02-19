@@ -5,14 +5,17 @@
  */
 {template .render}
 	{@param? activeExperienceLabel: string }
-	{@param? experiences: list<[
+	{@param? availableExperiences: list<[
 		experienceId: string,
 		experienceLabel: string
 	]>}
+	{@param? availableSegments: list<[
+		segmentId: string,
+		segmentLabel: string
+	]>}
 	{@param? openDropdown: bool}
-	{@param? modal: bool}
 	<div>
-	{if $experiences and length($experiences) > 0}
+	{if $availableExperiences and length($availableExperiences) > 0}
 		<div
 			class="experience-selector"
 			tabindex="0"
@@ -26,44 +29,55 @@
 				{$activeExperienceLabel}
 			</button>
 			<div
-				class="dropdown-menu {if $openDropdown}toggled{/if}"
+				class="p-4 rounded dropdown-menu {if $openDropdown}toggled{/if}"
 				onFocus="_handleDropdownFocus"
 				onBlur="_handleButtonBlur"
 				tabindex="-1"
 			>
-				<ul class="list-unstyled">
-					{foreach $experience in $experiences}
-						<li
-							class="dropdown-item"
-							data-onclick="_handleExperienceClick"
-							data-experience-id="{$experience.experienceId}"
-						>
-							{$experience.experienceLabel}
-						</li>
-					{/foreach}
-						<li
-							class="dropdown-item"
-						>
+					<h2>Select Experience</h2>
+					<form data-onsubmit="_createExperience" class="row mb-3">
+						<div class="form-group my-2 col-6">
+							<label for="createExperience">Create new experience</label>
+							<input name="experienceName" class="form-control form-control-sm" id="createExperience" placeholder="Experience Name" type="text"/>
+						</div>
+						<div class="form-group my-2 col-6">
+							{if $availableSegments and length($availableSegments) > 0}
+									<label for="SegmentSelector">
+										{msg desc=""}select-segment{/msg}
+									</label>
+
+									<select
+										name="experienceSegmentId"
+										class="form-control form-control-sm"
+										id="SegmentSelector"
+									>
+										{foreach $segment in $availableSegments}
+											<option value="{$segment.segmentId}">{$segment.segmentLabel}</option>
+										{/foreach}
+									</select>
+							{/if}
+						</div>
+						<div class="form-group my-2 col-12">
 							<button
 								class="btn btn-sm btn-secondary"
-								data-onclick="_createExperience"
 							>
 								Create Experience
 							</button>
+						</div>
+					</form>
+				<ul class="list-unstyled">
+					{foreach $experience in $availableExperiences}
+						<li
+							class="dropdown-menu__experience p-3 rounded"
+							data-onclick="_handleExperienceClick"
+							data-experience-id="{$experience.experienceId}"
+						>
+							<span class="d-block p-1">{$experience.experienceLabel}</span>
 						</li>
+					{/foreach}
 				</ul>
 			</div>
 		</div>
-		{if $modal}
-			{call ClayModal.render}
-				{param body kind="html"}
-					<h4>Modal Body</h4>
-				{/param}
-
-				{param size: 'sm' /}
-				{param title: 'Modal Title' /}
-			{/call}
-		{/if}
 	{/if}
 	</div>
 {/template}

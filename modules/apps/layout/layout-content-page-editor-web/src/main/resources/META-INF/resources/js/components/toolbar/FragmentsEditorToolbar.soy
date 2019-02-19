@@ -5,6 +5,7 @@
  */
 {template .render}
 	{@param defaultExperienceId: string }
+	{@param? availableSegments: ?}
 	{@param? _handleToggleContextualSidebarButtonClick: any}
 	{@param? classPK: ?}
 	{@param? fragmentsEditorSidebarVisible: bool}
@@ -34,6 +35,7 @@
 				<li class="nav-item">
 					{call com.liferay.layout.content.page.editor.web.ExperienceSelector.render}
 						{param defaultExperienceId: $defaultExperienceId /}
+						{param availableSegments: $availableSegments /}
 						{param store: $store /}
 					{/call}
 				</li>

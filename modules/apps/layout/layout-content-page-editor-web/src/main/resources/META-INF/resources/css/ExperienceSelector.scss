@@ -1,9 +1,21 @@
 .experience-selector {
 	position: relative;
 	.dropdown-menu {
+		> h2 {
+			font-size: 1.25rem;
+			font-weight: 700;
+		}
 		display: none;
 		&.toggled {
 			display: block;
+		}
+	}
+	.dropdown-menu {
+		width: 808px;
+		max-width: 100vw;
+		li.dropdown-menu__experience {
+			border: 1px solid #E7E7ED;
+			cursor: pointer;
 		}
 	}
 }

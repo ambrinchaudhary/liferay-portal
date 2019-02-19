@@ -160,7 +160,7 @@ const INITIAL_STATE = {
 		)
 		.value([]),
 
-	experiences: Config
+	availableExperiences: Config
 		.objectOf(
 			Config.shapeOf(
 				{
@@ -183,7 +183,7 @@ const INITIAL_STATE = {
 			}
 		}),
 	
-	selectedExperienceId: Config
+	experienceId: Config
 		.string()
 		.value('experienceId'),
 
