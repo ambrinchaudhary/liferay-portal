@@ -174,12 +174,12 @@ const INITIAL_STATE = {
 			'experienceId': {
 				experienceId: 'experienceId',
 				experienceLabel: 'Default Experience',
-				segmentId: '38501'
+				segmentId: 'segment-id-38501'
 			},
 			'experienceId-2': {
 				experienceId: 'experienceId-2',
 				experienceLabel: 'Second Experience',
-				segmentId: '36966'
+				segmentId: 'segment-id-36966'
 			}
 		}),
 	

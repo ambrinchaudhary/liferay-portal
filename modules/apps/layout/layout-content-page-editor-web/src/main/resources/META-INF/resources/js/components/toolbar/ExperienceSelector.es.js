@@ -50,7 +50,7 @@ class ExperienceSelector extends Component {
 	_handleExperienceClick(event) {
 		event.preventDefault();
 		
-		const experienceId = event.delegateTarget.dataset.experienceId
+		const experienceId = event.delegateTarget.dataset.experienceId;
 		
 		this.store.dispatchAction(
 			SELECT_EXPERIENCE,
@@ -58,13 +58,27 @@ class ExperienceSelector extends Component {
 				experienceId,
 			}
 		);
-		this._toggleDropdown();
 	}
 	prepareStateForRender(state) {
+		console.log('Experience Selector Render');
+
 		let innerState = setIn(
 			state,
 			['availableExperiences'],
-			Object.values(state.availableExperiences)
+			Object.values(state.availableExperiences).map(experience => {
+				return Object.assign(
+					{},
+					experience,
+					{
+						segmentLabel: Object.values(state.availableSegments).find(
+								segment => {
+									debugger;
+									return segment.segmentId === experience.segmentId
+								}
+							).segmentLabel
+					}
+				);
+			})
 		);
 
 		innerState = setIn(

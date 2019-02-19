@@ -18,7 +18,7 @@ const fetch = function fakeFetch(
 	console.log('faking fetch', fakeUrl);
 	return new Promise((resolve, reject) => {
 		setTimeout(() => resolve({
-			experienceId: 'fakeExperienceId'
+			experienceId: 'fakeExperienceId' + Math.random()
 		}), 2000);
 	});
 }
@@ -80,7 +80,6 @@ function createExperienceReducer(state, actionType, payload) {
 							)
 						}
 					);
-					debugger;
 					resolve(nextState);
 				})
 				nextState = setIn(nextState, ['segmentId'], payload.segmentId);

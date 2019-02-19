@@ -7,12 +7,14 @@
 	{@param? activeExperienceLabel: string }
 	{@param? availableExperiences: list<[
 		experienceId: string,
-		experienceLabel: string
+		experienceLabel: string,
+		segmentLabel: string
 	]>}
 	{@param? availableSegments: list<[
 		segmentId: string,
 		segmentLabel: string
 	]>}
+	{@param? experienceId: string}
 	{@param? openDropdown: bool}
 	<div>
 	{if $availableExperiences and length($availableExperiences) > 0}
@@ -68,11 +70,14 @@
 				<ul class="list-unstyled">
 					{foreach $experience in $availableExperiences}
 						<li
-							class="dropdown-menu__experience p-3 rounded"
+							class="dropdown-menu__experience p-3 d-flex justify-content-between align-items-baseline {if $experience.experienceId == $experienceId }dropdown-menu__experience--active{/if}"
 							data-onclick="_handleExperienceClick"
 							data-experience-id="{$experience.experienceId}"
 						>
-							<span class="d-block p-1">{$experience.experienceLabel}</span>
+							<span title="{$experience.experienceLabel}" class="title d-inline-block p-1">{$experience.experienceLabel}</span>
+							<span title="Audience - { $experience.segmentLabel }" class="audience d-inline-block p-1">
+								<span class="text-secondary">Audience -</span> { $experience.segmentLabel }
+							</span>
 						</li>
 					{/foreach}
 				</ul>
