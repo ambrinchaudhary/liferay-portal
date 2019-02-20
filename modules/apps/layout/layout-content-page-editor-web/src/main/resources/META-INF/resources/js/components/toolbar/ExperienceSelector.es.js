@@ -18,15 +18,19 @@ function sortByPriority(a, b) {
 	return 0;
 }
 
+/**
+ * Searchs for a segment based on its Id
+ * and returns its label
+ *
+ * @param {Array} segments
+ * @param {string} segmentId
+ * @returns {string|undefined}
+ */
 function findSegmentLabelById(segments, segmentId) {
 	const mostWantedSegment = segments.find(
 		segment => segment.segmentId === segmentId
 	);
 	return mostWantedSegment && mostWantedSegment.segmentLabel;
-}
-
-function findSegmentById(experience, experienceId) {
-	return experience.experienceId === experienceId;
 }
 
 /**
@@ -96,7 +100,7 @@ class ExperienceSelector extends Component {
 				);
 			});
 		const activeExperience = availableExperiencesArray.find(
-			experience => findSegmentById(experience, state.experienceId)
+			experience => experience.experienceId === state.experienceId
 		);
 
 		let innerState = Object.assign(
