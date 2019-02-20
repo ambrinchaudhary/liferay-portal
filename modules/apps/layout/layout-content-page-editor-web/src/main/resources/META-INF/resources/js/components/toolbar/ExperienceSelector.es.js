@@ -8,6 +8,29 @@ import templates from './ExperienceSelector.soy';
 import { SELECT_EXPERIENCE, CREATE_EXPERIENCE } from '../../actions/actions.es';
 import 'frontend-js-web/liferay/compat/modal/Modal.es';
 
+
+function sortByPriority(a, b) {
+	if (a.priority > b.priority) {
+		return -1;
+	}
+	if (a.priority < b.priority) {
+		return 1;
+	}
+	return 0;
+}
+
+function findSegmentLabelById(segments, segmentId) {
+	segments.find(
+		segment => {
+			return segment.segmentId === segmentId
+		}
+	).segmentLabel
+}
+
+function findSegmentById(experience, experienceId) {
+	return experience.experienceId === experienceId;
+}
+
 /**
  * SegmentSelector
  */
@@ -60,55 +83,34 @@ class ExperienceSelector extends Component {
 		);
 	}
 	prepareStateForRender(state) {
-		console.log('Experience Selector Render');
+		const availableExperiencesArray = Object.values(state.availableExperiences)
+			.sort(sortByPriority)
+			.map(experience => {
+				return Object.assign(
+					{},
+					experience,
+					{
+						segmentLabel: findSegmentLabelById(
+							Object.values(state.availableSegments),
+							experience.segmentId
+						)
+					}
+				);
+			});
+		
+		const activeExperience = availableExperiencesArray.find(
+			experience => findSegmentById(experience, state.experienceId)
+		);
 
-		let innerState = setIn(
+		let innerState = Object.assign(
+			{},
 			state,
-			['availableExperiences'],
-			Object.values(state.availableExperiences)
-				.sort((a, b) => {
-					if (a.priority > b.priority) {
-						return -1;
-					}
-					if (a.priority < b.priority) {
-						return 1;
-					}
-					return 0;
-				})
-				.map(experience => {
-					return Object.assign(
-						{},
-						experience,
-						{
-							segmentLabel: Object.values(state.availableSegments).find(
-									segment => {
-										return segment.segmentId === experience.segmentId
-									}
-								).segmentLabel
-						}
-					);
-				})
-		);
-
-		innerState = setIn(
-			innerState,
-			['availableSegments'],
-			Object.values(state.availableSegments)
-		);
-
-		const activeExperience = innerState.availableExperiences.find(
-			experience => {
-				return experience.experienceId === state.experienceId ?
-				experience.experienceLabel :
-				false;
+			{
+				availableExperiences: availableExperiencesArray,
+				availableSegments: Object.values(state.availableSegments),
+				activeExperienceLabel: activeExperience && activeExperience.experienceLabel
 			}
-		);
-
-		innerState = setIn(
-			innerState,
-			['activeExperienceLabel'],
-			activeExperience && activeExperience.experienceLabel
-		);
+		)
 
 		return innerState;
 	}
