@@ -2,7 +2,6 @@ import Component from 'metal-component';
 import Soy, {Config} from 'metal-soy';
 import './SegmentSelector.es';
 
-import {setIn} from '../../utils/FragmentsEditorUpdateUtils.es';
 import getConnectedComponent from '../../store/ConnectedComponent.es';
 import templates from './ExperienceSelector.soy';
 import { SELECT_EXPERIENCE, CREATE_EXPERIENCE } from '../../actions/actions.es';
@@ -20,11 +19,10 @@ function sortByPriority(a, b) {
 }
 
 function findSegmentLabelById(segments, segmentId) {
-	segments.find(
-		segment => {
-			return segment.segmentId === segmentId
-		}
-	).segmentLabel
+	const mostWantedSegment = segments.find(
+		segment => segment.segmentId === segmentId
+	);
+	return mostWantedSegment && mostWantedSegment.segmentLabel;
 }
 
 function findSegmentById(experience, experienceId) {
@@ -97,7 +95,6 @@ class ExperienceSelector extends Component {
 					}
 				);
 			});
-		
 		const activeExperience = availableExperiencesArray.find(
 			experience => findSegmentById(experience, state.experienceId)
 		);

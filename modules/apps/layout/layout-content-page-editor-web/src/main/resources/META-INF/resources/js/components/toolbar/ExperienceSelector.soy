@@ -22,7 +22,7 @@
 			class="experience-selector"
 			tabindex="0"
 		>
-			<label>Experience</label>
+			<label class="text-white mr-2">Experience</label>
 			<button
 				class="btn btn-sm btn-outline-light mr-2"
 				onClick="_handleButtonClick"
@@ -75,8 +75,8 @@
 							data-onclick="_handleExperienceClick"
 							data-experience-id="{$experience.experienceId}"
 						>
-							<span class="lfr-portal-tooltip title d-inline-block p-1">{$experience.experienceLabel}</span>
-							<span class="lfr-portal-tooltip audience d-inline-block p-1">
+							<span class="title d-inline-block p-1">{$experience.experienceLabel}</span>
+							<span class="audience d-inline-block p-1">
 								<span class="text-secondary">Audience -</span> { $experience.segmentLabel }
 							</span>
 						</li>
