@@ -12,14 +12,25 @@
  */
 {template .render}
 	{@param name: string}
-	{@param options: list<[label: string, value: string]>}
+	{@param options: list<[
+		label: string,
+		value: string
+	]>}
 	{@param pathThemeImages: string}
 	{@param predefinedValue: list<string>}
-	{@param strings: [chooseAnOption: string, chooseOptions: string, search: string, emptyList: string]}
+	{@param strings: [
+		chooseAnOption: string,
+		chooseOptions: string,
+		search: string,
+		emptyList: string
+	]}
 	{@param value: list<string>}
 	{@param visible: bool}
 	{@param? dir: string}
-	{@param? fixedOptions: list<[label: string, value: string]>}
+	{@param? fixedOptions: list<[
+		label: string,
+		value: string
+	]>}
 	{@param? label: string}
 	{@param? labelCloseIcon: html}
 	{@param? multiple: bool}
@@ -152,7 +163,10 @@
  * Prints the label item.
  */
 {template .label_item}
-	{@param option: [label: string, value: string]}
+	{@param option: [
+		label: string,
+		value: string
+	]}
 	{@param value: list<string>}
 	{@param? labelCloseIcon: html}
 	{@param? readOnly: bool}
@@ -213,8 +227,16 @@
 {template .hidden_select}
 	{@param displayValues: list<string>}
 	{@param name: string}
-	{@param options: list<[label: string, value: string]>}
-	{@param strings: [chooseAnOption: string, chooseOptions: string, search: string, emptyList: string]}
+	{@param options: list<[
+		label: string,
+		value: string
+	]>}
+	{@param strings: [
+		chooseAnOption: string,
+		chooseOptions: string,
+		search: string,
+		emptyList: string
+	]}
 	{@param? dir: string}
 	{@param? multiple: bool}
 
@@ -237,7 +259,10 @@
  * Prints the DDM form hidden select options.
  */
 {template .select_hidden_options}
-	{@param option: [label: string, value: string]}
+	{@param option: [
+		label: string,
+		value: string
+	]}
 	{@param values: list<string>}
 	{@param? dir: string}
 
@@ -253,7 +278,12 @@
 {/template}
 
 {template .select_option_placeholder}
-	{@param strings: [chooseAnOption: string, chooseOptions: string, search: string, emptyList: string]}
+	{@param strings: [
+		chooseAnOption: string,
+		chooseOptions: string,
+		search: string,
+		emptyList: string
+	]}
 	{@param value: list<string>}
 
 	<li class="select-option-item">
@@ -276,10 +306,21 @@
  * Prints the DDM form select field UI itens.
  */
 {template .select_options}
-	{@param options: list<[label: string, value: string]>}
-	{@param strings: [chooseAnOption: string, chooseOptions: string, search: string, emptyList: string]}
+	{@param options: list<[
+		label: string,
+		value: string
+	]>}
+	{@param strings: [
+		chooseAnOption: string,
+		chooseOptions: string,
+		search: string,
+		emptyList: string
+	]}
 	{@param value: list<string>}
-	{@param? fixedOptions: list<[label: string, value: string]>}
+	{@param? fixedOptions: list<[
+		label: string,
+		value: string
+	]>}
 	{@param? multiple: bool}
 	{@param? showPlaceholderOption: bool}
 
@@ -320,7 +361,10 @@
  * Prints the DDM dropdown itens.
  */
 {template .plot_dropdown_rows}
-	{@param options: list<[label: string, value: string]>}
+	{@param options: list<[
+		label: string,
+		value: string
+	]>}
 	{@param value: list<string>}
 	{@param? fixed: bool}
 	{@param? multiple: bool}
@@ -365,7 +409,10 @@
  */
 {template .multiple_selection}
 	{@param indexOption: int}
-	{@param option: [label: string, value: string]}
+	{@param option: [
+		label: string,
+		value: string
+	]}
 	{@param selected: string}
 	{@param? fixed: bool}
 	{let $attributesMultipleSelection kind="attributes"}
@@ -406,7 +453,10 @@
  */
 {template .simple_selection}
 	{@param indexOption: int}
-	{@param option: [label: string, value: string]}
+	{@param option: [
+		label: string,
+		value: string
+	]}
 	{@param selected: string}
 	{@param? fixed: bool}
 

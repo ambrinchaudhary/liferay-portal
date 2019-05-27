@@ -110,7 +110,12 @@
  * Prints all rows.
  */
 {template .form_rows}
-	{@param rows: list<[columns: list<[size: int, fields: list<?>]>]>}
+	{@param rows: list<[
+		columns: list<[
+			size: int,
+			fields: list<?>
+		]>
+	]>}
 
 	{foreach $row in $rows}
 		<div class="row">
@@ -125,7 +130,10 @@
  * Prints a column.
  */
 {template .form_row_column}
-	{@param column: [size: int, fields: list<?>]}
+	{@param column: [
+		size: int,
+		fields: list<?>
+	]}
 
 	<div class="col-md-{$column.size}">
 		{call .fields data="all"}
@@ -138,7 +146,10 @@
  * Prints all columns.
  */
 {template .form_row_columns}
-	{@param columns: list<[size: int, fields: list<?>]>}
+	{@param columns: list<[
+		size: int,
+		fields: list<?>
+	]>}
 
 	{foreach $column in $columns}
 		{call .form_row_column data="all"}
@@ -168,12 +179,20 @@
 		title: string,
 		description: string,
 		showRequiredFieldsWarning: bool,
-		rows: list<[columns: list<[size: int, fields: list<?>]>]>
+		rows: list<[
+			columns: list<[
+				size: int,
+				fields: list<?>
+			]>
+		]>
 	]>}
 	{@param portletNamespace: string}
 	{@param requiredFieldsWarningMessageHTML: html}
 	{@param showSubmitButton: bool}
-	{@param strings: [previous: string, next: string]}
+	{@param strings: [
+		previous: string,
+		next: string
+	]}
 	{@param submitLabel: string}
 
 	<div class="lfr-ddm-form-container" id="{$containerId}">
@@ -247,11 +266,19 @@
 		title: string,
 		description: string,
 		showRequiredFieldsWarning: bool,
-		rows: list<[columns: list<[size: int, fields: list<?>]>]>
+		rows: list<[
+			columns: list<[
+				size: int,
+				fields: list<?>
+			]>
+		]>
 	]>}
 	{@param requiredFieldsWarningMessageHTML: html}
 	{@param showSubmitButton: bool}
-	{@param strings: [previous: string, next: string]}
+	{@param strings: [
+		previous: string,
+		next: string
+	]}
 	{@param submitLabel: string}
 
 	<div class="lfr-ddm-form-container" id="{$containerId}">
@@ -317,7 +344,12 @@
 		title: string,
 		description: string,
 		showRequiredFieldsWarning: bool,
-		rows: list<[columns: list<[size: int, fields: list<?>]>]>
+		rows: list<[
+			columns: list<[
+				size: int,
+				fields: list<?>
+			]>
+		]>
 	]>}
 	{@param requiredFieldsWarningMessageHTML: html}
 
@@ -346,7 +378,12 @@
 		title: string,
 		description: string,
 		showRequiredFieldsWarning: bool,
-		rows: list<[columns: list<[size: int, fields: list<?>]>]>
+		rows: list<[
+			columns: list<[
+				size: int,
+				fields: list<?>
+			]>
+		]>
 	]>}
 	{@param requiredFieldsWarningMessageHTML: html}
 
@@ -396,7 +433,12 @@
 		title: string,
 		description: string,
 		showRequiredFieldsWarning: bool,
-		rows: list<[columns: list<[size: int, fields: list<?>]>]>
+		rows: list<[
+			columns: list<[
+				size: int,
+				fields: list<?>
+			]>
+		]>
 	]>}
 
 	<div class="lfr-ddm-form-container" id="{$containerId}">

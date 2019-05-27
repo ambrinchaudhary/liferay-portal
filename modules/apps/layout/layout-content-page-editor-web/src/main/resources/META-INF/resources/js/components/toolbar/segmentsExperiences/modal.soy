@@ -2,20 +2,20 @@
 
 {template .render}
 	{@param? _handleFormSubmit: any}
-	{@param? _requiredNameError: bool | null}
-	{@param? porletPrefix: string }
-	{@param visible: bool }
+	{@param? _requiredNameError: bool|null}
+	{@param? porletPrefix: string}
+	{@param visible: bool}
 	{@param error: [
 		visible: bool,
 		message: string,
 		onDismiss: any
-	] }
+	]}
 	{@param experienceForm: [
-		onExperienceSubmit: any | null,
+		onExperienceSubmit: any|null,
 		formId: string,
 		experienceName: [
 			inputId: string,
-			value: string | null,
+			value: string|null,
 			placeholder: string,
 			label: string
 		],
@@ -24,15 +24,15 @@
 			segments: list<[
 				name: string,
 				segmentsEntryId: string
-			]> | null,
-			value: string | null,
+			]>|null,
+			value: string|null,
 			label: string
 		]
 	]}
 	{@param onClose: any}
 	{@param onDismiss: any}
-	{@param spritemap: string }
-	{@param title: string }
+	{@param spritemap: string}
+	{@param title: string}
 
 	{if $visible}
 		{call liferay.frontend.Modal.render}

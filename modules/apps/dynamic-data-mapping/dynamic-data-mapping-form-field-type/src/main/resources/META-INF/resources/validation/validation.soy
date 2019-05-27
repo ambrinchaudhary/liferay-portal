@@ -11,7 +11,11 @@
  * Prints an option.
  */
 {template .validationOption}
-	{@param option: [label: string, status: string, value: string]}
+	{@param option: [
+		label: string,
+		status: string,
+		value: string
+	]}
 
 	<option {if $option.status == 'selected'}selected{/if} value="{$option.value}">{$option.label}</option>
 {/template}
@@ -25,7 +29,15 @@
 	{@param? enableValidationValue: bool}
 	{@param? errorMessageValue: string}
 	{@param? parameterMessagePlaceholder: string}
-	{@param? strings: [email: string, errorMessage: string, ifInput: string, showErrorMessage: string, theValue: string, url: string, validationMessage: string]}
+	{@param? strings: [
+		email: string,
+		errorMessage: string,
+		ifInput: string,
+		showErrorMessage: string,
+		theValue: string,
+		url: string,
+		validationMessage: string
+	]}
 
 	<div class="form-group lfr-ddm-form-field-validation" data-fieldname="{$name}">
 		<label class="control-label" for="{$name}EnableValidation">

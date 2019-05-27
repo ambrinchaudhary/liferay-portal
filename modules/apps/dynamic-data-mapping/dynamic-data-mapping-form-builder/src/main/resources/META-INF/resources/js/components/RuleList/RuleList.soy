@@ -6,26 +6,25 @@
 {template .render}
 	{@param? dropdownExpandedIndex: number}
 	{@param rules: list<[
-			conditions: list<[
-				operator: string,
-				operands: list<[
-					type: string,
-					label: string,
-					value: string
-				]>
-			]>,
-			actions: list<[
-				action: string,
-				dataProviderName: ?,
-				expression: ?,
-				inputLabel: ?,
-				target: string,
+		conditions: list<[
+			operator: string,
+			operands: list<[
+				type: string,
 				label: string,
-				outputLabel: ?
-			]>,
-			logicalOperator: string
-		]>
-	}
+				value: string
+			]>
+		]>,
+		actions: list<[
+			action: string,
+			dataProviderName: ?,
+			expression: ?,
+			inputLabel: ?,
+			target: string,
+			label: string,
+			outputLabel: ?
+		]>,
+		logicalOperator: string
+	]>}
 	{@param? rulesCardOptions: ?}
 	{@param spritemap: string}
 	{@param strings: map<string, string>}
@@ -54,26 +53,25 @@
  */
 {template .rule_list}
 	{@param rules: list<[
-			conditions: list<[
-				operator: string,
-				operands: list<[
-					type: string,
-					label: string,
-					value: ?
-				]>
-			]>,
-			actions: list<[
-				action: string,
-				dataProviderName: ?,
-				expression: ?,
-				inputLabel: ?,
-				target: string,
+		conditions: list<[
+			operator: string,
+			operands: list<[
+				type: string,
 				label: string,
-				outputLabel: ?
-			]>,
-			logicalOperator: string
-		]>
-	}
+				value: ?
+			]>
+		]>,
+		actions: list<[
+			action: string,
+			dataProviderName: ?,
+			expression: ?,
+			inputLabel: ?,
+			target: string,
+			label: string,
+			outputLabel: ?
+		]>,
+		logicalOperator: string
+	]>}
 	{@param spritemap: string}
 	{@param strings: map<string, string>}
 	{@param _handleDropdownClicked: any}

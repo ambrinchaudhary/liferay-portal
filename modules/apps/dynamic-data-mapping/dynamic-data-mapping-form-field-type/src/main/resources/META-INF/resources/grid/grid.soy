@@ -11,17 +11,26 @@
  * Prints the DDM form grid field.
  */
 {template .render}
-	{@param columns: list<[label: string, value: ?]>}
+	{@param columns: list<[
+		label: string,
+		value: ?
+	]>}
 	{@param label: string}
 	{@param name: string}
 	{@param pathThemeImages: string}
 	{@param readOnly: bool}
-	{@param rows: list<[label: string, value: ?]>}
+	{@param rows: list<[
+		label: string,
+		value: ?
+	]>}
 	{@param showLabel: bool}
 	{@param value: ?}
 	{@param visible: bool}
 	{@param? dir: string}
-	{@param? focusTarget: [row: int, index: int]}
+	{@param? focusTarget: [
+		row: int,
+		index: int
+	]}
 	{@param? required: bool}
 	{@param? tip: string}
 
@@ -96,7 +105,10 @@
  */
 {template .hidden_grid}
 	{@param name: string}
-	{@param rows: list<[label: string, value: ?]>}
+	{@param rows: list<[
+		label: string,
+		value: ?
+	]>}
 	{@param value: ?}
 	{@param? dir: string}
 

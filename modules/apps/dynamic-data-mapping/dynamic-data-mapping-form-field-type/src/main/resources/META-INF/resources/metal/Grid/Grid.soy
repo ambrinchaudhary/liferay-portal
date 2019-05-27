@@ -1,7 +1,10 @@
 {namespace Grid}
 
 {template .render}
-	{@param columns: list<[label: string, value: ?]>}
+	{@param columns: list<[
+		label: string,
+		value: ?
+	]>}
 	{@param? readOnly: bool}
 	{@param? tip: string}
 	{@param? id: string}
@@ -9,7 +12,10 @@
 	{@param? placeholder: string}
 	{@param? required: bool}
 	{@param? repeatable: bool}
-	{@param rows: list<[label: string, value: ?]>}
+	{@param rows: list<[
+		label: string,
+		value: ?
+	]>}
 	{@param? showLabel: bool}
 	{@param? spritemap: string}
 
@@ -35,8 +41,14 @@
 {/template}
 
 {template .content}
-	{@param columns: list<[label: string, value: ?]>}
-	{@param rows: list<[label: string, value: ?]>}
+	{@param columns: list<[
+		label: string,
+		value: ?
+	]>}
+	{@param rows: list<[
+		label: string,
+		value: ?
+	]>}
 	{@param? disabled: bool}
 		<div class="liferay-ddm-form-field-grid table-responsive">
 			<table class="table table-autofit table-list table-striped">

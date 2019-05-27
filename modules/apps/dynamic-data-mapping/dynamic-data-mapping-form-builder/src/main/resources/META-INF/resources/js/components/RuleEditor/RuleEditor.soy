@@ -5,8 +5,26 @@
  */
 {template .render}
 	{@param actions: list<[
-			action: string,
-			calculatorFields: list<[
+		action: string,
+		calculatorFields: list<[
+			label: string,
+			name: string,
+			options: list<[
+				label: string,
+				value: string
+			]>,
+			type: string,
+			value: string
+		]>,
+		expression: string,
+		hasRequiredInputs: bool,
+		inputs: list<[
+			label: string,
+			name: string,
+			required: bool,
+			type: string,
+			value: string,
+			fieldOptions: list<[
 				label: string,
 				name: string,
 				options: list<[
@@ -15,133 +33,105 @@
 				]>,
 				type: string,
 				value: string
-			]>,
-			expression: string,
-			hasRequiredInputs: bool,
-			inputs: list<[
-				label: string,
-				name: string,
-				required: bool,
-				type: string,
-				value: string,
-				fieldOptions: list<[
-					label: string,
-					name: string,
-					options: list<[
-						label: string,
-						value: string
-					]>,
-					type: string,
-					value: string
-				]>
-			]>,
-			label: string,
-			outputs: list<[
-				name: string,
-				type: string,
-				value: string,
-				fieldOptions: list<[
-					label: string,
-					name: string,
-					options: list<[
-						label: string,
-						value: string
-					]>,
-					type: string,
-					value: string
-				]>
-			]>,
-			target: string
-		]>
-	}
-	{@param actionTypes: list<[
+			]>
+		]>,
+		label: string,
+		outputs: list<[
+			name: string,
+			type: string,
 			value: string,
-			name: string
-		]>
-	}
-	{@param actionsFieldOptions: list<[
-			label: string,
-			name: string,
-			options: list<[
+			fieldOptions: list<[
 				label: string,
-				value: string
-			]>,
-			type: string,
-			value: string
-		]>
-	}
-	{@param calculatorFunctions: list<[
-			label: string,
-			tooltip: string,
-			value: string
-		]>
-	}
-	{@param calculatorResultOptions: list<[
-			label: string,
-			name: string,
-			options: list<[
-				label: string,
-				value: string
-			]>,
-			type: string,
-			value: string
-		]>
-	}
-	{@param conditions: list<[
-			binaryOperator: bool,
-			firstOperandOptions: list<[
-				label: string,
-				value: string
-			]>,
-			operands: list<[
-				dataType: string,
-				type: string,
-				label: string,
-				value: string
-			]>,
-			operator: string,
-			operators: list<[
 				name: string,
-				parameterTypes: list<string>,
-				returnType: string,
+				options: list<[
+					label: string,
+					value: string
+				]>,
+				type: string,
 				value: string
 			]>
-		]>
-	}
-	{@param conditionsFieldOptions: list<[
+		]>,
+		target: string
+	]>}
+	{@param actionTypes: list<[
+		value: string,
+		name: string
+	]>}
+	{@param actionsFieldOptions: list<[
+		label: string,
+		name: string,
+		options: list<[
 			label: string,
-			name: string,
-			options: list<[
-				label: string,
-				value: string
-			]>,
+			value: string
+		]>,
+		type: string,
+		value: string
+	]>}
+	{@param calculatorFunctions: list<[
+		label: string,
+		tooltip: string,
+		value: string
+	]>}
+	{@param calculatorResultOptions: list<[
+		label: string,
+		name: string,
+		options: list<[
+			label: string,
+			value: string
+		]>,
+		type: string,
+		value: string
+	]>}
+	{@param conditions: list<[
+		binaryOperator: bool,
+		firstOperandOptions: list<[
+			label: string,
+			value: string
+		]>,
+		operands: list<[
+			dataType: string,
 			type: string,
+			label: string,
+			value: string
+		]>,
+		operator: string,
+		operators: list<[
+			name: string,
+			parameterTypes: list<string>,
+			returnType: string,
 			value: string
 		]>
-	}
+	]>}
+	{@param conditionsFieldOptions: list<[
+		label: string,
+		name: string,
+		options: list<[
+			label: string,
+			value: string
+		]>,
+		type: string,
+		value: string
+	]>}
 	{@param? dataProvider: list<[
-			id: string,
-			name: string
-		]>
-	}
+		id: string,
+		name: string
+	]>}
 	{@param fixedOptions: list<[
-			name: string,
-			options: list<[
-				label: string,
-				value: string
-			]>,
-			type: string,
+		name: string,
+		options: list<[
+			label: string,
 			value: string
-		]>
-	}
+		]>,
+		type: string,
+		value: string
+	]>}
 	{@param invalidRule: bool}
 	{@param logicalOperator: string}
 	{@param pageOptions: list<[
-			label: string,
-			name: string,
-			value: string
-		]>
-	}
+		label: string,
+		name: string,
+		value: string
+	]>}
 	{@param readOnly: bool}
 	{@param spritemap: string}
 	{@param? _handleActionSelection: any}
@@ -363,10 +353,9 @@
 
 {template .renderAction}
 	{@param actionTypes: list<[
-			value: string,
-			name: string
-		]>
-	}
+		value: string,
+		name: string
+	]>}
 	{@param calculatorFields: list<[
 		label: string,
 		name: string,
@@ -378,40 +367,36 @@
 		value: string
 	]>}
 	{@param calculatorFunctions: list<[
-			label: string,
-			tooltip: string,
-			value: string
-		]>
-	}
+		label: string,
+		tooltip: string,
+		value: string
+	]>}
 	{@param calculatorResultOptions: list<[
+		label: string,
+		name: string,
+		options: list<[
 			label: string,
-			name: string,
-			options: list<[
-				label: string,
-				value: string
-			]>,
-			type: string,
 			value: string
-		]>
-	}
+		]>,
+		type: string,
+		value: string
+	]>}
 	{@param fieldOptions: list<[
+		label: string,
+		name: string,
+		options: list<[
 			label: string,
-			name: string,
-			options: list<[
-				label: string,
-				value: string
-			]>,
-			type: string,
 			value: string
-		]>
-	}
+		]>,
+		type: string,
+		value: string
+	]>}
 	{@param index: int}
 	{@param pageOptions: list<[
-			label: string,
-			name: string,
-			value: string
-		]>
-	}
+		label: string,
+		name: string,
+		value: string
+	]>}
 	{@param spritemap: string}
 	{@param? _handleActionSelection: any}
 	{@param? _handleEditExpression: any}
@@ -436,8 +421,7 @@
 			type: string,
 			value: string
 		]>
-	]>
-	}
+	]>}
 	{@param? actionOutputs: list<[
 		name: string,
 		type: string,
@@ -452,14 +436,12 @@
 			type: string,
 			value: string
 		]>
-	]>
-	}
+	]>}
 	{@param? actionSelected: string}
 	{@param? dataProvider: list<[
-			id: string,
-			name: string
-		]>
-	}
+		id: string,
+		name: string
+	]>}
 	{@param? targetSelected: string}
 	{@param? hasRequiredInputs: bool}
 
@@ -602,7 +584,7 @@
 
 {template .renderCondition}
 	{@param binaryOperator: bool}
-	{@param fieldOptions : list<[
+	{@param fieldOptions: list<[
 		label: string,
 		name: string,
 		options: list<[
@@ -629,7 +611,7 @@
 	]>}
 	{@param? fixedOptions: any}
 	{@param? logicalOperator: string}
-	{@param? operators:  list<[
+	{@param? operators: list<[
 		name: string,
 		parameterTypes: list<string>,
 		returnType: string,
@@ -796,13 +778,12 @@
 	{@param spritemap: string}
 	{@param? _handleOperatorEdited: any}
 	{@param? firstOperandType: string}
-	{@param? operators:  list<[
-			value: string,
-			name: string,
-			parameterTypes: list<string>,
-			returnType: string
-		]>
-	}
+	{@param? operators: list<[
+		value: string,
+		name: string,
+		parameterTypes: list<string>,
+		returnType: string
+	]>}
 	{@param? selectedOperator: string}
 
 	{let $readOnly: $firstOperandType ? false : true /}
@@ -877,12 +858,11 @@
 	{@param spritemap: string}
 	{@param? _handleSecondOperandFieldEdited: any}
 	{@param? roles: list<[
-			label: string,
-			value: string
-		]>
-	}
+		label: string,
+		value: string
+	]>}
 	{@param? selectedOperator: any}
-	{@param? secondOperandValue: any }
+	{@param? secondOperandValue: any}
 
 	{let $visible: $selectedOperator ? true : false /}
 
