@@ -85,14 +85,14 @@
 		href: string,
 		typeName: string
 	]>}
+	{@param? handleAssetBrowserLinkClick: any}
+	{@param? handleAssetEntryLinkClick: any}
 	{@param? mappedAssetEntries: list<[
 		encodedId: string,
 		classNameId: string,
 		classPK: string,
 		title: string
 	]>}
-	{@param? handleAssetBrowserLinkClick: any}
-	{@param? handleAssetEntryLinkClick: any}
 	{@param? selectedAssetEntryTitle: string}
 	{@param? spritemap: string}
 
@@ -232,8 +232,8 @@
  */
 {template .sourceTypeSelect}
 	{@param? handleSourceOptionChange: any}
-	{@param? sourceTypes: ?}
 	{@param? selectedSourceTypeId: string}
+	{@param? sourceTypes: ?}
 
 	<label for="floatingToolbarMappingPanelSourceTypeSelect">
 		{msg desc=""}source{/msg}

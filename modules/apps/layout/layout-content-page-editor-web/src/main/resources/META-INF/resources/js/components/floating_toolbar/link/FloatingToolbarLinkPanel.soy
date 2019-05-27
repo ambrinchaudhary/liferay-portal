@@ -16,8 +16,8 @@
 	{@param? _buttonTypes: ?}
 	{@param? _handleButtonTypeOptionChange: any}
 	{@param? _handleInputHrefKeyUp: any}
-	{@param? _handleTargetOptionChange: any}
 	{@param? _handleSubmit: any}
+	{@param? _handleTargetOptionChange: any}
 	{@param? _targetTypes: ?}
 
 	<div class="floating-toolbar-link-panel">
@@ -86,16 +86,16 @@
  * Link button option
  */
 {template .buttonTypeOption}
+	{@param buttonType: [
+		buttonTypeId: string,
+		label: string
+	]}
 	{@param item: [
 		editableValues: [
 			config: [
 				buttonType: string
 			]
 		]
-	]}
-	{@param buttonType: [
-		buttonTypeId: string,
-		label: string
 	]}
 
 	{let $optionAttributes kind="attributes"}

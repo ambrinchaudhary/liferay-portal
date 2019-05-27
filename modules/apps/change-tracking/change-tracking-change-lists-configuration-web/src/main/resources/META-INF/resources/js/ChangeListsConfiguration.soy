@@ -4,24 +4,24 @@
  * This renders the Configuration Window element.
  */
 {template .render}
-	{@param spritemap: string}
-	{@param? changeTrackingAllowed: bool}
-	{@param? changeTrackingEnabled: bool}
-	{@param? checkoutCTCollectionConfirmationEnabled: bool}
-	{@param? currentPage: string}
-	{@param? initialFetch: bool}
 	{@param navigationItems: list<[
 		active: bool,
 		href: string,
 		label: string
 	]>}
-	{@param? tooltipBody: string}
+	{@param spritemap: string}
 	{@param? _handleCheck: any}
 	{@param? _handleNavItemClicked: any}
-	{@param? _handleUserConfigCheck: any}
-	{@param? _handleUserConfigSave: any}
 	{@param? _handleSave: any}
 	{@param? _handleSaveAndGoToOverview: any}
+	{@param? _handleUserConfigCheck: any}
+	{@param? _handleUserConfigSave: any}
+	{@param? changeTrackingAllowed: bool}
+	{@param? changeTrackingEnabled: bool}
+	{@param? checkoutCTCollectionConfirmationEnabled: bool}
+	{@param? currentPage: string}
+	{@param? initialFetch: bool}
+	{@param? tooltipBody: string}
 
 	<div id="change-tracking-change-list-configuration-sheet">
 		{call ClayNavigationBar.render}

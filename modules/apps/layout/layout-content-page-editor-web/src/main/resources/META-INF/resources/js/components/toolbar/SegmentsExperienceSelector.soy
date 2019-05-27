@@ -4,7 +4,31 @@
  * SegmentsExperienceSelector
  */
 {template .render}
+	{@param spritemap: string}
+	{@param? _closeCreateModal: any}
+	{@param? _closeEditModal: any}
+	{@param? _createSegmentsExperience: any}
+	{@param? _dismissCreationError: any}
+	{@param? _dismissDeletionError: any}
+	{@param? _dismissEditionError: any}
+	{@param? _handleDeleteButtonClick: any}
+	{@param? _handleDropdownBlur: any}
+	{@param? _handleDropdownButtonClick: any}
+	{@param? _handleDropdownFocus: any}
+	{@param? _handleEditButtonClick: any}
+	{@param? _handleEditFormSubmit: any}
+	{@param? _handleMoveExperienceDownButtonClick: any}
+	{@param? _handleMoveExperienceUpButtonClick: any}
+	{@param? _handleSegmentsExperienceClick: any}
+	{@param? _openCreateModal: any}
+	{@param? _segmentsExperienceErrors: ?}
+	{@param? _toggleCreateModal: any}
+	{@param? _toggleEditModal: any}
 	{@param? activeSegmentsExperienceName: string}
+	{@param? availableSegmentsEntries: list<[
+		segmentsEntryId: string,
+		name: string
+	]>}
 	{@param? availableSegmentsExperiences: list<[
 		segmentsExperienceId: string,
 		name: string,
@@ -13,32 +37,6 @@
 		segmentsEntryId: string
 	]>}
 	{@param? defaultSegmentsExperienceId: string}
-	{@param? _closeEditModal: any}
-	{@param? _closeCreateModal: any}
-	{@param? _dismissCreationError: any}
-	{@param? _dismissDeletionError: any}
-	{@param? _dismissEditionError: any}
-	{@param? _handleDeleteButtonClick: any}
-	{@param? _handleMoveExperienceDownButtonClick: any}
-	{@param? _handleMoveExperienceUpButtonClick: any}
-	{@param? _handleEditButtonClick: any}
-	{@param? _handleSegmentsExperienceClick: any}
-	{@param? _handleDropdownBlur: any}
-	{@param? _handleDropdownFocus: any}
-	{@param? _handleDropdownButtonClick: any}
-	{@param? _handleEditFormSubmit: any}
-	{@param? _createSegmentsExperience: any}
-	{@param? _segmentsExperienceErrors: ?}
-	{@param? _openCreateModal: any}
-	{@param? _toggleEditModal: any}
-	{@param? _toggleCreateModal: any}
-	{@param? availableSegmentsEntries: list<[
-		segmentsEntryId: string,
-		name: string
-	]>}
-	{@param? segmentsExperienceId: string}
-	{@param? openDropdown: bool}
-	{@param? portletNamespace: string}
 	{@param? modalStates: [
 		creation: bool,
 		edition: [
@@ -46,7 +44,9 @@
 			segmentsEntryId: string|null
 		]
 	]}
-	{@param spritemap: string}
+	{@param? openDropdown: bool}
+	{@param? portletNamespace: string}
+	{@param? segmentsExperienceId: string}
 
 	{if $availableSegmentsExperiences and length($availableSegmentsExperiences) > 0}
 		<div

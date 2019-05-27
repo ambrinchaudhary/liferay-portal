@@ -4,6 +4,10 @@
  * Prints the DDM rule settings.
  */
 {template .render}
+	{@param actionTypes: list<[
+		value: string,
+		name: string
+	]>}
 	{@param actions: list<[
 		action: string,
 		calculatorFields: list<[
@@ -52,10 +56,6 @@
 			]>
 		]>,
 		target: string
-	]>}
-	{@param actionTypes: list<[
-		value: string,
-		name: string
 	]>}
 	{@param actionsFieldOptions: list<[
 		label: string,
@@ -112,10 +112,6 @@
 		type: string,
 		value: string
 	]>}
-	{@param? dataProvider: list<[
-		id: string,
-		name: string
-	]>}
 	{@param fixedOptions: list<[
 		name: string,
 		options: list<[
@@ -134,8 +130,8 @@
 	]>}
 	{@param readOnly: bool}
 	{@param spritemap: string}
-	{@param? _handleActionSelection: any}
 	{@param? _handleActionAdded: any}
+	{@param? _handleActionSelection: any}
 	{@param? _handleCancelRule: any}
 	{@param? _handleConditionAdded: any}
 	{@param? _handleDataProviderInputEdited: any}
@@ -145,13 +141,17 @@
 	{@param? _handleEditExpression: any}
 	{@param? _handleFirstOperandFieldEdited: any}
 	{@param? _handleLogicalOperationChange: any}
+	{@param? _handleModalButtonClicked: any}
 	{@param? _handleOperatorEdited: any}
 	{@param? _handleRuleAdded: any}
 	{@param? _handleSecondOperandFieldEdited: any}
 	{@param? _handleSecondOperandTypeEdited: any}
 	{@param? _handleSecondOperandValueEdited: any}
 	{@param? _handleTargetSelection: any}
-	{@param? _handleModalButtonClicked: any}
+	{@param? dataProvider: list<[
+		id: string,
+		name: string
+	]>}
 	{@param? roles: list<[
 		label: string,
 		value: string
@@ -310,9 +310,9 @@
 
 {template .renderModal}
 	{@param question: string}
+	{@param spritemap: string}
 	{@param title: string}
 	{@param type: string}
-	{@param spritemap: string}
 	{@param? _handleModalButtonClicked: any}
 
 	{let $deleteLabel kind="text"}
@@ -399,10 +399,10 @@
 	]>}
 	{@param spritemap: string}
 	{@param? _handleActionSelection: any}
-	{@param? _handleEditExpression: any}
 	{@param? _handleDataProviderInputEdited: any}
 	{@param? _handleDataProviderOutputEdited: any}
 	{@param? _handleDeleteAction: any}
+	{@param? _handleEditExpression: any}
 	{@param? _handleTargetSelection: any}
 	{@param? actionExpression: string}
 	{@param? actionInputs: list<[
@@ -442,8 +442,8 @@
 		id: string,
 		name: string
 	]>}
-	{@param? targetSelected: string}
 	{@param? hasRequiredInputs: bool}
+	{@param? targetSelected: string}
 
 	<li action-index="{$index}" class="action form-builder-rule-action-container-{$index} timeline-item">
 		<div class="panel panel-default">
@@ -603,12 +603,12 @@
 	{@param? _handleSecondOperandFieldEdited: any}
 	{@param? _handleSecondOperandTypeEdited: any}
 	{@param? _handleSecondOperandValueEdited: any}
-	{@param? firstOperandType: string}
-	{@param? firstOperandValueSelected: string}
 	{@param? firstOperandOptions: list<[
 		label: string,
 		value: string
 	]>}
+	{@param? firstOperandType: string}
+	{@param? firstOperandValueSelected: string}
 	{@param? fixedOptions: any}
 	{@param? logicalOperator: string}
 	{@param? operators: list<[
@@ -861,8 +861,8 @@
 		label: string,
 		value: string
 	]>}
-	{@param? selectedOperator: any}
 	{@param? secondOperandValue: any}
+	{@param? selectedOperator: any}
 
 	{let $visible: $selectedOperator ? true : false /}
 
@@ -952,8 +952,8 @@
  * Prints the add condition button.
  */
 {template .renderAddItemButton}
-	{@param? _handleItemAdded: any}
 	{@param spritemap: string}
+	{@param? _handleItemAdded: any}
 	{@param? type: string}
 
 	<div class="addbutton-timeline-item">

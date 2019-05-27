@@ -2,6 +2,7 @@
 
 {template .render}
 	{@param spritemap: string}
+	{@param? loaded: bool}
 	{@param? processEntries: list<[
 		name: string,
 		description: string,
@@ -12,7 +13,6 @@
 		userInitials: string,
 		userName: string
 	]>}
-	{@param? loaded: bool}
 
 	<div id="change-list-history">
 		{if not $loaded}
@@ -48,15 +48,15 @@
 {template .processCard}
 	{@param spritemap: string}
 	{@param? cardState: string}
-	{@param? changeListName: string}
 	{@param? changeListDescription: string}
 	{@param? changeListDetailsLink: string}
+	{@param? changeListName: string}
 	{@param? labelState: string}
 	{@param? labelText: string}
 	{@param? percentage: int}
 	{@param? timestamp: string}
-	{@param? userName: string}
 	{@param? userInitials: string}
+	{@param? userName: string}
 	{@param? userPortraitURL: string}
 
 	<div class="process-card {$cardState}">

@@ -73,11 +73,11 @@
  * Prints the flag icon and the text message.
  */
 {template .flagIcon}
-	{@param? _handleFlagButtonClick: any}
-	{@param? enabled: bool}
 	{@param label: bool}
 	{@param message: string|null}
 	{@param spritemap: string}
+	{@param? _handleFlagButtonClick: any}
+	{@param? enabled: bool}
 
 	{let $defaultMessage kind="text"}
 		{msg desc=""}report{/msg}

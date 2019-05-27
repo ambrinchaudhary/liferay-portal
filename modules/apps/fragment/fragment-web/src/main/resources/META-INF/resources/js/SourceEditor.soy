@@ -7,14 +7,14 @@
 	{@param initialContent: string}
 	{@param spritemap: string}
 	{@param syntax: string}
+	{@param? _handleContentChanged: any}
 	{@param? autocompleteTags: list<[
 		content: string,
 		name: string
 	]>}
+	{@param? codeFooter: string}
 	{@param? codeHeader: string}
 	{@param? codeHeaderHelp: html|string}
-	{@param? codeFooter: string}
-	{@param? _handleContentChanged: any}
 
 	<div class="source-editor">
 		{call com.liferay.fragment.web.SourceEditorToolbar.render}

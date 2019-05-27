@@ -4,7 +4,8 @@
  * Prints the DDM form rule builder cotainer.
  */
 {template .render}
-	{@param? dropdownExpandedIndex: number}
+	{@param _handleDropdownClicked: any}
+	{@param _handleRuleCardClicked: any}
 	{@param rules: list<[
 		conditions: list<[
 			operator: string,
@@ -25,11 +26,10 @@
 		]>,
 		logicalOperator: string
 	]>}
-	{@param? rulesCardOptions: ?}
 	{@param spritemap: string}
 	{@param strings: map<string, string>}
-	{@param _handleDropdownClicked: any}
-	{@param _handleRuleCardClicked: any}
+	{@param? dropdownExpandedIndex: number}
+	{@param? rulesCardOptions: ?}
 
 	<div class="form-builder-rule-builder-container">
 		<h1 class="form-builder-section-title text-default">{msg desc=""}rule-builder{/msg}</h1>
@@ -52,6 +52,8 @@
  * Prints the DDM form card rule.
  */
 {template .rule_list}
+	{@param _handleDropdownClicked: any}
+	{@param _handleRuleCardClicked: any}
 	{@param rules: list<[
 		conditions: list<[
 			operator: string,
@@ -74,8 +76,6 @@
 	]>}
 	{@param spritemap: string}
 	{@param strings: map<string, string>}
-	{@param _handleDropdownClicked: any}
-	{@param _handleRuleCardClicked: any}
 	{@param? dropdownExpandedIndex: number}
 	{@param? rulesCardOptions: ?}
 

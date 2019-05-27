@@ -1,22 +1,22 @@
 {namespace Radio}
 
 {template .render}
-	{@param? readOnly: bool}
-	{@param? tip: string}
+	{@param name: string}
+	{@param? id: string}
+	{@param? inline: bool}
+	{@param? label: string}
 	{@param? options: list<[
 		label: string,
 		name: string,
 		value: string
 	]>}
-	{@param? id: string}
-	{@param? inline: bool}
-	{@param? label: string}
-	{@param name: string}
 	{@param? predefinedValue: string}
+	{@param? readOnly: bool}
 	{@param? repeatable: bool}
 	{@param? required: bool}
 	{@param? showLabel: bool}
 	{@param? spritemap: string}
+	{@param? tip: string}
 	{@param? value: string}
 
 	{call FieldBase.render}
@@ -43,6 +43,7 @@
 
 {template .content}
 	{@param name: string}
+	{@param? disabled: bool}
 	{@param? inline: bool}
 	{@param? options: list<[
 		label: string,
@@ -50,7 +51,6 @@
 		value: string
 	]>}
 	{@param? predefinedValue: string}
-	{@param? disabled: bool}
 	{@param? value: string}
 
 	{if $options}

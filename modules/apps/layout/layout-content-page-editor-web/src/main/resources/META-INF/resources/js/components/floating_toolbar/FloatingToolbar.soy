@@ -4,9 +4,6 @@
  * FloatingToolbar
  */
 {template .render}
-	{@param item: ?}
-	{@param itemId: string}
-	{@param itemType: string}
 	{@param buttons: list<[
 		icon: string,
 		id: string,
@@ -14,6 +11,9 @@
 		title: string,
 		type: string
 	]>}
+	{@param item: ?}
+	{@param itemId: string}
+	{@param itemType: string}
 	{@param? _handlePanelButtonClick: any}
 	{@param? classes: string}
 	{@param? fixSelectedPanel: bool}

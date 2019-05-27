@@ -4,6 +4,9 @@
  * Layout
  */
 {template .render}
+	{@param _handleLayoutColumnItemCheck: any}
+	{@param _handleLayoutColumnItemCheckboxClick: any}
+	{@param _handleLayoutColumnItemClick: any}
 	{@param breadcrumbEntries: list<[
 		title: string,
 		url: string
@@ -12,9 +15,6 @@
 	{@param pathThemeImages: string}
 	{@param portletNamespace: string}
 	{@param siteNavigationMenuNames: string}
-	{@param _handleLayoutColumnItemCheck: any}
-	{@param _handleLayoutColumnItemCheckboxClick: any}
-	{@param _handleLayoutColumnItemClick: any}
 
 	<div ref="layout">
 		{call com.liferay.layout.admin.web.LayoutBreadcrumbs.render}

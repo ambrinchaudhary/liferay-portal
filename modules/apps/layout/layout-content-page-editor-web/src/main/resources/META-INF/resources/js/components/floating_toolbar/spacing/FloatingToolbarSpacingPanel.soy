@@ -81,11 +81,11 @@
 	{@param item: [
 		columns: list<?>
 	]}
+	{@param? handleNumberOfColumnsOptionChange: any}
 	{@param? numberOfColumnsOptions: list<[
 		label: string,
 		numberOfColumnId: string
 	]>}
-	{@param? handleNumberOfColumnsOptionChange: any}
 
 	{if $numberOfColumnsOptions}
 		<label for="floatingToolbarSpacingPanelNumberOfColumnsOption">
@@ -112,12 +112,12 @@
  * Columns number option
  */
 {template .numberOfColumnsOption}
+	{@param item: [
+		columns: list<?>
+	]}
 	{@param numberOfColumnsOption: [
 		label: string,
 		numberOfColumnId: string
-	]}
-	{@param item: [
-		columns: list<?>
 	]}
 
 	{let $optionAttributes kind="attributes"}

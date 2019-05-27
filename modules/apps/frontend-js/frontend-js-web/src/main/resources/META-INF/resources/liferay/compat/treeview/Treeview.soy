@@ -5,9 +5,9 @@
  * @deprecated since 7.2
  */
 {template .render}
+	{@param nodes: ?}
 	{@param? elementClasses: string}
 	{@param? lastFocusedRef_: string}
-	{@param nodes: ?}
 
 	<div class="treeview{$elementClasses ? ' ' + $elementClasses : ''}">
 		{call .nodes}
@@ -21,8 +21,8 @@
  *
  */
 {template .nodes}
-	{@param? lastFocusedRef_: string}
 	{@param nodes: ?}
+	{@param? lastFocusedRef_: string}
 	{@param? parentPath: ?}
 
 	{if $nodes}
@@ -43,9 +43,9 @@
  *
  */
 {template .node}
-	{@param? lastFocusedRef_: string}
 	{@param node: ?}
 	{@param path: ?}
+	{@param? lastFocusedRef_: string}
 
 	{let $focusRef: $lastFocusedRef_ ? $lastFocusedRef_ : 'node-0' /}
 	{let $ref: 'node-' + $path /}

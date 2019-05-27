@@ -5,6 +5,9 @@
  */
 {template .render}
 	{@param item: ?}
+	{@param? _handleTextAlignmentOptionChange: any}
+	{@param? _handleTextColorButtonClick: any}
+	{@param? _handleTextStyleOptionChange: any}
 	{@param? _textAlignmentOptions: list<[
 		textAlignmentId: string,
 		label: string
@@ -13,9 +16,6 @@
 		textStyleId: string,
 		label: string
 	]>}
-	{@param? _handleTextAlignmentOptionChange: any}
-	{@param? _handleTextColorButtonClick: any}
-	{@param? _handleTextStyleOptionChange: any}
 	{@param? themeColorsCssClasses: list<string>}
 
 	<div class="floating-toolbar-spacing-panel">
@@ -78,8 +78,8 @@
  */
 {template .textColorOptions}
 	{@param item: ?}
-	{@param? textColorCssClasses: list<string>}
 	{@param? _handleTextColorButtonClick: any}
+	{@param? textColorCssClasses: list<string>}
 
 	{if $textColorCssClasses}
 		<div class="form-group">
@@ -141,11 +141,11 @@
  * Text style option
  */
 {template .textAlignmentOption}
+	{@param item: ?}
 	{@param textAlignmentOption: [
 		textAlignmentId: string,
 		label: string
 	]}
-	{@param item: ?}
 
 	{let $optionAttributes kind="attributes"}
 		value="{$textAlignmentOption.textAlignmentId}"
@@ -164,11 +164,11 @@
  * Text style option
  */
 {template .textStyleOption}
+	{@param item: ?}
 	{@param textStyle: [
 		textStyleId: string,
 		label: string
 	]}
-	{@param item: ?}
 
 	{let $optionAttributes kind="attributes"}
 		value="{$textStyle.textStyleId}"

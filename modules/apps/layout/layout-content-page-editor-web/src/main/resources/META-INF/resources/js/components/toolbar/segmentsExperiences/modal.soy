@@ -1,10 +1,6 @@
 {namespace com.liferay.layout.content.page.editor.web.SegmentsExperienceSeletorModal}
 
 {template .render}
-	{@param? _handleFormSubmit: any}
-	{@param? _requiredNameError: bool|null}
-	{@param? porletPrefix: string}
-	{@param visible: bool}
 	{@param error: [
 		visible: bool,
 		message: string,
@@ -33,6 +29,10 @@
 	{@param onDismiss: any}
 	{@param spritemap: string}
 	{@param title: string}
+	{@param visible: bool}
+	{@param? _handleFormSubmit: any}
+	{@param? _requiredNameError: bool|null}
+	{@param? porletPrefix: string}
 
 	{if $visible}
 		{call liferay.frontend.Modal.render}

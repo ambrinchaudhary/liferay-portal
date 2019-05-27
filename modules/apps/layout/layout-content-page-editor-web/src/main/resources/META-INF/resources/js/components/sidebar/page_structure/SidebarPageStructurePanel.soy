@@ -5,11 +5,12 @@
  */
 {template .render}
 	{@param? _expandedNodes: ?}
-	{@param? _handleElementRemoveButtonClick: any}
 	{@param? _handleElementClick: any}
+	{@param? _handleElementRemoveButtonClick: any}
 	{@param? activeItemId: string}
 	{@param? hoveredItemId: string}
 	{@param? layoutData: ?}
+	{@param? spritemap: string}
 	{@param? structure: [
 		active: bool,
 		children: list<?>,
@@ -21,7 +22,6 @@
 		label: string,
 		removable: bool
 	]}
-	{@param? spritemap: string}
 
 	<div
 		class="fragments-editor-sidebar-section__structure-panel"
@@ -49,8 +49,6 @@
  * Tree root
  */
 {template .treeNode}
-	{@param? handleElementClick: any}
-	{@param? handleElementRemoveButtonClick: any}
 	{@param node: [
 		active: bool,
 		children: list<?>,
@@ -63,6 +61,8 @@
 		removable: bool
 	]}
 	{@param spritemap: string}
+	{@param? handleElementClick: any}
+	{@param? handleElementRemoveButtonClick: any}
 
 	<ul class="nav nav-stacked" key="{$node.key}">
 		<li class="nav-item">

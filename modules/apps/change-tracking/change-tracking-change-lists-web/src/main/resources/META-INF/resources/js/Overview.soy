@@ -7,6 +7,8 @@
 	{@param spritemap: string}
 	{@param urlProductionView: string}
 	{@param urlSelectChangeList: string}
+	{@param? _handleClickPublish: any}
+	{@param? _handleClickRecentCollections: any}
 	{@param? changeEntries: list<[
 		title: string,
 		conflict: bool,
@@ -17,20 +19,20 @@
 		changeType: string,
 		version: string
 	]>}
+	{@param? changeListsDropdownMenu: list<[
+		label: string,
+		ctCollectionId: string
+	]>}
 	{@param? changes: [
 		added: number,
 		deleted: number,
 		modified: number
 	]}
-	{@param? collisionsLoading: bool}
 	{@param? collisionsCount: number}
+	{@param? collisionsLoading: bool}
 	{@param? collisionsTooltip: string}
 	{@param? descriptionActiveChangeList: string}
 	{@param? descriptionProductionInformation: string}
-	{@param? changeListsDropdownMenu: list<[
-		label: string,
-		ctCollectionId: string
-	]>}
 	{@param? headerButtonDisabled: bool}
 	{@param? headerTitleActiveChangeList: string}
 	{@param? headerTitleProductionInformation: string}
@@ -43,8 +45,6 @@
 		userPortraitURL: string,
 		userName: string
 	]}
-	{@param? _handleClickPublish: any}
-	{@param? _handleClickRecentCollections: any}
 
 	{let $headerButtonLabel kind="text"}
 		{msg desc=""}publish{/msg}
@@ -161,6 +161,8 @@
  */
 {template .overviewCard}
 	{@param spritemap: string}
+	{@param? _handleClickPublish: any}
+	{@param? _handleClickRecentCollections: any}
 	{@param? cardEmpty: bool}
 	{@param? cardStateColor: string}
 	{@param? changeEntries: list<[
@@ -188,8 +190,8 @@
 		modifiedLabel: string
 	]}
 	{@param? changesLabel: string}
-	{@param? collisionsLoading: bool}
 	{@param? collisionsCount: number}
+	{@param? collisionsLoading: bool}
 	{@param? collisionsTooltip: string}
 	{@param? description: string}
 	{@param? descriptionTitle: string}
@@ -212,8 +214,6 @@
 	]}
 	{@param? publishedByTitle: string}
 	{@param? urlSelectChangeList: string}
-	{@param? _handleClickPublish: any}
-	{@param? _handleClickRecentCollections: any}
 
 	<div class="overview-card-sheet {$cardStateColor}">
 		{call .overviewCardHeader}
@@ -260,6 +260,8 @@
 
 {template .overviewCardHeader}
 	{@param spritemap: string}
+	{@param? _handleClickPublish: any}
+	{@param? _handleClickRecentCollections: any}
 	{@param? cardEmpty: bool}
 	{@param? changeListsDropdownMenu: list<[
 		label: string,
@@ -267,8 +269,8 @@
 	]>}
 	{@param? changeListsDropdownMenuTitle: string}
 	{@param? changeListsProductionDropdownMenuTitle: string}
-	{@param? collisionsLoading: bool}
 	{@param? collisionsCount: number}
+	{@param? collisionsLoading: bool}
 	{@param? collisionsTooltip: string}
 	{@param? headerButton: [
 		label: string
@@ -282,8 +284,6 @@
 	{@param? headerTitle: string}
 	{@param? productionCTCollectionId: number}
 	{@param? urlSelectChangeList: string}
-	{@param? _handleClickPublish: any}
-	{@param? _handleClickRecentCollections: any}
 
 	{let $twoColumns: $headerButton /}
 
@@ -364,6 +364,7 @@
 {/template}
 
 {template .overviewCardBody}
+	{@param spritemap: string}
 	{@param? changeEntries: list<[
 		title: string,
 		conflict: bool,
@@ -374,7 +375,6 @@
 		changeType: string,
 		version: string
 	]>}
-	{@param? changesLabel: string}
 	{@param? changes: [
 		added: number,
 		addedLabel: string,
@@ -383,6 +383,7 @@
 		modified: number,
 		modifiedLabel: string
 	]}
+	{@param? changesLabel: string}
 	{@param? description: string}
 	{@param? descriptionTitle: string}
 	{@param? publishedBy: [
@@ -392,7 +393,6 @@
 		userName: string
 	]}
 	{@param? publishedByTitle: string}
-	{@param spritemap: string}
 
 	<div class="overview-card-body overview-card-container">
 

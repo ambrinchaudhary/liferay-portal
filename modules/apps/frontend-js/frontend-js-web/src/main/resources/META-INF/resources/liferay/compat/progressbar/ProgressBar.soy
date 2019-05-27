@@ -7,10 +7,10 @@
 {template .render}
 	{@param? barClass: string}
 	{@param? elementClasses: string}
+	{@param? label: html|string}
 	{@param? max: int}
 	{@param? min: int}
 	{@param? value: int}
-	{@param? label: html|string}
 
 	{let $curMax: $max ? $max : 100 /}
 	{let $curMin: $min ? $min : 0 /}

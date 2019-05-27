@@ -4,9 +4,10 @@
  * FragmentsEditorToolbar
  */
 {template .render}
-	{@param? availableSegmentsEntries: ?}
 	{@param? _handleDiscardDraft: any}
 	{@param? _handleToggleContextualSidebarButtonClick: any}
+	{@param? _lastSaveText: string}
+	{@param? availableSegmentsEntries: ?}
 	{@param? classPK: ?}
 	{@param? defaultSegmentsExperienceId: string}
 	{@param? discardDraftRedirectURL: string}
@@ -20,7 +21,6 @@
 	{@param? selectedSidebarPanelId: string}
 	{@param? spritemap: string}
 	{@param? store: ?}
-	{@param? _lastSaveText: string}
 
 	{let $toolbarClasses kind="text"}
 		fragments-editor-toolbar

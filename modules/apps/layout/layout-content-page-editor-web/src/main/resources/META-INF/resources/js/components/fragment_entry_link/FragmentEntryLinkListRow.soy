@@ -26,11 +26,11 @@
 	{@param? activeItemId: string}
 	{@param? activeItemType: string}
 	{@param? defaultSegmentsExperienceId: string}
-	{@param? dropTargetItemTypes: ?}
-	{@param? empty: bool}
 	{@param? dropTargetBorder: string}
 	{@param? dropTargetItemId: string}
 	{@param? dropTargetItemType: string}
+	{@param? dropTargetItemTypes: ?}
+	{@param? empty: bool}
 	{@param? hoveredItemId: string}
 	{@param? hoveredItemType: string}
 	{@param? mappingFieldsURL: string}
@@ -225,13 +225,13 @@
 	{@param? _columnResizerVisible: bool}
 	{@param? _handleResizerMouseDown: any}
 	{@param? _resizeColumnIndex: number}
+	{@param? activeItemId: string}
+	{@param? activeItemType: string}
 	{@param? defaultSegmentsExperienceId: string}
-	{@param? dropTargetItemTypes: ?}
 	{@param? dropTargetBorder: string}
 	{@param? dropTargetItemId: string}
 	{@param? dropTargetItemType: string}
-	{@param? activeItemId: string}
-	{@param? activeItemType: string}
+	{@param? dropTargetItemTypes: ?}
 	{@param? hoveredItemId: string}
 	{@param? hoveredItemType: string}
 	{@param? lastColumn: bool}
@@ -327,7 +327,6 @@
  */
 {template .fragmentEntryLink}
 	{@param defaultEditorConfigurations: ?}
-	{@param? defaultSegmentsExperienceId: string}
 	{@param editableValues: ?}
 	{@param fragmentEntryLinkId: string}
 	{@param key: string}
@@ -336,6 +335,7 @@
 	{@param selectedMappingTypes: ?}
 	{@param store: ?}
 	{@param? content: ?}
+	{@param? defaultSegmentsExperienceId: string}
 	{@param? error: bool}
 	{@param? rowType: ?}
 

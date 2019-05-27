@@ -4,6 +4,9 @@
  * LayoutColumn
  */
 {template .render}
+	{@param handleLayoutColumnItemCheck: any}
+	{@param handleLayoutColumnItemCheckboxClick: any}
+	{@param handleLayoutColumnItemClick: any}
 	{@param layoutColumn: list<[
 		actions: string,
 		actionURLs: map<string, string>,
@@ -19,9 +22,6 @@
 		url: string
 	]>}
 	{@param layoutColumnIndex: number}
-	{@param handleLayoutColumnItemCheck: any}
-	{@param handleLayoutColumnItemCheckboxClick: any}
-	{@param handleLayoutColumnItemClick: any}
 	{@param pathThemeImages: string}
 	{@param portletNamespace: string}
 	{@param? _handleLayoutColumnItemDropdownItemClick: any}
@@ -80,6 +80,9 @@
  * Renders a Lexicon Horizontal Card
  */
 {template .layoutColumnItem}
+	{@param handleLayoutColumnItemCheck: any}
+	{@param handleLayoutColumnItemCheckboxClick: any}
+	{@param handleLayoutColumnItemClick: any}
 	{@param layoutColumnIndex: number}
 	{@param layoutColumnItem: [
 		actions: string,
@@ -95,9 +98,6 @@
 		title: string,
 		url: string
 	]}
-	{@param handleLayoutColumnItemCheck: any}
-	{@param handleLayoutColumnItemCheckboxClick: any}
-	{@param handleLayoutColumnItemClick: any}
 	{@param pathThemeImages: string}
 	{@param portletNamespace: string}
 	{@param? _handleLayoutColumnItemDropdownItemClick: any}
