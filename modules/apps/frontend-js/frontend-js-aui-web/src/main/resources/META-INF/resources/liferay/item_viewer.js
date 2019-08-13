@@ -318,18 +318,30 @@ AUI.add(
 
 					var links = instance.get('links');
 
-					var linkContainer = links.last().ancestor();
+					var linkContainer = links
+						.last()
+						.ancestor('.card-type-asset');
 
 					var newLinkContainer = linkContainer.clone();
 
-					var newLink = newLinkContainer.one('.item-preview');
+					newLinkContainer.setAttribute(
+						'data-href',
+						imageData.file.url
+					);
+					newLinkContainer.setAttribute(
+						'data-title',
+						imageData.file.title
+					);
+					newLinkContainer.setAttribute(
+						'data-value',
+						imageData.file.url
+					);
+					newLinkContainer.setAttribute(
+						'data-url',
+						imageData.file.url
+					);
 
-					newLink.setAttribute('data-href', imageData.file.url);
-					newLink.setAttribute('data-title', imageData.file.title);
-					newLink.setAttribute('data-value', imageData.file.url);
-					newLink.setAttribute('data-url', imageData.file.url);
-
-					newLink.all('[style]').each(function(node) {
+					newLinkContainer.all('[style]').each(function(node) {
 						var styleAttr = node.getAttribute('style');
 
 						if (styleAttr) {
@@ -342,7 +354,7 @@ AUI.add(
 						}
 					});
 
-					newLink.setData(
+					newLinkContainer.setData(
 						'metadata',
 						JSON.stringify(
 							instance._getUploadFileMetadata(imageData.file)
@@ -351,7 +363,7 @@ AUI.add(
 
 					linkContainer.placeAfter(newLinkContainer);
 
-					links.push(newLink);
+					links.push(newLinkContainer);
 
 					instance.updateCurrentImage(imageData, newLink);
 
@@ -367,7 +379,8 @@ AUI.add(
 						link ||
 						instance
 							.get('links')
-							.item(instance.get('currentIndex'));
+							.item(instance.get('currentIndex'))
+							.ancestor('.card-type-asset');
 
 					var itemFile = itemData.file;
 
@@ -445,7 +458,8 @@ AUI.add(
 
 					var link = instance
 						.get('links')
-						.item(instance.get('currentIndex'));
+						.item(instance.get('currentIndex'))
+						.ancestor('.card-type-asset');
 
 					var metadata = link.getData('metadata');
 
@@ -539,7 +553,8 @@ AUI.add(
 
 					var item = instance
 						.get('links')
-						.item(instance.get('currentIndex'));
+						.item(instance.get('currentIndex'))
+						.ancestor('.card-type-asset');
 
 					var itemTitle = item.getAttribute('data-title');
 					var itemURL = item.getAttribute('data-url');
@@ -814,7 +829,9 @@ AUI.add(
 
 					var links = instance.get('links');
 
-					var link = links.item(instance.get('currentIndex'));
+					var link = links
+						.item(instance.get('currentIndex'))
+						.ancestor('.card-type-asset');
 
 					var caption = link.attr('title') || link.attr('data-title');
 

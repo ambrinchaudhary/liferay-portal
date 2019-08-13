@@ -360,7 +360,8 @@ AUI.add(
 
 					var link = itemViewer
 						.get(STR_LINKS)
-						.item(itemViewer.get('currentIndex'));
+						.item(itemViewer.get('currentIndex'))
+						.ancestor('.card-type-asset');
 
 					instance.fire(STR_SELECTED_ITEM, {
 						data: {

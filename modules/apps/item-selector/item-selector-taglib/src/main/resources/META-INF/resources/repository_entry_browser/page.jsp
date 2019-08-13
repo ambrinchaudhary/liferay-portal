@@ -318,6 +318,8 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 										<c:choose>
 											<c:when test="<%= Validator.isNull(thumbnailSrc) %>">
 												<liferay-frontend:icon-vertical-card
+													actionJsp="/repository_entry_browser/action_button_preview.jsp"
+													actionJspServletContext="<%= application %>"
 													cardCssClass="card-interactive"
 													cssClass="file-card form-check form-check-card item-preview"
 													data="<%= data %>"
@@ -334,6 +336,8 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 											</c:when>
 											<c:otherwise>
 												<liferay-frontend:vertical-card
+													actionJsp="/repository_entry_browser/action_button_preview.jsp"
+													actionJspServletContext="<%= application %>"
 													cardCssClass="card-interactive"
 													cssClass="form-check form-check-card image-card item-preview"
 													data="<%= data %>"
@@ -347,6 +351,50 @@ ItemSelectorRepositoryEntryManagementToolbarDisplayContext itemSelectorRepositor
 														/>
 													</liferay-frontend:vertical-card-sticker-bottom>
 												</liferay-frontend:vertical-card>
+
+												<%-- TEMP: Markup to fit to new design  --%>
+												<%
+													Map<String, String> dataButton = new HashMap<>();
+
+													if (Validator.isNotNull(thumbnailSrc)) {
+														dataButton.put("href", DLURLHelperUtil.getImagePreviewURL(fileEntry, themeDisplay));
+													}
+													else {
+														dataButton.put("href", themeDisplay.getPathThemeImages() + "/file_system/large/default.png");
+													}
+
+													dataButton.put("metadata", itemMedatadaJSONObject.toString());
+													dataButton.put("returnType", ItemSelectorRepositoryEntryBrowserUtil.getItemSelectorReturnTypeClassName(itemSelectorReturnTypeResolver, existingFileEntryReturnType));
+													dataButton.put("title", title);
+													dataButton.put("url", DLURLHelperUtil.getPreviewURL(fileEntry, latestFileVersion, themeDisplay, StringPool.BLANK));
+													data.put("value", ItemSelectorRepositoryEntryBrowserUtil.getValue(itemSelectorReturnTypeResolver, existingFileEntryReturnType, fileEntry, themeDisplay));
+												%>
+
+												<div class="card-type-asset form-check form-check-card image-card">
+													<div class="card">
+													<div class="aspect-ratio card-item-first">
+														<img alt="thumbnail" class="aspect-ratio-item-center-middle aspect-ratio-item-fluid" src="<%= thumbnailSrc %>" />
+													</div>
+
+													<div class="card-body">
+														<div class="align-items-center card-row">
+															<div class="autofit-col autofit-col-expand">
+																<div class="card-title text-truncate" title="<%= title %>"><%= title %></div>
+															</div>
+
+															<div class="autofit-col">
+																<clay:button
+																	data="<%= dataButton %>"
+																	elementClasses="component-action item-preview"
+																	icon="view"
+																	monospaced="<%= true %>"
+																/>
+															</div>
+														</div>
+													</div>
+												</div>
+												</div>
+												<%-- /TEMP  --%>
 											</c:otherwise>
 										</c:choose>
 									</liferay-ui:search-container-column-text>
