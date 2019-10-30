@@ -28,6 +28,7 @@ export default function seoInit({itemSelectorUrl, namespace}) {
 		});
 
 		itemSelectorDialog.on('selectedItemChange', event => {
+			debugger;
 			const selectedItem = event.selectedItem;
 
 			if (!selectedItem) {
