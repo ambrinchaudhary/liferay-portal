@@ -1036,7 +1036,7 @@
     "@clayui/shared" "^3.0.2"
     classnames "^2.2.6"
 
-"@clayui/button@3.0.1", "@clayui/button@^3.0.1":
+"@clayui/button@3.0.1", "@clayui/button@^3.0.0", "@clayui/button@^3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@clayui/button/-/button-3.0.1.tgz#ce0dc6220c11ef9af539c6cda50618a73eb61ab9"
   integrity sha512-dzeYzlzJeFn8YF8zQ8Ku1K05UlHtdyw+9WeaAkL+yzJHTqY8TNFcuYesTOPf1BXNim4Ssu9ZidOJDs26mPGBKw==
@@ -1116,6 +1116,14 @@
     metal-position "^2.1.2"
     warning "^4.0.3"
 
+"@clayui/form@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@clayui/form/-/form-3.0.0.tgz#1382403329c0ca52676204ce03887accd1e7b241"
+  integrity sha512-uBAxoutH0KlM226CfgdIGirCXMbuDnOhz0AidLiaeCnjU48JlyHsqF6obkeiFfHq+IDtW5DcsIR3yFmqgsnKYQ==
+  dependencies:
+    "@clayui/icon" "^3.0.0"
+    classnames "^2.2.6"
+
 "@clayui/form@3.1.0", "@clayui/form@^3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@clayui/form/-/form-3.1.0.tgz#288fa3e340c7886fb679bd3d0d9cf61a7f18c6c0"
@@ -1123,6 +1131,14 @@
   dependencies:
     "@clayui/icon" "^3.0.1"
     classnames "^2.2.6"
+
+"@clayui/icon@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@clayui/icon/-/icon-3.0.0.tgz#d73721acf20dd717ef1d0f5ba83ac253ce0e04e3"
+  integrity sha512-V+YXx9tR9lojxm8o1wm4Ju7mcMvkOJ4F0yF5J8TdYnAI7B0GoIyYVCwTTCbHQdgJofr8gXWG2MC93Q3BqRtClA==
+  dependencies:
+    classnames "^2.2.6"
+    warning "^4.0.3"
 
 "@clayui/icon@3.0.1", "@clayui/icon@^3.0.0", "@clayui/icon@^3.0.1":
   version "3.0.1"
@@ -1165,19 +1181,23 @@
   dependencies:
     classnames "^2.2.6"
 
-"@clayui/management-toolbar@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@clayui/management-toolbar/-/management-toolbar-3.0.0.tgz#32e2dcc6e666be6a6aeab2ab5e04883d02552562"
-  integrity sha512-Nf3NaS47X+oTDm+5X//8Fm5w/pviPL4UsHYhNQmahTJaHtixTsP8xMzHRhHD/3lFRhWI7QLzR4k46FFzytFYNQ==
-  dependencies:
-    classnames "^2.2.6"
-
 "@clayui/management-toolbar@3.0.1":
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@clayui/management-toolbar/-/management-toolbar-3.0.1.tgz#0847c0858ba322011b960bec38949070eec0fe80"
   integrity sha512-5uOtva4gow4/SUmJhl0Jrx+Z/JCNhzeZGxj5Tk082b4qrPO7Oq/1cgKMcFlVxs4r+vOJ5jEjnerAOqZ3L7VXTw==
   dependencies:
     classnames "^2.2.6"
+
+"@clayui/modal@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@clayui/modal/-/modal-3.0.0.tgz#d1170be625f670cf879c5c777b7c63a3b9beb6d2"
+  integrity sha512-OA0OpA7FJNeqQmawy62jKKO1RaTGNo2zyALOG8DC0xvxTylHTfY8ZsalF/qQPpOZiTuseuZxrLzW5xR71VsXrA==
+  dependencies:
+    "@clayui/button" "^3.0.0"
+    "@clayui/icon" "^3.0.0"
+    "@clayui/shared" "^3.0.1"
+    classnames "^2.2.6"
+    warning "^4.0.3"
 
 "@clayui/modal@3.1.0":
   version "3.1.0"
@@ -1281,7 +1301,7 @@
     classnames "^2.2.6"
     warning "^4.0.3"
 
-"@clayui/shared@3.0.2", "@clayui/shared@^3.0.2":
+"@clayui/shared@3.0.2", "@clayui/shared@^3.0.1", "@clayui/shared@^3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@clayui/shared/-/shared-3.0.2.tgz#29d1cc139a1adaa3d35bcd82f98f068938cf8987"
   integrity sha512-sWOlVD4mn6QC62NhvIO7UYCZsFynKf4zHzIzfTL9yvgY52R6RtBxXbJl9KUaxoFEtM9qCBpSO6r7pXk/tSkESA==
@@ -7294,7 +7314,7 @@ error@^7.0.0:
     string-template "~0.2.1"
     xtend "~4.0.0"
 
-es-abstract@^1.10.0, es-abstract@^1.11.0, es-abstract@^1.12.0, es-abstract@^1.13.0, es-abstract@^1.15.0, es-abstract@^1.4.3, es-abstract@^1.5.1, es-abstract@^1.7.0, es-abstract@^1.9.0:
+es-abstract@^1.10.0, es-abstract@^1.12.0, es-abstract@^1.13.0, es-abstract@^1.15.0, es-abstract@^1.4.3, es-abstract@^1.5.1, es-abstract@^1.7.0, es-abstract@^1.9.0:
   version "1.16.0"
   resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.16.0.tgz#d3a26dc9c3283ac9750dca569586e976d9dcc06d"
   integrity sha512-xdQnfykZ9JMEiasTAJZJdMWCQ1Vm00NBw79/AWi7ELfZuuPCSOMDZbT9mkOfSctVtfhb+sAAzrm+j//GjjLHLg==
