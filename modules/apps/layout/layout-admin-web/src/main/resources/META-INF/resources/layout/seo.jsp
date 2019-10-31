@@ -227,6 +227,7 @@ UnicodeProperties layoutTypeSettings = selLayout.getTypeSettingsProperties();
 
 				itemSelectorDialog.on('selectedItemChange', function(event) {
 					var selectedItem = event.selectedItem;
+					debugger;
 
 					if (selectedItem) {
 						var itemValue = JSON.parse(selectedItem.value);
