@@ -27,9 +27,13 @@ page import="com.liferay.document.library.web.internal.display.context.FolderAct
 page import="com.liferay.document.library.web.internal.util.DLAssetHelperUtil" %><%@
 page import="com.liferay.document.library.web.internal.util.RepositoryClassDefinitionUtil" %><%@
 page import="com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList" %><%@
+page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.lock.Lock" %><%@
 page import="com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil" %><%@
 page import="com.liferay.portal.kernel.util.LocaleUtil" %><%@
+page import="com.liferay.portal.kernel.util.PortalUtil" %><%@
+page import="com.liferay.portal.kernel.util.PortletKeys" %><%@
+page import="com.liferay.portal.kernel.util.StringUtil" %><%@
 page import="com.liferay.portal.util.RepositoryUtil" %>
 
 <%@ page import="java.util.Collections" %><%@
