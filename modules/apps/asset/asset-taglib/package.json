@@ -5,6 +5,7 @@
 		"@clayui/multi-select": "3.0.1",
 		"clay-multi-select": "2.18.4",
 		"frontend-js-react-web": "*",
+		"item-selector-taglib": "*",
 		"metal-component": "2.16.8",
 		"metal-dom": "2.16.8",
 		"metal-soy": "2.16.8",

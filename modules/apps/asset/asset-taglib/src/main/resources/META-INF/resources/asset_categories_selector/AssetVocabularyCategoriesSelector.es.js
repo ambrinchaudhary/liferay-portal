@@ -13,7 +13,7 @@
  */
 
 import 'clay-multi-select';
-import {ItemSelectorDialog} from 'frontend-js-web';
+import {ItemSelectorDialog} from 'item-selector-taglib';
 import Component from 'metal-component';
 import Soy from 'metal-soy';
 import {Config} from 'metal-state';

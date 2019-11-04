@@ -17,7 +17,7 @@ import {useResource} from '@clayui/data-provider';
 import ClayForm, {ClayInput} from '@clayui/form';
 import ClayMultiSelect from '@clayui/multi-select';
 import {usePrevious} from 'frontend-js-react-web';
-import {ItemSelectorDialog} from 'frontend-js-web';
+import {ItemSelectorDialog} from 'item-selector-taglib';
 import PropTypes from 'prop-types';
 import React, {useEffect} from 'react';
 
