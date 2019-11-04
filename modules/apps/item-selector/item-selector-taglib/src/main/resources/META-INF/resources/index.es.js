@@ -1,0 +1,1 @@
+export {default as ItemSelectorDialog} from './item_selector_dialog/js/ItemSelectorDialog.es';
