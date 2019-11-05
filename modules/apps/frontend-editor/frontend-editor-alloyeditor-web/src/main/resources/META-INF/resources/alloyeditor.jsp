@@ -140,6 +140,7 @@ name = HtmlUtil.escapeJS(name);
 %>
 
 <aui:script use="<%= modules %>">
+
 	var windowNode = A.getWin();
 
 	<%
@@ -152,23 +153,11 @@ name = HtmlUtil.escapeJS(name);
 
 	var documentBrowseLinkCallback = function(editor, linkHref, callback) {
 		Liferay.Loader.require(
-			'frontend-js-web/liferay/ItemSelectorDialog.es',
+			'<%= npmResolvedPackageName %>/AlloyEditorItemSelectorDialog.es as AlloyEditorItemSelectorDialog',
 			function(ItemSelectorDialog) {
-				var itemSelectorDialog = new ItemSelectorDialog.default({
-					eventName: editor.name + 'selectDocument',
-					title: '<liferay-ui:message key="select-item" />',
-					url: linkHref
-				});
-
-				itemSelectorDialog.open();
-
-				itemSelectorDialog.on('selectedItemChange', function(event) {
-					var selectedItem = event.selectedItem;
-
-					if (selectedItem) {
-						callback(selectedItem);
-					}
-				});
+				debugger;
+				AlloyEditorItemSelectorDialog.openDialog(
+				editor, linkHref, callback, '<liferay-ui:message key="select-item" />');
 			}
 		);
 	};
