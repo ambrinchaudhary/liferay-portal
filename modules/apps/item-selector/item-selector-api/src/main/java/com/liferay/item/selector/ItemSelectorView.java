@@ -65,6 +65,22 @@ public interface ItemSelectorView<T extends ItemSelectorCriterion> {
 	public String getTitle(Locale locale);
 
 	/**
+	 * Returns whether the item selector allows multiple selection or not.
+	 *
+	 * <p>
+	 * Most of the implementations of this method will return <code>true</code>.
+	 * However, there are certain cases where the view should not be displayed:
+	 * the view isn't ready, the view needs some additional third-party
+	 * configuration, etc.
+	 * </p>
+	 *
+	 * @return <code>true</code> if multipleSelection is allowed
+	 */
+	default public boolean isMultiple() {
+		return false;
+	}
+
+	/**
 	 * Returns whether the item selector view is visible.
 	 *
 	 * <p>
