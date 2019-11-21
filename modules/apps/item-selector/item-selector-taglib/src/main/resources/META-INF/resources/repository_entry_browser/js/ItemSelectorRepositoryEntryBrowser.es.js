@@ -21,7 +21,7 @@ import {Config} from 'metal-state';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import ItemSelectorPreview from '../../item_selector_preview/js/ItemSelectorPreview.es';
+import ItemSelectorPreview from '../../item_selector_preview/js/ItemSelectorPreviewHook.es';
 
 const STR_DRAG_LEAVE = 'dragleave';
 const STR_DRAG_OVER = 'dragover';
