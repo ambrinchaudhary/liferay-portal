@@ -12,6 +12,7 @@
  * details.
  */
 
+import ClayIcon from '@clayui/icon';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import {fetch, objectToFormData} from 'frontend-js-web';
 import PropTypes from 'prop-types';
@@ -87,8 +88,20 @@ function LayoutFinder(props) {
 		[cancelUpdatePageResults, props.namespace, updatePageResults]
 	);
 
+	const handleOnClick = useCallback(() => {
+		Liferay.Util.Session.set(
+			'com.liferay.product.navigation.product.menu.web_pagesTreeState',
+			'closed'
+		).then(() => Liferay.Util.navigate(window.location.href));
+	}, []);
+
 	return (
 		<div className="layout-finder">
+			<button className={`btn-unstyled mb-3`} onClick={handleOnClick}>
+				<ClayIcon className={`icon-monospaced`} symbol="angle-left" />
+
+				{`${Liferay.Language.get('back-to-menu')} `}
+			</button>
 			<form onSubmit={handleFormSubmit} role="search">
 				<label
 					className="sr-only"

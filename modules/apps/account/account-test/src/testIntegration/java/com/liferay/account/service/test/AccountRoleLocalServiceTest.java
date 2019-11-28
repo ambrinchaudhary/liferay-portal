@@ -22,18 +22,26 @@ import com.liferay.account.service.AccountEntryLocalService;
 import com.liferay.account.service.AccountEntryUserRelLocalService;
 import com.liferay.account.service.AccountRoleLocalService;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.exception.ModelListenerException;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.BaseModelListener;
+import com.liferay.portal.kernel.model.ModelListener;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
+import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
+import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -48,6 +56,11 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.FrameworkUtil;
+import org.osgi.framework.ServiceRegistration;
 
 /**
  * @author Drew Brokke
@@ -191,6 +204,43 @@ public class AccountRoleLocalServiceTest {
 	}
 
 	@Test
+	public void testDeleteAccountRole() throws Exception {
+		Bundle bundle = FrameworkUtil.getBundle(
+			AccountRoleLocalServiceTest.class);
+
+		BundleContext bundleContext = bundle.getBundleContext();
+
+		ServiceRegistration serviceRegistration = bundleContext.registerService(
+			ModelListener.class,
+			new BaseModelListener<UserGroupRole>() {
+
+				@Override
+				public void onBeforeRemove(UserGroupRole userGroupRole)
+					throws ModelListenerException {
+
+					try {
+						userGroupRole.getRole();
+					}
+					catch (PortalException pe) {
+						throw new ModelListenerException(pe);
+					}
+				}
+
+			},
+			new HashMapDictionary<>());
+
+		try {
+			_testDeleteAccountRole(_accountRoleLocalService::deleteAccountRole);
+			_testDeleteAccountRole(
+				accountRole -> _accountRoleLocalService.deleteAccountRole(
+					accountRole.getAccountRoleId()));
+		}
+		finally {
+			serviceRegistration.unregister();
+		}
+	}
+
+	@Test
 	public void testGetAccountRoles() throws Exception {
 		List<AccountRole> accountRoles =
 			_accountRoleLocalService.getAccountRolesByAccountEntryIds(
@@ -301,6 +351,35 @@ public class AccountRoleLocalServiceTest {
 		return ArrayUtil.contains(accountRoleIds, roleId);
 	}
 
+	private void _testDeleteAccountRole(
+			UnsafeFunction<AccountRole, AccountRole, PortalException>
+				deleteAccountRoleFunction)
+		throws Exception {
+
+		AccountRole accountRole = _addAccountRole(
+			_accountEntry1.getAccountEntryId(), RandomTestUtil.randomString());
+
+		User user = UserTestUtil.addUser();
+
+		_users.add(user);
+
+		_accountRoleLocalService.associateUser(
+			_accountEntry1.getAccountEntryId(), accountRole.getAccountRoleId(),
+			user.getUserId());
+
+		long[] roleIds = _getRoleIds(user);
+
+		Assert.assertTrue(ArrayUtil.contains(roleIds, accountRole.getRoleId()));
+
+		deleteAccountRoleFunction.apply(accountRole);
+
+		_accountRoles.remove(accountRole);
+
+		Assert.assertFalse(
+			ArrayUtil.contains(
+				_getRoleIds(_users.get(0)), accountRole.getRoleId()));
+	}
+
 	@DeleteAfterTestRun
 	private AccountEntry _accountEntry1;
 
@@ -331,6 +410,9 @@ public class AccountRoleLocalServiceTest {
 
 	@Inject
 	private RoleLocalService _roleLocalService;
+
+	@Inject
+	private UserGroupRoleLocalService _userGroupRoleLocalService;
 
 	@DeleteAfterTestRun
 	private final List<User> _users = new ArrayList<>();

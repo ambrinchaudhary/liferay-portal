@@ -25,12 +25,11 @@ long kaleoProcessId = ParamUtil.getLong(request, renderResponse.getNamespace() +
 </portlet:resourceURL>
 
 <%
-StringBundler sb = new StringBundler(6);
+StringBundler sb = new StringBundler(5);
 
 sb.append("javascript:");
 sb.append(renderResponse.getNamespace());
-sb.append("exportKaleoProcess");
-sb.append("('");
+sb.append("exportKaleoProcess('");
 sb.append(exportURL);
 sb.append("');");
 %>

@@ -38,7 +38,7 @@ String namespace = PortalUtil.getPortletNamespace(ProductNavigationProductMenuPo
 data.put("namespace", namespace);
 data.put("spritemap", themeDisplay.getPathThemeImages() + "/lexicon/icons.svg");
 
-Group scopeGroup = themeDisplay.getScopeGroup();
+Group group = themeDisplay.getSiteGroup();
 
 boolean privateLayout = GetterUtil.getBoolean(SessionClicks.get(request, namespace + ProductNavigationProductMenuWebKeys.PRIVATE_LAYOUT, "false"), layout.isPrivateLayout());
 
@@ -66,11 +66,11 @@ pageTypeSelectorData.put("namespace", PortalUtil.getPortletNamespace(ProductNavi
 	</div>
 
 	<liferay-layout:layouts-tree
-		groupId="<%= scopeGroupId %>"
+		groupId="<%= themeDisplay.getSiteGroupId() %>"
 		linkTemplate='<a class="{cssClass}" data-regular-url="{regularURL}" data-url="{url}" data-uuid="{uuid}" href="{url}" id="{id}" title="{title}">{label}</a>'
 		privateLayout="<%= privateLayout %>"
 		rootLinkTemplate='<a class="{cssClass}" href="javascript:void(0);" id="{id}" title="{title}">{label}</a>'
-		rootNodeName="<%= scopeGroup.getLayoutRootNodeName(privateLayout, locale) %>"
+		rootNodeName="<%= group.getLayoutRootNodeName(privateLayout, locale) %>"
 		selPlid="<%= plid %>"
 		treeId="pagesTree"
 	/>
@@ -79,3 +79,12 @@ pageTypeSelectorData.put("namespace", PortalUtil.getPortletNamespace(ProductNavi
 		<aui:a cssClass="ml-2" href="<%= administrationPortletURL.toString() %>"><%= LanguageUtil.get(request, "go-to-pages-administration") %></aui:a>
 	</div>
 </div>
+
+<aui:script>
+	function destroyTreeComponent() {
+		Liferay.destroyComponent(`${props.namespace}pagesTree`);
+		Liferay.detach('destroyPortlet', destroyTreeComponent);
+	}
+
+	Liferay.on('destroyPortlet', destroyTreeComponent);
+</aui:script>
