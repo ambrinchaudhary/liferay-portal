@@ -13,17 +13,23 @@
  */
 
 import ClayButton from '@clayui/button';
+import ClayDropDown from '@clayui/drop-down';
 import ClayIcon from '@clayui/icon';
 import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 
 /**
- * @class CollectionInput
- * @extends {React.Component}
+ * @class Languages
  */
 
-export default function Languages({defaultLanguage, languages}) {
+const Languages = ({defaultLanguage, languages}) => {
+	const [dropDownActive, setDropDownActive] = useState(false);
+
+	const makeDefault = (languageId) => {
+		console.log('makeDefault: ' + languageId);
+	};
+
 	const Language = ({id, label}) => {
 		return (
 			<ClayTable.Row>
@@ -32,13 +38,41 @@ export default function Languages({defaultLanguage, languages}) {
 					<span className="hide"> {id} </span>
 				</ClayTable.Cell>
 				<ClayTable.Cell>
-					<ClayIcon symbol="ellipsis-v" />
+					<ClayDropDown
+						active={dropDownActive}
+						onActiveChange={setDropDownActive}
+						trigger={
+							<ClayButton
+								aria-label={Liferay.Language.get(
+									'show-actions'
+								)}
+								borderless
+								displayType="secondary"
+								monospaced
+								outline
+								small
+							>
+								<ClayIcon symbol="ellipsis-v" />
+							</ClayButton>
+						}
+					> 
+						<ClayDropDown.ItemList>
+							<ClayDropDown.Item>
+								{Liferay.Language.get('make-default')}
+							</ClayDropDown.Item>
+							<ClayDropDown.Item>
+								Test
+							</ClayDropDown.Item>
+						</ClayDropDown.ItemList>
+					</ClayDropDown>
+
 				</ClayTable.Cell>
 			</ClayTable.Row>
 		);
 	};
 
 	return (
+	<>
 		<ClayTable borderless>
 			<ClayTable.Head>
 				<ClayTable.Row>
@@ -53,10 +87,11 @@ export default function Languages({defaultLanguage, languages}) {
 
 			<ClayTable.Body>
 				{languages.map(language => {
-					return <Language id={language.id} label={language.label} />;
+					return <Language id={language.id} label={language.label} key={language.id} />;
 				})}
 			</ClayTable.Body>
 		</ClayTable>
+	</>
 	);
 }
 
@@ -64,3 +99,7 @@ Languages.propTypes = {
 	defaultLanguage: PropTypes.string,
 	languages: PropTypes.array
 };
+
+export default function(props) {
+	return <Languages {...props} />;
+}
