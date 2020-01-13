@@ -174,6 +174,35 @@ if ((publicLayoutSet.isLayoutSetPrototypeLinkEnabled() || privateLayoutSet.isLay
 			rightList="<%= rightList %>"
 			rightTitle="available"
 		/>
+
+		<div class="site-languages">
+			<%
+				List<JSONObject> languagesList = new ArrayList<>();
+
+				JSONArray languagesJSONArray =
+				JSONFactoryUtil.createJSONArray();
+
+				for (Locale siteAvailableLocale : siteAvailableLocales) {
+					JSONObject languageObject = JSONUtil.put(
+						"id", LocaleUtil.toLanguageId(siteAvailableLocale)
+					).put(
+						"label", siteAvailableLocale.getDisplayName(locale)
+					);
+
+					languagesJSONArray.put(languageObject);
+				}
+
+				Map<String, Object> data = new HashMap<>();
+				data.put("defaultLanguage", "aaa");
+				data.put("languages", languagesJSONArray);
+			%>
+
+			<react:component
+				data="<%= data %>"
+				module="js/Languages.es"
+			/>
+		</div>
+
 	</aui:fieldset>
 </aui:fieldset>
 
