@@ -12,7 +12,9 @@
  * details.
  */
 
+import ClayButton from '@clayui/button';
 import ClayIcon from '@clayui/icon';
+import ClayTable from '@clayui/table';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -24,34 +26,37 @@ import React from 'react';
 export default function Languages({defaultLanguage, languages}) {
 	const Language = ({id, label}) => {
 		return (
-			<li className="list-group-item list-group-item-flex" key="{id}">
-				<div className="autofit-col autofit-col-expand">
-					<p className="list-group-subtitle text-truncate">
-						{' '}
-						{label}
-					</p>
+			<ClayTable.Row>
+				<ClayTable.Cell>
+					{label}
 					<span className="hide"> {id} </span>
-				</div>
-
-				<div className="dropdown dropdown-action">
+				</ClayTable.Cell>
+				<ClayTable.Cell>
 					<ClayIcon symbol="ellipsis-v" />
-				</div>
-			</li>
+				</ClayTable.Cell>
+			</ClayTable.Row>
 		);
 	};
 
 	return (
-		<ul className="list-group">
-			<li className="list-group-header">
-				<h3 className="list-group-header-title">
-					{Liferay.Language.get('languages')}
-				</h3>
-			</li>
+		<ClayTable borderless>
+			<ClayTable.Head>
+				<ClayTable.Row>
+					<ClayTable.Cell expanded headingCell headingTitle>
+						{Liferay.Language.get('language')}
+					</ClayTable.Cell>
+					<ClayTable.Cell>
+						<ClayButton displayType="secondary">{Liferay.Language.get('add')}</ClayButton>
+					</ClayTable.Cell>
+				</ClayTable.Row>
+			</ClayTable.Head>
 
-			{languages.map(language => {
-				return <Language id={language.id} label={language.label} />;
-			})}
-		</ul>
+			<ClayTable.Body>
+				{languages.map(language => {
+					return <Language id={language.id} label={language.label} />;
+				})}
+			</ClayTable.Body>
+		</ClayTable>
 	);
 }
 
