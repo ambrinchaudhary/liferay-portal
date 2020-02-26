@@ -81,6 +81,13 @@ BlogsPortletInstanceConfiguration blogsPortletInstanceConfiguration = BlogsPortl
 					ratingsStats="<%= ratingsStats %>"
 				/>
 			</div>
+			<div class="test-new-taglib">
+				<liferay-ratings:ratings
+					className="<%= BlogsEntry.class.getName() %>"
+					classPK="<%= entry.getEntryId() %>"
+					type="like"
+				/>
+			</div>
 		</div>
 	</c:if>
 
