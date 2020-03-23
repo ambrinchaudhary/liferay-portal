@@ -83,7 +83,7 @@ else {
 
 			<react:component
 				data="<%= data %>"
-				module="js/DestinationUrlInput.es"
+				module="js/DestinationUrlInput"
 			/>
 		</div>
 

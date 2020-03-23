@@ -21,7 +21,7 @@ import {
 import React from 'react';
 import {act} from 'react-dom/test-utils';
 
-import DestinationURLInput from '../src/main/resources/META-INF/resources/js/DestinationURLInput.es';
+import DestinationURLInput from '../src/main/resources/META-INF/resources/js/DestinationURLInput';
 
 const defaultProps = {
 	namespace: '_portlet_namespace_',
