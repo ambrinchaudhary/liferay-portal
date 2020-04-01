@@ -12,6 +12,7 @@
  * details.
  */
 
+import {ClayButtonWithIcon} from '@clayui/button';
 import ClayForm, {ClayInput} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
@@ -61,30 +62,26 @@ const Notification = ({type}) => {
 	}
 };
 
-const DestinationUrlInput = ({destinationUrl = STR_BLANK, namespace}) => {
+const DestinationUrlInput = ({initialDestinationUrl = STR_BLANK, namespace}) => {
 	const [validationType, setValidationType] = useState(STR_BLANK);
+	const [destinationUrl, setDestinationUrl] = useState(initialDestinationUrl);
+
+	const onClickTryMe = () => {
+		console.log('try me ' + destinationUrl);
+
+		let testUrl = destinationUrl;
+		const protocol = 'http';
+		if (!testUrl.startsWith(protocol)) {
+			testUrl = protocol + '://' + testUrl;
+		}
+		window.open(testUrl, '_blank').focus();
+	};
 
 	const onInputBlur = event => {
 		const url = event.currentTarget.value;
 
 		if (!url) {
 			setValidationType(VALIDATION_TYPE.error);
-		}
-		else if (url.includes(window.location.hostname)) {
-			setValidationType(VALIDATION_TYPE.checking);
-
-			fetch(url)
-				.then(response => {
-					if (!response.ok) {
-						setValidationType(VALIDATION_TYPE.warning);
-					}
-					else {
-						setValidationType(VALIDATION_TYPE.info);
-					}
-				})
-				.catch(() => {
-					setValidationType(VALIDATION_TYPE.warning);
-				});
 		}
 		else {
 			setValidationType(STR_BLANK);
@@ -105,14 +102,30 @@ const DestinationUrlInput = ({destinationUrl = STR_BLANK, namespace}) => {
 				</span>
 			</label>
 
-			<ClayInput
-				aria-label={Liferay.Language.get('destination-url')}
-				defaultValue={destinationUrl}
-				id={`${namespace}destinationURL`}
-				name={`${namespace}destinationURL`}
-				onBlur={onInputBlur}
-				type="text"
-			/>
+	 		<ClayInput.Group>
+				<ClayInput.GroupItem prepend>
+					<ClayInput
+						aria-label={Liferay.Language.get('destination-url')}
+						id={`${namespace}destinationURL`}
+						name={`${namespace}destinationURL`}
+						onBlur={onInputBlur}
+						onChange={({currentTarget}) =>
+							setDestinationUrl(currentTarget.value)
+						}
+						value={destinationUrl}
+						type="text"
+					/>
+				</ClayInput.GroupItem>
+				<ClayInput.GroupItem append shrink>
+					<ClayButtonWithIcon
+						disabled={destinationUrl === STR_BLANK}
+						displayType="secondary"
+						onClick={onClickTryMe}
+						symbol="shortcut"
+						title={Liferay.Language.get('try-me')}
+					/>
+	          	</ClayInput.GroupItem>
+			</ClayInput.Group>
 
 			{validationType && (
 				<ClayForm.FeedbackGroup>
@@ -126,7 +139,7 @@ const DestinationUrlInput = ({destinationUrl = STR_BLANK, namespace}) => {
 };
 
 DestinationUrlInput.propTypes = {
-	destinationUrl: PropTypes.string,
+	initialDestinationUrl: PropTypes.string,
 	namespace: PropTypes.string.isRequired,
 };
 
