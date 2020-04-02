@@ -31,7 +31,7 @@ String content = BeanParamUtil.getString(wikiPage, request, "content");
 	<liferay-editor:editor
 		configParams="<%= configParams %>"
 		contents="<%= content %>"
-		editorName="ckeditor"
+		editorName="<%= baseWikiEngine.getEditorName() %>"
 		fileBrowserParams="<%= fileBrowserParams %>"
 		name="contentEditor"
 		toolbarSet="<%= baseWikiEngine.getToolbarSet() %>"
