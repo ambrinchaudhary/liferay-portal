@@ -242,6 +242,8 @@ definition {
 		else if ("${htmlSource}" == "true") {
 			Click(locator1 = "CKEditor#TOOLBAR_SOURCE_BUTTON");
 
+			SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
 			Type(
 				locator1 = "CKEditor#BODY_FIELD_SOURCE_ON",
 				value1 = "${wikiPageContent}");
