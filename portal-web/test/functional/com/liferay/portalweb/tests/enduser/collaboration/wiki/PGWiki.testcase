@@ -76,7 +76,7 @@ definition {
 		Click(locator1 = "CKEditor#TOOLBAR_SOURCE_BUTTON");
 
 		Type(
-			locator1 = "CKEditor#BODY_FIELD_SOURCE_ON",
+			locator1 = "CKEditor#BODY_FIELD_SOURCE_ON_2",
 			value1 = '''<!DOCTYPE html> <html lang="en"> <body> <h1>My First Heading</h1> <p>My first paragraph.</p> </body> </html>''');
 
 		SelectFrame(value1 = "relative=top");
@@ -115,7 +115,7 @@ definition {
 		Click(locator1 = "CKEditor#TOOLBAR_SOURCE_BUTTON");
 
 		Type(
-			locator1 = "CKEditor#BODY_FIELD_SOURCE_ON",
+			locator1 = "CKEditor#BODY_FIELD_SOURCE_ON_2",
 			value1 = '''<!DOCTYPE html> <html lang="en"> <body> <h1>Edited My First Heading</h1> <p>Edited My first paragraph.</p> </body> </html>''');
 
 		SelectFrame(value1 = "relative=top");
@@ -153,7 +153,7 @@ definition {
 		Click(locator1 = "CKEditor#TOOLBAR_SOURCE_BUTTON");
 
 		Type(
-			locator1 = "CKEditor#BODY_FIELD_SOURCE_ON",
+			locator1 = "CKEditor#BODY_FIELD_SOURCE_ON_2",
 			value1 = "${welcomeToLiferay}");
 
 		SelectFrame(value1 = "relative=top");
@@ -282,7 +282,7 @@ definition {
 		Click(locator1 = "CKEditor#TOOLBAR_SOURCE_BUTTON");
 
 		Type(
-			locator1 = "CKEditor#BODY_FIELD_SOURCE_ON",
+			locator1 = "CKEditor#BODY_FIELD_SOURCE_ON_2",
 			value1 = '''
 				<p id="demo">PASS</p><script type="text/javascript">document.getElementById('demo').innerHTML="this code should not be read by the client";</script>
 			''');
@@ -477,7 +477,7 @@ definition {
 		Click(locator1 = "CKEditor#TOOLBAR_SOURCE_BUTTON");
 
 		Type(
-			locator1 = "CKEditor#BODY_FIELD_SOURCE_ON",
+			locator1 = "CKEditor#BODY_FIELD_SOURCE_ON_2",
 			value1 = "${welcomeToLiferay}");
 
 		SelectFrame(value1 = "relative=top");
