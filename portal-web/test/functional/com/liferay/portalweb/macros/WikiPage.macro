@@ -30,11 +30,13 @@ definition {
 			locator1 = "Wiki#FRONTPAGE_DEFAULT_MESSAGE",
 			value1 = "This page is empty. Edit it to add some text.");
 
-		AssertElementPresent(
-			key_editor = "content",
-			locator1 = "AlloyEditor#EDITOR");
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
 
-		AlloyEditor.addContent(content = "${wikiPageContent}");
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${wikiPageContent}");
+
+		SelectFrame(value1 = "relative=top");
 	}
 
 	macro addAttachmentViaPageEdit {
@@ -70,9 +72,15 @@ definition {
 
 		var key_wikiChildPageTitle = "${wikiChildPageTitle}";
 
-		AlloyEditor.addTitleAndContent(
-			content = "${wikiChildPageContent}",
-			title = "${wikiChildPageTitle}");
+		WikiEntry.addPageTitle(title = "${wikiChildPageTitle}");
+
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${wikiChildPageContent}");
+
+		SelectFrame(value1 = "relative=top");
 
 		Click(
 			locator1 = "Button#PUBLISH",
@@ -88,9 +96,15 @@ definition {
 
 		var key_wikiChildPageTitle = "${wikiChildPageTitle}";
 
-		AlloyEditor.addTitleAndContent(
-			content = "${wikiChildPageContent}",
-			title = "${wikiChildPageTitle}");
+		WikiEntry.addPageTitle(title = "${wikiChildPageTitle}");
+
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${wikiChildPageContent}");
+
+		SelectFrame(value1 = "relative=top");
 
 		Click(
 			locator1 = "Button#PUBLISH",
@@ -118,9 +132,17 @@ definition {
 
 		var key_wikiPageTitle = "${wikiPageTitle}";
 
-		AlloyEditor.addTitleAndContent(
-			content = "${wikiPageContent}",
-			title = "${wikiPageTitle}");
+		WikiEntry.addPageTitle(title = "${wikiPageTitle}");
+
+		var key_wikiPageTitle = "${wikiPageContent}";
+
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${wikiPageContent}");
+
+		SelectFrame(value1 = "relative=top");
 
 		PortletEntry.publish();
 	}
@@ -132,9 +154,15 @@ definition {
 
 		var key_wikiChildPageTitle = "${wikiChildPageTitle}";
 
-		AlloyEditor.addTitleAndContent(
-			content = "${wikiChildPageContent}",
-			title = "${wikiChildPageTitle}");
+		WikiEntry.addPageTitle(title = "${wikiChildPageTitle}");
+
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${wikiChildPageContent}");
+
+		SelectFrame(value1 = "relative=top");
 
 		AssertClick(
 			locator1 = "Button#PUBLISH",
@@ -154,9 +182,15 @@ definition {
 
 		var key_wikiChildPageTitle = "${wikiChildPageTitle}";
 
-		AlloyEditor.addTitleAndContent(
-			content = "${wikiChildPageContent}",
-			title = "${wikiChildPageTitle}");
+		WikiEntry.addPageTitle(title = "${wikiChildPageTitle}");
+
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${wikiChildPageContent}");
+
+		SelectFrame(value1 = "relative=top");
 
 		AssertClick(
 			locator1 = "Button#PUBLISH",
@@ -174,11 +208,13 @@ definition {
 			locator1 = "Message#INFO_LINK",
 			value1 = "This page is empty. Edit it to add some text.");
 
-		AssertElementPresent(
-			key_editor = "content",
-			locator1 = "AlloyEditor#EDITOR");
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
 
-		AlloyEditor.addContent(content = "${wikiFrontPageContent}");
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${wikiFrontPageContent}");
+
+		SelectFrame(value1 = "relative=top");
 
 		PortletEntry.publish();
 	}
@@ -196,33 +232,31 @@ definition {
 			locator1 = "Wiki#FRONTPAGE_DEFAULT_MESSAGE",
 			value1 = "This page is empty. Edit it to add some text.");
 
-		AssertElementPresent(
-			key_editor = "content",
-			locator1 = "AlloyEditor#EDITOR");
-
 		if ("${creoleSource}" == "true") {
 			Panel.expandPanel(panel = "Configuration");
 
 			Select.pauseSelect(
 				locator1 = "Wiki#ADD_PAGE_FORMAT_DROPDOWN",
 				value1 = "Creole");
-
-			AlloyEditor.addContent(content = "${wikiPageContent}");
 		}
 		else if ("${htmlSource}" == "true") {
-			Panel.expandPanel(panel = "Configuration");
+			Click(locator1 = "CKEditor#TOOLBAR_SOURCE_BUTTON");
 
-			SelectNoError(
-				locator1 = "Wiki#ADD_PAGE_FORMAT_DROPDOWN",
-				value1 = "HTML");
+			SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
 
-			AssertConfirm(value1 = "You may lose some formatting when switching from Creole to HTML. Do you want to continue?");
-
-			AlloyEditor.addContent(content = "${wikiPageContent}");
+			Type(
+				locator1 = "CKEditor#BODY_FIELD_SOURCE_ON",
+				value1 = "${wikiPageContent}");
 		}
 		else {
-			AlloyEditor.addContent(content = "${wikiPageContent}");
+			SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
+			Type(
+				locator1 = "CKEditor#BODY",
+				value1 = "${wikiPageContent}");
 		}
+
+		SelectFrame(value1 = "relative=top");
 
 		if ("${pageAddTag}" == "true") {
 			WikiPage.addTagPGCmd(tagNameList = "${tagNameList}");
@@ -283,9 +317,15 @@ definition {
 	macro addPageWithWorkflowPG {
 		WikiNavigator.gotoAddPageViaPG();
 
-		AlloyEditor.addTitleAndContent(
-			content = "${wikiPageContent}",
-			title = "${wikiPageTitle}");
+		WikiEntry.addPageTitle(title = "${wikiPageTitle}");
+
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${wikiPageContent}");
+
+		SelectFrame(value1 = "relative=top");
 
 		AssertClick(
 			locator1 = "Button#SUBMIT_FOR_PUBLICATION",
@@ -318,13 +358,7 @@ definition {
 	macro addPG {
 		WikiNavigator.gotoAddPageViaPG();
 
-		AssertElementPresent(
-			key_editor = "title",
-			locator1 = "AlloyEditor#EDITOR");
-
 		AlloyEditor.addTitle(title = "${wikiPageTitle}");
-
-		var key_wikiPageTitle = "${wikiPageTitle}";
 
 		if ("${viewFormat}" == "true") {
 			AssertSelectedLabel(
@@ -332,7 +366,13 @@ definition {
 				value1 = "${wikiFormat}");
 		}
 
-		AlloyEditor.addContent(content = "${wikiPageContent}");
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${wikiPageContent}");
+
+		SelectFrame(value1 = "relative=top");
 
 		if ("${viewCKEditorResizer}" == "true") {
 			AssertVisible(locator1 = "CKEditor#RESIZER");
@@ -658,7 +698,13 @@ definition {
 
 		Pause(locator1 = "3000");
 
-		AlloyEditor.addContent(content = "${wikiPageContentEdit}");
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${wikiPageContentEdit}");
+
+		SelectFrame(value1 = "relative=top");
 
 		AssertClick(
 			locator1 = "Button#PUBLISH",
@@ -676,13 +722,13 @@ definition {
 
 		MenuItem.click(menuItem = "Edit");
 
-		Click(
-			key_editor = "content",
-			locator1 = "AlloyEditor#EDITOR");
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
 
-		AssertElementPresent(locator1 = "AlloyEditor#CONTENT_ADD_BUTTON");
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${wikiPageContentEdit}");
 
-		AlloyEditor.addContent(content = "${wikiPageContentEdit}");
+		SelectFrame(value1 = "relative=top");
 
 		PortletEntry.publish();
 	}
@@ -694,7 +740,13 @@ definition {
 
 		MenuItem.click(menuItem = "Edit");
 
-		AlloyEditor.addContent(content = "${wikiPageContentEdit}");
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${wikiPageContentEdit}");
+
+		SelectFrame(value1 = "relative=top");
 
 		if ("${minorEdit}" == "true") {
 			Check(locator1 = "Checkbox#THIS_IS_A_MINOR_EDIT");
@@ -732,15 +784,19 @@ definition {
 			locator1 = "Link#EDIT",
 			value1 = "Edit");
 
-		AlloyEditor.clickContentField();
-
 		Panel.expandPanel(panel = "Configuration");
 
 		Select(
 			locator1 = "Wiki#ADD_PAGE_FORMAT_DROPDOWN",
 			value1 = "Creole");
 
-		AlloyEditor.addContent(content = "${wikiPage2Link}");
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${wikiPage2Link}");
+
+		SelectFrame(value1 = "relative=top");
 
 		PortletEntry.publish();
 
@@ -808,7 +864,13 @@ definition {
 			locator1 = "Button#REMOVE_REDIRECT",
 			value1 = "Remove Redirect");
 
-		AlloyEditor.addContent(content = "${wikiPage2Content}");
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${wikiPage2Content}");
+
+		SelectFrame(value1 = "relative=top");
 
 		PortletEntry.publish();
 	}

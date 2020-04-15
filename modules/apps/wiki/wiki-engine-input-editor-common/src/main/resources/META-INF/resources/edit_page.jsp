@@ -28,12 +28,13 @@ String content = BeanParamUtil.getString(wikiPage, request, "content");
 <div class="wiki-page-editor">
 	<%@ include file="/editor_config.jspf" %>
 
-	<liferay-ui:input-editor
+	<liferay-editor:editor
 		configParams="<%= configParams %>"
 		contents="<%= content %>"
 		editorName="<%= baseWikiEngine.getEditorName() %>"
 		fileBrowserParams="<%= fileBrowserParams %>"
 		name="contentEditor"
+		placeholder="content"
 		toolbarSet="<%= baseWikiEngine.getToolbarSet() %>"
 	/>
 
