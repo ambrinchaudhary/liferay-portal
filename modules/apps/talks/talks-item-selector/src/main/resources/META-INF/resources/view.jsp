@@ -53,6 +53,8 @@ String eventName = (String)request.getAttribute("eventName");
 
 		</clay:col>
 	</clay:row>
+
+	<small>API by <a href="https://pokeapi.co" rel="noopener noreferrer" target="_blank">Pok&eacute;API</a> and CSS + Charmander made by <a href="https://dev.to/maxime_daraize/css-pokemon-4bii" rel="noopener noreferrer" target="_blank">Maxime</a>.</small>
 </clay:container-fluid>
 
 <aui:script require="frontend-js-web/liferay/ItemSelectorDialog.es as ItemSelectorDialog">
