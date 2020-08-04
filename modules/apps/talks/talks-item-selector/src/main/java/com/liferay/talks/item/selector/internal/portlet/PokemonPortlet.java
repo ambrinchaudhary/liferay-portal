@@ -41,7 +41,7 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.application-type=widget",
 		"com.liferay.portlet.css-class-wrapper=portlet-pokemon",
 		"com.liferay.portlet.display-category=category.collaboration",
-		"com.liferay.portlet.header-portlet-css=/main.css",
+		"com.liferay.portlet.header-portlet-css=/css/main.css",
 		"com.liferay.portlet.icon=/pokeball.png",
 		"com.liferay.portlet.layout-cacheable=true",
 		"com.liferay.portlet.use-default-template=true",

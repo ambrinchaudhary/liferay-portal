@@ -21,34 +21,60 @@ String itemSelectorURL = (String)request.getAttribute("itemSelectorURL");
 String eventName = (String)request.getAttribute("eventName");
 %>
 
-<clay:button
-	id="selectPokemonBtn"
-	label="Select Pokemon"
-/>
+<clay:container-fluid>
+	<clay:row>
+		<clay:col
+			md="6"
+		>
+			<clay:button
+				id="selectPokemonBtn"
+				label="Select Pokemon"
+			/>
 
-<h1 id="pokemonTitle"></h1>
+			<h1 id="pokemonTitle"></h1>
+		</clay:col>
+
+		<clay:col
+			md="6"
+		>
+			<div class="pokemon-canvas pokemon-canvas-show-grid">
+
+				<%
+				for (int i = 1; i <= 1600; i++) {
+				%>
+
+					<div class="pixel"></div>
+
+				<%
+				}
+				%>
+
+			</div>
+
+		</clay:col>
+	</clay:row>
+</clay:container-fluid>
 
 <aui:script require="frontend-js-web/liferay/ItemSelectorDialog.es as ItemSelectorDialog">
-	var selectPokemonBtn = document.getElementById(
-		'selectPokemonBtn'
-	);
+	var selectPokemonBtn = document.getElementById('selectPokemonBtn');
 
-	var pokemonTitle = document.getElementById(
-		'pokemonTitle'
-	);
+	var pokemonTitle = document.getElementById('pokemonTitle');
 
 	selectPokemonBtn.addEventListener('click', function (event) {
 		var itemSelectorDialog = new ItemSelectorDialog.default({
 			eventName: '<%= eventName %>',
 			title: 'Select a pokemon',
 			singleSelect: true,
-			url:'<%= itemSelectorURL %>',
+			url: '<%= itemSelectorURL %>',
 		});
 
 		itemSelectorDialog.open();
 
 		itemSelectorDialog.on('selectedItemChange', function (event) {
-			if (event.selectedItem) {//always check this, will be null is user cancel or close the dialog
+			if (event.selectedItem) {
+
+				//always check this, will be null is user cancel or close the dialog
+
 				pokemonTitle.innerText = event.selectedItem.value;
 			}
 		});
