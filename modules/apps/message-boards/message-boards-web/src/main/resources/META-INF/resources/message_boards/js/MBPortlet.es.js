@@ -12,9 +12,10 @@
  * details.
  */
 
-import {PortletBase, fetch} from 'frontend-js-web';
-import core from 'metal';
-import {EventHandler} from 'metal-events';
+import {fetch} from 'frontend-js-web';
+
+// import core from 'metal';
+// import {EventHandler} from 'metal-events';
 
 const RECENTLY_REMOVED_ATTACHMENTS = {
 	multiple: Liferay.Language.get('x-recently-removed-attachments'),
@@ -29,63 +30,117 @@ const RECENTLY_REMOVED_ATTACHMENTS = {
  * @extends {PortletBase}
  */
 
-class MBPortlet extends PortletBase {
+class MBPortlet {
+	constructor({
+		namespace,
+		constants,
+		currentAction,
+		getAttachmentsURL,
+		rootNode,
+		viewTrashAttachmentsURL,
+	}) {
+		this.namespace = namespace;
+		this.constants = constants;
+		this.currentAction = currentAction;
+		this.getAttachmentsURL = getAttachmentsURL;
+		this.rootNode = document.querySelector(rootNode);
+		this.viewTrashAttachmentsURL = viewTrashAttachmentsURL;
 
-	/**
-	 * @inheritDoc
-	 */
+		// this.init();
 
-	created() {
-		this.eventHandler_ = new EventHandler();
+	}
+
+	namespaceSelectors_(selectors) {
+		return selectors.replace(
+			new RegExp('(#|\\[id=(\\"|\\\'))(?!' + this.namespace + ')', 'g'),
+			'$1' + this.namespace
+		);
+	}
+
+	one(selector) {
+		return this.rootNode.querySelector(this.namespaceSelectors_(selector));
+	}
+
+	all(selector) {
+		return this.rootNode.querySelectorAll(selector);
+	}
+
+	ns(name) {
+		return `${this.namespace}${name}`;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 
-	attached() {
+	// created() {
+	// 	this.eventHandler_ = new EventHandler();
+	// }
+
+	/**
+	 * @inheritDoc
+	 */
+
+	init() {
 		const publishButton = this.one('.button-holder button[type="submit"]');
 
 		if (publishButton) {
-			this.eventHandler_.add(
-				publishButton.addEventListener('click', (e) => {
-					this.publish_(e);
-				})
-			);
+
+			// this.eventHandler_.add(
+
+			publishButton.addEventListener('click', (e) => {
+				this.publish_(e);
+			});
+
+			// );
+
 		}
 
 		const saveButton = this.one('#saveButton');
 
 		if (saveButton) {
-			this.eventHandler_.add(
-				saveButton.addEventListener('click', (e) => {
-					this.saveDraft_(e);
-				})
-			);
+
+			// this.eventHandler_.add(
+
+			saveButton.addEventListener('click', (e) => {
+				this.saveDraft_(e);
+			});
+
+			// );
+
 		}
 
 		const advancedReplyLink = this.one('.advanced-reply');
 
 		if (advancedReplyLink) {
-			this.eventHandler_.add(
-				advancedReplyLink.addEventListener('click', (e) => {
-					this.openAdvancedReply_(e);
-				})
-			);
+
+			// this.eventHandler_.add(
+
+			advancedReplyLink.addEventListener('click', (e) => {
+				this.openAdvancedReply_(e);
+			});
+
+			// );
+
 		}
+
+		// MOVE INTO CONSTRUCTOR
 
 		const searchContainerId = this.ns('messageAttachments');
 
 		Liferay.componentReady(searchContainerId).then((searchContainer) => {
-			this.eventHandler_.add(
-				searchContainer
-					.get('contentBox')
-					.delegate(
-						'click',
-						this.removeAttachment_.bind(this),
-						'.delete-attachment'
-					)
-			);
+
+			// this.eventHandler_.add(
+
+			searchContainer
+				.get('contentBox')
+				.delegate(
+					'click',
+					this.removeAttachment_.bind(this),
+					'.delete-attachment'
+				);
+
+			// );
 
 			this.searchContainer_ = searchContainer;
 		});
@@ -118,10 +173,10 @@ class MBPortlet extends PortletBase {
 	 * @inheritDoc
 	 */
 
-	detached() {
-		super.detached();
-		this.eventHandler_.removeAllListeners();
-	}
+	// detached() {
+	// 	super.detached();
+	// 	this.eventHandler_.removeAllListeners();
+	// }
 
 	/**
 	 * Redirects to the advanced reply page
@@ -348,80 +403,80 @@ class MBPortlet extends PortletBase {
  * @type {!Object}
  */
 
-MBPortlet.STATE = {
+// MBPortlet.STATE = {
 
-	/**
-	 * Portlet's constants
-	 * @instance
-	 * @memberof MBPortlet
-	 * @type {!Object}
-	 */
+// 	/**
+// 	 * Portlet's constants
+// 	 * @instance
+// 	 * @memberof MBPortlet
+// 	 * @type {!Object}
+// 	 */
 
-	constants: {
-		validator: core.isObject,
-	},
+// 	constants: {
+// 		validator: core.isObject,
+// 	},
 
-	/**
-	 * The current action (CMD.ADD, CMD.UPDATE, ...)
-	 * for the message
-	 * @instance
-	 * @memberof MBPortlet
-	 * @type {String}
-	 */
+// 	/**
+// 	 * The current action (CMD.ADD, CMD.UPDATE, ...)
+// 	 * for the message
+// 	 * @instance
+// 	 * @memberof MBPortlet
+// 	 * @type {String}
+// 	 */
 
-	currentAction: {
-		validator: core.isString,
-	},
+// 	currentAction: {
+// 		validator: core.isString,
+// 	},
 
-	/**
-	 * The URL to get deleted attachments from
-	 * @instance
-	 * @memberof MBPortlet
-	 * @type {String}
-	 */
+// 	/**
+// 	 * The URL to get deleted attachments from
+// 	 * @instance
+// 	 * @memberof MBPortlet
+// 	 * @type {String}
+// 	 */
 
-	getAttachmentsURL: {
-		validator: core.isString,
-	},
+// 	getAttachmentsURL: {
+// 		validator: core.isString,
+// 	},
 
-	/**
-	 * The id of the message that
-	 * you are replying to
-	 * @instance
-	 * @memberof MBPortlet
-	 * @type {String}
-	 */
+// 	/**
+// 	 * The id of the message that
+// 	 * you are replying to
+// 	 * @instance
+// 	 * @memberof MBPortlet
+// 	 * @type {String}
+// 	 */
 
-	replyToMessageId: {
-		validator: core.isString,
-	},
+// 	replyToMessageId: {
+// 		validator: core.isString,
+// 	},
 
-	/**
-	 * Portlet's messages
-	 * @instance
-	 * @memberof WikiPortlet
-	 * @type {Object}
-	 */
+// 	/**
+// 	 * Portlet's messages
+// 	 * @instance
+// 	 * @memberof WikiPortlet
+// 	 * @type {Object}
+// 	 */
 
-	strings: {
-		validator: core.isObject,
-		value: {
-			confirmDiscardImages: Liferay.Language.get(
-				'uploads-are-in-progress-confirmation'
-			),
-		},
-	},
+// 	strings: {
+// 		validator: core.isObject,
+// 		value: {
+// 			confirmDiscardImages: Liferay.Language.get(
+// 				'uploads-are-in-progress-confirmation'
+// 			),
+// 		},
+// 	},
 
-	/**
-	 * The URL to edit deleted attachments
-	 * @instance
-	 * @memberof MBPortlet
-	 * @type {String}
-	 */
+// 	/**
+// 	 * The URL to edit deleted attachments
+// 	 * @instance
+// 	 * @memberof MBPortlet
+// 	 * @type {String}
+// 	 */
 
-	viewTrashAttachmentsURL: {
-		validator: core.isString,
-	},
-};
+// 	viewTrashAttachmentsURL: {
+// 		validator: core.isString,
+// 	},
+// };
 
 export default MBPortlet;
