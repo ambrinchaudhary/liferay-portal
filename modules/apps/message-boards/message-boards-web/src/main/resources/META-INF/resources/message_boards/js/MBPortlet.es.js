@@ -14,9 +14,6 @@
 
 import {fetch} from 'frontend-js-web';
 
-// import core from 'metal';
-// import {EventHandler} from 'metal-events';
-
 const RECENTLY_REMOVED_ATTACHMENTS = {
 	multiple: Liferay.Language.get('x-recently-removed-attachments'),
 	single: Liferay.Language.get('x-recently-removed-attachment'),
@@ -32,10 +29,10 @@ const RECENTLY_REMOVED_ATTACHMENTS = {
 
 class MBPortlet {
 	constructor({
-		namespace,
 		constants,
 		currentAction,
 		getAttachmentsURL,
+		namespace,
 		rootNode,
 		viewTrashAttachmentsURL,
 	}) {
@@ -43,11 +40,10 @@ class MBPortlet {
 		this.constants = constants;
 		this.currentAction = currentAction;
 		this.getAttachmentsURL = getAttachmentsURL;
-		this.rootNode = document.querySelector(rootNode);
+		this.rootNode = document.getElementById(rootNode);
 		this.viewTrashAttachmentsURL = viewTrashAttachmentsURL;
 
-		// this.init();
-
+		this.init();
 	}
 
 	namespaceSelectors_(selectors) {
@@ -69,69 +65,34 @@ class MBPortlet {
 		return `${this.namespace}${name}`;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-
-	// created() {
-	// 	this.eventHandler_ = new EventHandler();
-	// }
-
-	/**
-	 * @inheritDoc
-	 */
-
 	init() {
 		const publishButton = this.one('.button-holder button[type="submit"]');
 
 		if (publishButton) {
-
-			// this.eventHandler_.add(
-
 			publishButton.addEventListener('click', (e) => {
 				this.publish_(e);
 			});
-
-			// );
-
 		}
 
 		const saveButton = this.one('#saveButton');
 
 		if (saveButton) {
-
-			// this.eventHandler_.add(
-
 			saveButton.addEventListener('click', (e) => {
 				this.saveDraft_(e);
 			});
-
-			// );
-
 		}
 
 		const advancedReplyLink = this.one('.advanced-reply');
 
 		if (advancedReplyLink) {
-
-			// this.eventHandler_.add(
-
 			advancedReplyLink.addEventListener('click', (e) => {
 				this.openAdvancedReply_(e);
 			});
-
-			// );
-
 		}
-
-		// MOVE INTO CONSTRUCTOR
 
 		const searchContainerId = this.ns('messageAttachments');
 
 		Liferay.componentReady(searchContainerId).then((searchContainer) => {
-
-			// this.eventHandler_.add(
-
 			searchContainer
 				.get('contentBox')
 				.delegate(
@@ -139,8 +100,6 @@ class MBPortlet {
 					this.removeAttachment_.bind(this),
 					'.delete-attachment'
 				);
-
-			// );
 
 			this.searchContainer_ = searchContainer;
 		});
@@ -173,10 +132,11 @@ class MBPortlet {
 	 * @inheritDoc
 	 */
 
-	// detached() {
-	// 	super.detached();
-	// 	this.eventHandler_.removeAllListeners();
-	// }
+	detached() {
+
+		// TODO : implement a destroy
+
+	}
 
 	/**
 	 * Redirects to the advanced reply page
