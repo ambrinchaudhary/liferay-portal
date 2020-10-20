@@ -12,80 +12,92 @@
  * details.
  */
 
-import {PortletBase, fetch} from 'frontend-js-web';
-import core from 'metal';
-import {EventHandler} from 'metal-events';
+import {fetch} from 'frontend-js-web';
 
 const RECENTLY_REMOVED_ATTACHMENTS = {
 	multiple: Liferay.Language.get('x-recently-removed-attachments'),
 	single: Liferay.Language.get('x-recently-removed-attachment'),
 };
 
+const CONFIRM_DISCARD_IMAGES = Liferay.Language.get(
+	'uploads-are-in-progress-confirmation'
+);
+
 /**
  * MBPortlet handles the actions of replying or editing a
  * message board.
- *
- * @abstract
- * @extends {PortletBase}
  */
 
-class MBPortlet extends PortletBase {
+class MBPortlet {
+	constructor({
+		constants,
+		currentAction,
+		getAttachmentsURL,
+		namespace,
+		replyToMessageId,
+		rootNode,
+		strings = {
+			confirmDiscardImages: CONFIRM_DISCARD_IMAGES,
+		},
+		viewTrashAttachmentsURL,
+	}) {
+		this.namespace = namespace;
+		this.constants = constants;
+		this.currentAction = currentAction;
+		this.getAttachmentsURL = getAttachmentsURL;
+		this.replyToMessageId = replyToMessageId;
+		this.rootNode = document.getElementById(rootNode);
+		this.strings = strings;
+		this.viewTrashAttachmentsURL = viewTrashAttachmentsURL;
 
-	/**
-	 * @inheritDoc
-	 */
+		this._workflowActionInput = this.rootNode.querySelector(
+			`#${this.namespace}workflowAction`
+		);
 
-	created() {
-		this.eventHandler_ = new EventHandler();
+		this._init();
 	}
 
-	/**
-	 * @inheritDoc
-	 */
-
-	attached() {
-		const publishButton = this.one('.button-holder button[type="submit"]');
+	_init() {
+		const publishButton = this.rootNode.querySelector(
+			'.button-holder button[type="submit"]'
+		);
 
 		if (publishButton) {
-			this.eventHandler_.add(
-				publishButton.addEventListener('click', (e) => {
-					this.publish_(e);
-				})
-			);
+			publishButton.addEventListener('click', (e) => {
+				this._publish(e);
+			});
 		}
 
-		const saveButton = this.one('#saveButton');
+		const saveButton = this.rootNode.querySelector(
+			`#${this.namespace}saveButton`
+		);
 
 		if (saveButton) {
-			this.eventHandler_.add(
-				saveButton.addEventListener('click', (e) => {
-					this.saveDraft_(e);
-				})
-			);
+			saveButton.addEventListener('click', (e) => {
+				this._saveDraft(e);
+			});
 		}
 
-		const advancedReplyLink = this.one('.advanced-reply');
+		const advancedReplyLink = this.rootNode.querySelector(
+			'.advanced-reply'
+		);
 
 		if (advancedReplyLink) {
-			this.eventHandler_.add(
-				advancedReplyLink.addEventListener('click', (e) => {
-					this.openAdvancedReply_(e);
-				})
-			);
+			advancedReplyLink.addEventListener('click', (e) => {
+				this._openAdvancedReply(e);
+			});
 		}
 
-		const searchContainerId = this.ns('messageAttachments');
+		const searchContainerId = `${this.namespace}messageAttachments`;
 
 		Liferay.componentReady(searchContainerId).then((searchContainer) => {
-			this.eventHandler_.add(
-				searchContainer
-					.get('contentBox')
-					.delegate(
-						'click',
-						this.removeAttachment_.bind(this),
-						'.delete-attachment'
-					)
-			);
+			searchContainer
+				.get('contentBox')
+				.delegate(
+					'click',
+					this._removeAttachment.bind(this),
+					'.delete-attachment'
+				);
 
 			this.searchContainer_ = searchContainer;
 		});
@@ -101,7 +113,7 @@ class MBPortlet extends PortletBase {
 						on: {
 							visibleChange: (event) => {
 								if (!event.newVal) {
-									this.updateRemovedAttachments_();
+									this._updateRemovedAttachments();
 								}
 							},
 						},
@@ -115,36 +127,27 @@ class MBPortlet extends PortletBase {
 	}
 
 	/**
-	 * @inheritDoc
-	 */
-
-	detached() {
-		super.detached();
-		this.eventHandler_.removeAllListeners();
-	}
-
-	/**
 	 * Redirects to the advanced reply page
 	 * keeping the current message.
 	 *
 	 * @protected
 	 */
 
-	openAdvancedReply_() {
-		const inputNode = this.one('#body');
-		inputNode.value = window[
-			this.ns('replyMessageBody' + this.replyToMessageId)
+	_openAdvancedReply() {
+		const bodyInput = this.rootNode.querySelector(`#${this.namespace}body`);
+		bodyInput.value = window[
+			`${this.namespace}replyMessageBody${this.replyToMessageId}`
 		].getHTML();
 
-		const form = this.one(
-			`[name="${this.ns('advancedReplyFm' + this.replyToMessageId)}"]`
+		const form = this.rootNode.querySelector(
+			`[name="${this.namespace}advancedReplyFm${this.replyToMessageId}"]`
 		);
 
 		const advancedReplyInputNode = form.querySelector(
-			`[name="${this.ns('body')}"]`
+			`[name="${this.namespace}body"]`
 		);
 
-		advancedReplyInputNode.value = inputNode.value;
+		advancedReplyInputNode.value = bodyInput.value;
 
 		submitForm(form);
 	}
@@ -155,9 +158,9 @@ class MBPortlet extends PortletBase {
 	 * @protected
 	 */
 
-	publish_() {
-		this.one('#workflowAction').value = this.constants.ACTION_PUBLISH;
-		this.save_();
+	_publish() {
+		this._workflowActionInput.value = this.constants.ACTION_PUBLISH;
+		this._save();
 	}
 
 	/**
@@ -168,8 +171,10 @@ class MBPortlet extends PortletBase {
 	 * @protected
 	 */
 
-	save_() {
-		const tempImages = this.all('img[data-random-id]');
+	_save() {
+		const tempImages = this.rootNode.querySelectorAll(
+			'img[data-random-id]'
+		);
 
 		if (tempImages.length > 0) {
 			if (confirm(this.strings.confirmDiscardImages)) {
@@ -177,11 +182,11 @@ class MBPortlet extends PortletBase {
 					node.parentElement.remove();
 				});
 
-				this.submitForm_();
+				this._submitForm();
 			}
 		}
 		else {
-			this.submitForm_();
+			this._submitForm();
 		}
 	}
 
@@ -192,7 +197,7 @@ class MBPortlet extends PortletBase {
 	 * @param {Event} event The click event that triggered the remove action
 	 */
 
-	removeAttachment_(event) {
+	_removeAttachment(event) {
 		const link = event.currentTarget;
 
 		const deleteURL = link.getAttribute('data-url');
@@ -206,7 +211,7 @@ class MBPortlet extends PortletBase {
 			);
 			searchContainer.updateDataStore();
 
-			this.updateRemovedAttachments_();
+			this._updateRemovedAttachments();
 		});
 	}
 
@@ -216,7 +221,7 @@ class MBPortlet extends PortletBase {
 	 * @protected
 	 */
 
-	updateRemovedAttachments_() {
+	_updateRemovedAttachments() {
 		fetch(this.getAttachmentsURL)
 			.then((res) => res.json())
 			.then((attachments) => {
@@ -276,16 +281,18 @@ class MBPortlet extends PortletBase {
 	 * @protected
 	 */
 
-	updateMultipleMBMessageAttachments_() {
-		const selectedFileNameContainer = this.one(
-			'#selectedFileNameContainer'
+	_updateMultipleMBMessageAttachments() {
+		const selectedFileNameContainer = this.rootNode.querySelector(
+			`#${this.namespace}selectedFileNameContainer`
 		);
 
 		if (selectedFileNameContainer) {
-			const inputName = this.ns('selectUploadedFile');
+			const inputName = `${this.namespace}selectUploadedFile`;
 
 			const input = [].slice.call(
-				this.all(`input[name=${inputName}]:checked`)
+				this.rootNode.querySelectorAll(
+					`input[name=${inputName}]:checked`
+				)
 			);
 
 			const data = input
@@ -308,24 +315,30 @@ class MBPortlet extends PortletBase {
 	 * @protected
 	 */
 
-	submitForm_() {
-		this.one('#' + this.constants.CMD).value = this.currentAction;
+	_submitForm() {
+		this.rootNode.querySelector(
+			`#${this.namespace}${this.constants.CMD}`
+		).value = this.currentAction;
 
-		this.updateMultipleMBMessageAttachments_();
+		this._updateMultipleMBMessageAttachments();
+
+		const bodyInput = this.rootNode.querySelector(`#${this.namespace}body`);
 
 		if (this.replyToMessageId) {
-			this.one('#body').value = window[
-				this.ns('replyMessageBody' + this.replyToMessageId)
+			bodyInput.value = window[
+				`${this.namespace}replyMessageBody${this.replyToMessageId}`
 			].getHTML();
 
 			submitForm(
-				document[this.ns('addQuickReplyFm' + this.replyToMessageId)]
+				document[
+					`${this.namespace}addQuickReplyFm${this.replyToMessageId}`
+				]
 			);
 		}
 		else {
-			this.one('#body').value = window[this.ns('bodyEditor')].getHTML();
+			bodyInput.value = window[`${this.namespace}bodyEditor`].getHTML();
 
-			submitForm(document[this.ns('fm')]);
+			submitForm(document[`${this.namespace}fm`]);
 		}
 	}
 
@@ -335,93 +348,10 @@ class MBPortlet extends PortletBase {
 	 * @protected
 	 */
 
-	saveDraft_() {
-		this.one('#workflowAction').value = this.constants.ACTION_SAVE_DRAFT;
-		this.save_();
+	_saveDraft() {
+		this._workflowActionInput.value = this.constants.ACTION_SAVE_DRAFT;
+		this._save();
 	}
 }
-
-/**
- * MBPortlet State definition.
- * @ignore
- * @static
- * @type {!Object}
- */
-
-MBPortlet.STATE = {
-
-	/**
-	 * Portlet's constants
-	 * @instance
-	 * @memberof MBPortlet
-	 * @type {!Object}
-	 */
-
-	constants: {
-		validator: core.isObject,
-	},
-
-	/**
-	 * The current action (CMD.ADD, CMD.UPDATE, ...)
-	 * for the message
-	 * @instance
-	 * @memberof MBPortlet
-	 * @type {String}
-	 */
-
-	currentAction: {
-		validator: core.isString,
-	},
-
-	/**
-	 * The URL to get deleted attachments from
-	 * @instance
-	 * @memberof MBPortlet
-	 * @type {String}
-	 */
-
-	getAttachmentsURL: {
-		validator: core.isString,
-	},
-
-	/**
-	 * The id of the message that
-	 * you are replying to
-	 * @instance
-	 * @memberof MBPortlet
-	 * @type {String}
-	 */
-
-	replyToMessageId: {
-		validator: core.isString,
-	},
-
-	/**
-	 * Portlet's messages
-	 * @instance
-	 * @memberof WikiPortlet
-	 * @type {Object}
-	 */
-
-	strings: {
-		validator: core.isObject,
-		value: {
-			confirmDiscardImages: Liferay.Language.get(
-				'uploads-are-in-progress-confirmation'
-			),
-		},
-	},
-
-	/**
-	 * The URL to edit deleted attachments
-	 * @instance
-	 * @memberof MBPortlet
-	 * @type {String}
-	 */
-
-	viewTrashAttachmentsURL: {
-		validator: core.isString,
-	},
-};
 
 export default MBPortlet;
