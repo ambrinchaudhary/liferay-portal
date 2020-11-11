@@ -40,7 +40,7 @@ definition {
 			value1 = "${maxHeight}");
 
 		if (isSet(addHighDensityDisplay)) {
-			Check(locator1 = "Checkbox#ADD_HIGH_DENSITY_DISPLAY");
+			Check.checkNotVisible(locator1 = "Checkbox#ADD_HIGH_DENSITY_DISPLAY");
 		}
 
 		if (isSet(customID)) {
