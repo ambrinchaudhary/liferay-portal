@@ -28,6 +28,12 @@ RedirectNotFoundEntriesManagementToolbarDisplayContext redirectNotFoundEntriesMa
 	displayContext="<%= redirectNotFoundEntriesManagementToolbarDisplayContext %>"
 />
 
+<clay:management-toolbar
+	additionalProps="<%= redirectNotFoundEntriesManagementToolbarDisplayContext.getAdditionalProps() %>"
+	managementToolbarDisplayContext="<%= redirectNotFoundEntriesManagementToolbarDisplayContext %>"
+	propsTransformer="js/RedirectNotFoundEntriesManagementToolbarPropsTransformer"
+/>
+
 <aui:form action="<%= redirectNotFoundEntriesSearchContainer.getIteratorURL() %>" cssClass="container-fluid container-fluid-max-xl" name="fm">
 
 	<%

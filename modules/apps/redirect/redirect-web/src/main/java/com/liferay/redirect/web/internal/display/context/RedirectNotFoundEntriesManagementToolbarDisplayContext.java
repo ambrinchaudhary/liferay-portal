@@ -86,6 +86,29 @@ public class RedirectNotFoundEntriesManagementToolbarDisplayContext
 		).build();
 	}
 
+	public Map<String, Object> getAdditionalProps() {
+		return HashMapBuilder.<String, Object>put(
+			"editRedirectNotFoundEntriesURL",
+			() -> {
+				ActionURL editRedirectNotFoundEntriesURL =
+					liferayPortletResponse.createActionURL();
+
+				editRedirectNotFoundEntriesURL.setParameter(
+					ActionRequest.ACTION_NAME,
+					"/redirect/edit_redirect_not_found_entry");
+
+				ThemeDisplay themeDisplay =
+					(ThemeDisplay)httpServletRequest.getAttribute(
+						WebKeys.THEME_DISPLAY);
+
+				editRedirectNotFoundEntriesURL.setParameter(
+					"redirect", themeDisplay.getURLCurrent());
+
+				return editRedirectNotFoundEntriesURL.toString();
+			}
+		).build();
+	}
+
 	public String getAvailableActions(
 		RedirectNotFoundEntry redirectNotFoundEntry) {
 
