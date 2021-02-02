@@ -19,7 +19,7 @@ export default function propsTransformer({
 	portletNamespace,
 	...otherProps
 }) {
-    const deleteSelectedRedirectEntries = () => {
+	const deleteSelectedRedirectEntries = () => {
 		const form = document.getElementById(`${portletNamespace}fm`);
 
 		postForm(form, {
@@ -31,7 +31,7 @@ export default function propsTransformer({
 			},
 			url: deleteRedirectEntriesURL,
 		});
-	}
+	};
 
 	return {
 		...otherProps,

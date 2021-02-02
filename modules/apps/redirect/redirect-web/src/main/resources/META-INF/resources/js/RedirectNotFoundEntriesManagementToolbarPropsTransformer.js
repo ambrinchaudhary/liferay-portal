@@ -19,7 +19,7 @@ export default function propsTransformer({
 	portletNamespace,
 	...otherProps
 }) {
-	const ignoreSelectedRedirectNotFoundEntries= () => {
+	const ignoreSelectedRedirectNotFoundEntries = () => {
 		const form = document.getElementById(`${portletNamespace}fm`);
 
 		postForm(form, {
@@ -32,7 +32,7 @@ export default function propsTransformer({
 			},
 			url: editRedirectNotFoundEntriesURL,
 		});
-	}
+	};
 
 	const unignoreSelectedRedirectNotFoundEntries = () => {
 		const form = document.getElementById(`${portletNamespace}fm`);
@@ -47,14 +47,14 @@ export default function propsTransformer({
 			},
 			url: editRedirectNotFoundEntriesURL,
 		});
-	}
+	};
 
 	return {
 		...otherProps,
 		onActionButtonClick: (event, {item}) => {
-            const action = item?.data?.action || '';
+			const action = item?.data?.action || '';
 
-		 	if (action === 'ignoreSelectedRedirectNotFoundEntries') {
+			if (action === 'ignoreSelectedRedirectNotFoundEntries') {
 				ignoreSelectedRedirectNotFoundEntries();
 			}
 			else if (action === 'unignoreSelectedRedirectNotFoundEntries') {
