@@ -115,22 +115,6 @@ public class RedirectManagementToolbarDisplayContext
 		return clearResultsURL.toString();
 	}
 
-	public Map<String, Object> getComponentContext() {
-		return HashMapBuilder.<String, Object>put(
-			"deleteRedirectEntriesURL",
-			() -> {
-				PortletURL deleteRedirectEntriesURL =
-					liferayPortletResponse.createActionURL();
-
-				deleteRedirectEntriesURL.setParameter(
-					ActionRequest.ACTION_NAME,
-					"/redirect/delete_redirect_entry");
-
-				return deleteRedirectEntriesURL.toString();
-			}
-		).build();
-	}
-
 	@Override
 	public CreationMenu getCreationMenu() {
 		if (!RedirectPermission.contains(

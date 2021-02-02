@@ -29,9 +29,6 @@ RedirectManagementToolbarDisplayContext redirectManagementToolbarDisplayContext 
 %>
 
 <c:if test="<%= !stagingGroup %>">
-	<clay:management-toolbar-v2
-		displayContext="<%= redirectManagementToolbarDisplayContext %>"
-	/>
 	<clay:management-toolbar
 		additionalProps="<%= redirectManagementToolbarDisplayContext.getAdditionalProps() %>"
 		managementToolbarDisplayContext="<%= redirectManagementToolbarDisplayContext %>"
@@ -154,12 +151,6 @@ RedirectManagementToolbarDisplayContext redirectManagementToolbarDisplayContext 
 		</clay:container-fluid>
 	</div>
 </div>
-
-<liferay-frontend:component
-	componentId="<%= redirectManagementToolbarDisplayContext.getDefaultEventHandler() %>"
-	context="<%= redirectManagementToolbarDisplayContext.getComponentContext() %>"
-	module="js/RedirectManagementToolbarDefaultEventHandler.es"
-/>
 
 <aui:script require="frontend-js-web/liferay/delegate/delegate.es as delegateModule">
 	var delegate = delegateModule.default;
