@@ -17,8 +17,6 @@ import React from 'react';
 
 import {Editor} from './Editor';
 
-import '../css/main.scss';
-
 const BalloonEditor = ({config = {}, contents, name, ...otherProps}) => {
 	const defaultExtraPlugins = 'balloontoolbar,floatingspace';
 
@@ -42,6 +40,13 @@ const BalloonEditor = ({config = {}, contents, name, ...otherProps}) => {
 				CKEDITOR.disableAutoInline = true;
 			}}
 			onInstanceReady={(event) => {
+				//hide the floating toolbar
+				const floatingToolbar = document.getElementById(`cke_${name}`);
+
+				if (floatingToolbar) {
+					floatingToolbar.querySelector('.cke_top').style.display='none';
+				}
+
 				const editor = event.editor;
 
 				const balloonToolbars = editor.balloonToolbars;
