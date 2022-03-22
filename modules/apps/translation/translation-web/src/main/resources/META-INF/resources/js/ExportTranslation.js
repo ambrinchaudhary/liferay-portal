@@ -13,7 +13,7 @@
  */
 
 import ClayButton from '@clayui/button';
-import ClayForm, {ClayCheckbox, ClayInput, ClaySelect} from '@clayui/form';
+import ClayForm, {ClayCheckbox, ClayInput, ClayRadio, ClayRadioGroup, ClaySelect} from '@clayui/form';
 import ClayLayout from '@clayui/layout';
 import ClayLink from '@clayui/link';
 import ClayList from '@clayui/list';
@@ -24,62 +24,43 @@ import React, {useState} from 'react';
 const Experiences = ({
 	experiences,
 	onChangeExperience,
-	selectedExperiencesIds,
+	portletNamespace,
+	selectedExperience,
 }) => {
 	if (experiences?.length > 1) {
 		return (
 			<>
 				<label className="mb-2">
-					{Liferay.Language.get('select-experiences')}
+					{Liferay.Language.get('export-experiences')}
 				</label>
-				<ClayList className="translation-experiences-wrapper">
-					{experiences.map(({label, segment, value}) => {
-						const checked =
-							selectedExperiencesIds.indexOf(value) !== -1;
-						const inputId = `experience_${value}`;
 
-						return (
-							<ClayList.Item flex key={value}>
-								<ClayList.ItemField>
-									<ClayCheckbox
-										checked={checked}
-										id={inputId}
-										onChange={() => {
-											onChangeExperience(!checked, value);
-										}}
-										value={value}
-									/>
-								</ClayList.ItemField>
+				<ClayRadioGroup
+					name={`${portletNamespace}exportExperience`}
+					onSelectedValueChange={onChangeExperience}
+					selectedValue={selectedExperience}
+				>
+					<ClayRadio
+						label={Liferay.Language.get('default-experience')}
+						value="default"
+					>
+						<div className="form-text">
+							{Liferay.Language.get(
+								'export-default-experience-help-message'
+							)}
+						</div>
+					</ClayRadio>
 
-								<ClayList.ItemField expand>
-									<ClayLayout.ContentRow
-										className="list-group-label"
-										containerElement="label"
-										htmlFor={inputId}
-									>
-										<ClayLayout.ContentCol className="translation-experience-name">
-											<div
-												className="text-truncate"
-												title={label}
-											>
-												{label}
-											</div>
-										</ClayLayout.ContentCol>
-
-										<ClayLayout.ContentCol
-											className="text-right"
-											expand
-										>
-											<span className="small text-secondary text-truncate">
-												{segment}
-											</span>
-										</ClayLayout.ContentCol>
-									</ClayLayout.ContentRow>
-								</ClayList.ItemField>
-							</ClayList.Item>
-						);
-					})}
-				</ClayList>
+					<ClayRadio
+						label={Liferay.Language.get('all-experiences')}
+						value="all"
+					>
+						<div className="form-text">
+							{Liferay.Language.get(
+								'export-all-experiences-help-message'
+							)}
+						</div>
+					</ClayRadio>
+				</ClayRadioGroup>
 			</>
 		);
 	}
@@ -220,14 +201,12 @@ const ExportTranslation = ({
 		);
 	};
 
-	const onChangeExperience = (checked, selectedExperienceId) => {
-		setSelectedExperiencesIds((experiencesIds) =>
-			checked
-				? experiencesIds.concat(selectedExperienceId)
-				: experiencesIds.filter(
-						(experienceId) => experienceId !== selectedExperienceId
-				  )
-		);
+	const [selectedExperienceValue, setSelectedExperienceValue] = useState(
+		'default'
+	);
+
+	const onChangeExperience = (value) => {
+		setSelectedExperienceValue(value);
 	};
 
 	return (
@@ -306,7 +285,8 @@ const ExportTranslation = ({
 			<Experiences
 				experiences={experiences}
 				onChangeExperience={onChangeExperience}
-				selectedExperiencesIds={selectedExperiencesIds}
+				portletNamespace={portletNamespace}
+				selectedExperience={selectedExperienceValue}
 			/>
 
 			<ClayButton.Group spaced>
