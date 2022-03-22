@@ -20,6 +20,10 @@ import {addParams} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
+const EXPORT_DEFAULT="default";
+
+const EXPORT_ALL="all";
+
 const Experiences = ({
 	experiences,
 	onChangeExperience,
@@ -40,7 +44,7 @@ const Experiences = ({
 				>
 					<ClayRadio
 						label={Liferay.Language.get('default-experience')}
-						value="default"
+						value={EXPORT_DEFAULT}
 					>
 						<div className="form-text">
 							{Liferay.Language.get(
@@ -51,7 +55,7 @@ const Experiences = ({
 
 					<ClayRadio
 						label={Liferay.Language.get('all-experiences')}
-						value="all"
+						value={EXPORT_ALL}
 					>
 						<div className="form-text">
 							{Liferay.Language.get(
@@ -197,7 +201,7 @@ const ExportTranslation = ({
 	};
 
 	const [selectedExperienceValue, setSelectedExperienceValue] = useState(
-		'default'
+		EXPORT_DEFAULT
 	);
 
 	const onChangeExperience = (value) => {
