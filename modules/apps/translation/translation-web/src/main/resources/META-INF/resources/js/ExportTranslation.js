@@ -16,7 +16,6 @@ import ClayButton from '@clayui/button';
 import ClayForm, {ClayCheckbox, ClayInput, ClayRadio, ClayRadioGroup, ClaySelect} from '@clayui/form';
 import ClayLayout from '@clayui/layout';
 import ClayLink from '@clayui/link';
-import ClayList from '@clayui/list';
 import {addParams} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
@@ -182,10 +181,6 @@ const ExportTranslation = ({
 		[]
 	);
 
-	const [selectedExperiencesIds, setSelectedExperiencesIds] = useState(() =>
-		experiences?.length ? experiences.map(({value}) => value) : []
-	);
-
 	const exportTranslationURL = addParams(
 		'download=true',
 		initialExportTranslationURL
@@ -219,12 +214,6 @@ const ExportTranslation = ({
 					sourceLanguageId,
 					targetLanguageIds: selectedTargetLanguageIds.join(','),
 				};
-
-				if (selectedExperiencesIds.length) {
-					params.segmentsExperienceIds = selectedExperiencesIds.join(
-						','
-					);
-				}
 
 				location.href = addParams(params, exportTranslationURL);
 			}}
@@ -292,9 +281,7 @@ const ExportTranslation = ({
 			<ClayButton.Group spaced>
 				<ClayButton
 					disabled={
-						selectedTargetLanguageIds.length === 0 ||
-						(experiences?.length > 1 &&
-							selectedExperiencesIds.length === 0)
+						selectedTargetLanguageIds.length === 0
 					}
 					displayType="primary"
 					type="submit"
