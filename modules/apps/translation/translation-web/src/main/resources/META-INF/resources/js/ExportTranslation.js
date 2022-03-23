@@ -32,7 +32,7 @@ const Experiences = ({
 }) => {
 	if (experiences?.length > 1) {
 		return (
-			<>
+			<div className="mb-5">
 				<label className="mb-2">
 					{Liferay.Language.get('export-experiences')}
 				</label>
@@ -64,7 +64,7 @@ const Experiences = ({
 						</div>
 					</ClayRadio>
 				</ClayRadioGroup>
-			</>
+			</div>
 		);
 	}
 
