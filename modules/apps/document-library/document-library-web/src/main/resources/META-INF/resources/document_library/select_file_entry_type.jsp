@@ -16,109 +16,11 @@
 
 <%@ include file="/document_library/init.jsp" %>
 
-<%
-long fileEntryTypeId = ParamUtil.getLong(request, "fileEntryTypeId");
-String eventName = ParamUtil.getString(request, "eventName", liferayPortletResponse.getNamespace() + "selectFileEntryType");
+<section class="h-100">
+	<span aria-hidden="true" class="loading-animation mt-0 tree-filter-loader"></span>
 
-long[] groupIds = PortalUtil.getCurrentAndAncestorSiteGroupIds(scopeGroupId);
-
-PortletURL portletURL = PortletURLBuilder.createRenderURL(
-	renderResponse
-).setMVCPath(
-	"/document_library/select_file_entry_type.jsp"
-).setParameter(
-	"eventName", eventName
-).buildPortletURL();
-%>
-
-<clay:navigation-bar
-	navigationItems='<%=
-		new JSPNavigationItemList(pageContext) {
-			{
-				add(
-					navigationItem -> {
-						navigationItem.setActive(true);
-						navigationItem.setLabel(LanguageUtil.get(httpServletRequest, "document-types"));
-					});
-			}
-		}
-	%>'
-/>
-
-<aui:form action="<%= portletURL %>" cssClass="container-fluid container-fluid-max-xl" method="post" name="selectFileEntryTypeFm">
-	<liferay-ui:search-container
-		iteratorURL="<%= portletURL %>"
-	>
-		<liferay-ui:search-container-results
-			results="<%= DLFileEntryTypeServiceUtil.getFileEntryTypes(groupIds) %>"
-		/>
-
-		<liferay-ui:search-container-row
-			className="com.liferay.document.library.kernel.model.DLFileEntryType"
-			cssClass="select-action"
-			modelVar="fileEntryType"
-		>
-
-			<%
-			if (fileEntryTypeId == fileEntryType.getFileEntryTypeId()) {
-				row.setCssClass("select-action active");
-			}
-
-			row.setData(
-				HashMapBuilder.<String, Object>put(
-					"fileEntryTypeId", fileEntryType.getFileEntryTypeId()
-				).build());
-			%>
-
-			<liferay-ui:search-container-column-icon
-				icon="edit-layout"
-			/>
-
-			<liferay-ui:search-container-column-text
-				colspan="<%= 2 %>"
-			>
-				<h5>
-					<aui:a href="#">
-						<%= HtmlUtil.escape(fileEntryType.getName(locale)) %>
-					</aui:a>
-				</h5>
-
-				<h6 class="text-default">
-					<span><%= fileEntryType.getDescription(locale) %></span>
-				</h6>
-			</liferay-ui:search-container-column-text>
-		</liferay-ui:search-container-row>
-
-		<liferay-ui:search-iterator
-			displayStyle="descriptive"
-			markupView="lexicon"
-		/>
-	</liferay-ui:search-container>
-</aui:form>
-
-<aui:script use="aui-base">
-	var form = A.one('#<portlet:namespace />selectFileEntryTypeFm');
-
-	form.delegate(
-		'click',
-		(event) => {
-			event.preventDefault();
-
-			var currentTarget = event.currentTarget;
-
-			A.all('.select-action').removeClass('active');
-
-			currentTarget.addClass('active');
-
-			Liferay.Util.getOpener().Liferay.fire(
-				'<%= HtmlUtil.escapeJS(eventName) %>',
-				{
-					data: {
-						value: currentTarget.attr('data-fileEntryTypeId'),
-					},
-				}
-			);
-		},
-		'.select-action'
-	);
-</aui:script>
+	<react:component module="document_library/js/SelectTypeAndSubtype" props='<%=
+	HashMapBuilder.<String, Object>put(
+		"test", "test"
+	).build() %>' />
+</section>
