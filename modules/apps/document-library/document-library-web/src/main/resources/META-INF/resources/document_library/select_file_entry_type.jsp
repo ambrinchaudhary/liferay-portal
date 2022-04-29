@@ -24,3 +24,9 @@
 		"test", "test"
 	).build() %>' />
 </section>
+
+<script>
+	(function () {
+		document.body.classList.remove('cadmin');
+	})();
+</script>
