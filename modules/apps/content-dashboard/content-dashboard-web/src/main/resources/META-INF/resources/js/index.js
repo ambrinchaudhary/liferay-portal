@@ -13,3 +13,4 @@
  */
 
 export {default as SelectFileExtension} from './components/SelectFileExtension';
+export {default as SelectTypeAndSubtype} from './components/SelectTypeAndSubtype';
