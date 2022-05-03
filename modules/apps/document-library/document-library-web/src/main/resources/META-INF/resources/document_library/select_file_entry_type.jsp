@@ -17,7 +17,9 @@
 <%@ include file="/document_library/init.jsp" %>
 
 <section class="h-100">
-	<span aria-hidden="true" class="loading-animation mt-0 tree-filter-loader"></span>
+	<div class="align-items-center d-flex justify-content-center min-vh-100">
+		<span aria-hidden="true" class="loading-animation"></span>
+	</div>
 
 	<react:component module="document_library/js/SelectTypeAndSubtype" props='<%=
 	HashMapBuilder.<String, Object>put(
