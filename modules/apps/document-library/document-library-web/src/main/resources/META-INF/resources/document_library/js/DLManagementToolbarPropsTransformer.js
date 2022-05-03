@@ -320,6 +320,8 @@ export default function propsTransformer({
 		onFilterDropdownItemClick(event, {item}) {
 			if (item?.data?.action === 'openDocumentTypesSelector') {
 				openSelectionModal({
+					buttonAddLabel: Liferay.Language.get('select'),
+					height: '70vh',
 					multiple: true,
 					onSelect(selectedItems) {
 						if (selectedItems) {
@@ -336,6 +338,7 @@ export default function propsTransformer({
 						}
 					},
 					selectEventName: `${portletNamespace}selectFileEntryType`,
+					size: 'md',
 					title: Liferay.Language.get('select-document-type'),
 					url: selectFileEntryTypeURL,
 				});
