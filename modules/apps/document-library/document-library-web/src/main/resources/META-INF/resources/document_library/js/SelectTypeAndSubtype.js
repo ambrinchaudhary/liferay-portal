@@ -46,12 +46,14 @@ const testProps = {
 			label: 'Document',
 		},
 	],
-	itemSelectorSaveEvent:
-		'_com_liferay_content_dashboard_web_portlet_ContentDashboardAdminPortlet_selectedContentDashboardItemSubtype',
-	portletNamespace:
-		'_com_liferay_item_selector_web_portlet_ItemSelectorPortlet_',
 };
 
-export default function (props) {
-	return <SelectTypeAndSubtype {...testProps} />;
+export default function ({itemSelectorSaveEvent, portletNamespace}) {
+	return (
+		<SelectTypeAndSubtype
+			contentDashboardItemTypes={testProps.contentDashboardItemTypes}
+			itemSelectorSaveEvent={itemSelectorSaveEvent}
+			portletNamespace={portletNamespace}
+		/>
+	);
 }
