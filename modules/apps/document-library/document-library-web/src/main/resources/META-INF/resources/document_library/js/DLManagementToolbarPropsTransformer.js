@@ -320,12 +320,18 @@ export default function propsTransformer({
 		onFilterDropdownItemClick(event, {item}) {
 			if (item?.data?.action === 'openDocumentTypesSelector') {
 				openSelectionModal({
-					onSelect(selectedItem) {
-						if (selectedItem) {
-							const url = addParams(
-								`${portletNamespace}fileEntryTypeId=${selectedItem.value}`,
-								viewFileEntryTypeURL
-							);
+					multiple: true,
+					onSelect(selectedItems) {
+						if (selectedItems) {
+							let url = viewFileEntryTypeURL;
+
+							selectedItems.forEach((item) => {
+								url = addParams(
+									`${portletNamespace}fileEntryTypeId=${item.classPK}`,
+									url
+								);
+							});
+
 							navigate(url);
 						}
 					},
