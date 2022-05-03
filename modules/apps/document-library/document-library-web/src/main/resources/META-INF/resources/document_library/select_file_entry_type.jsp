@@ -34,9 +34,3 @@ String eventName = ParamUtil.getString(request, "eventName", liferayPortletRespo
 		%>'
 	/>
 </section>
-
-<script>
-	(function () {
-		document.body.classList.remove('cadmin');
-	})();
-</script>
