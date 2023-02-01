@@ -200,6 +200,16 @@ const VerticalNavigationBar = ({
 									/>
 								</Suspense>
 							</div>
+
+							<div
+								aria-label={Liferay.Language.get(
+									'resize-sidebar'
+								)}
+								aria-orientation="vertical"
+								className="knowledge-base-sidebar-resizer"
+								role="separator"
+								tabIndex={0}
+							/>
 						</VerticalBar.Panel>
 					);
 				}}

@@ -3,6 +3,8 @@
 $controlMenuHeight: 56px;
 $productMenuWidth: 320px;
 $productMenuTransitionDuration: 0.5s;
+$resizerBorderWidth: 2px;
+$resizerWidth: 16px;
 $toolbarDesktopHeight: 4rem;
 $toolbarHeight: 6.875rem;
 $toolbarZIndex: 971;
@@ -81,6 +83,23 @@ $toolbarZIndex: 971;
 
 			.treeview-item a:hover {
 				text-decoration: none;
+			}
+
+			.knowledge-base-sidebar-resizer {
+				cursor: ew-resize;
+				height: 100%;
+				left: calc(100% - #{$resizerWidth / 2});
+				position: absolute;
+				top: 0;
+				width: $resizerWidth;
+
+				&:hover,
+				&:focus-visible {
+					box-shadow: inset ($resizerWidth / 2 - $resizerBorderWidth)
+							0 0 $white,
+						inset ($resizerWidth / 2) 0 0 $primary-l1;
+					outline: none;
+				}
 			}
 		}
 
