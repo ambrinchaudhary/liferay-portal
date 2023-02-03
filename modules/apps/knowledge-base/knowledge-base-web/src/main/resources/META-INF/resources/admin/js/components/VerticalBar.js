@@ -17,7 +17,7 @@ import {VerticalBar} from '@clayui/core';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import {navigate} from 'frontend-js-web';
 import PropTypes from 'prop-types';
-import React, {Suspense, useEffect, useState} from 'react';
+import React, {Suspense, useEffect, useRef, useState} from 'react';
 
 const NavigationPanel = React.lazy(() => import('./NavigationPanel'));
 const SuggestionsPanel = React.lazy(() => import('./SuggestionsPanel'));
@@ -28,6 +28,9 @@ const CSS_EXPANDED = 'expanded';
 const DELAY_ANIMATION = 300;
 
 const SUGGESTION_KEY = 'suggestion';
+
+const MAX_SIDEBAR_WIDTH = 560;
+const MIN_SIZEBAR_WIDTH = 320;
 
 const VerticalNavigationBar = ({
 	items,
@@ -53,6 +56,11 @@ const VerticalNavigationBar = ({
 	const productMenu = Liferay.SideNavigation.instance(
 		document.querySelector('.product-menu-toggle')
 	);
+
+	const [sidebarWidth, setSidebarWidth] = useState(MIN_SIZEBAR_WIDTH);
+	const separatorRef = useRef();
+	const sidebarWidthRef = useRef(sidebarWidth);
+	sidebarWidthRef.current = sidebarWidth;
 
 	useEffect(() => {
 		const onProductMenuChange = ({open}) => {
@@ -104,6 +112,55 @@ const VerticalNavigationBar = ({
 			parentContainer.classList.add('not-expandable');
 		}
 	}, [activePanel, parentContainer, verticalBarOpen]);
+
+	useEffect(() => {
+		const separatorElement = separatorRef.current;
+
+		if (!separatorElement) {
+			return;
+		}
+
+		let initialSidebarWidth;
+		let initialCursorPosition;
+
+		const handleMouseMove = (event) => {
+			const cursorDelta = event.clientX - initialCursorPosition;
+
+			setSidebarWidth(
+				Math.min(
+					MAX_SIDEBAR_WIDTH,
+					Math.max(
+						MIN_SIZEBAR_WIDTH,
+						initialSidebarWidth + cursorDelta
+					)
+				)
+			);
+		};
+
+		const stopResizing = () => {
+			document.body.removeEventListener('mousemove', handleMouseMove);
+			document.body.removeEventListener('mouseleave', stopResizing);
+			document.body.removeEventListener('mouseup', stopResizing);
+		};
+
+		const handleMouseDown = (event) => {
+			event.preventDefault();
+
+			initialSidebarWidth = sidebarWidthRef.current;
+			initialCursorPosition = event.clientX;
+
+			document.body.addEventListener('mousemove', handleMouseMove);
+			document.body.addEventListener('mouseleave', stopResizing);
+			document.body.addEventListener('mouseup', stopResizing);
+		};
+
+		separatorElement.addEventListener('mousedown', handleMouseDown);
+
+		return () => {
+			stopResizing();
+			separatorElement.removeEventListener('mousedown', handleMouseDown);
+		};
+	}, [separatorRef, setSidebarWidth, sidebarWidthRef]);
 
 	const onActiveChange = (currentActivePanelKey) => {
 		if (currentActivePanelKey === SUGGESTION_KEY) {
@@ -207,6 +264,7 @@ const VerticalNavigationBar = ({
 								)}
 								aria-orientation="vertical"
 								className="knowledge-base-sidebar-resizer"
+								ref={separatorRef}
 								role="separator"
 								tabIndex={0}
 							/>
