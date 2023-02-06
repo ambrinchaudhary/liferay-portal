@@ -240,7 +240,7 @@ const VerticalNavigationBar = ({
 					const PanelComponent = VerticalBarPanels[item.key];
 
 					return (
-						<VerticalBar.Panel key={item.key}>
+						<VerticalBar.Panel key={item.key} style={{width: `${sidebarWidth}px`}}>
 							<div className="sidebar-header">
 								<div className="component-title">
 									{item.title}
