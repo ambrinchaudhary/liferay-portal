@@ -717,6 +717,24 @@ public class DLAdminManagementToolbarDisplayContext
 
 				dropdownItem.setLabel(label);
 			}
+		).add(
+			dropdownItem -> {
+				dropdownItem.setActive(fileEntryTypeId != -1);
+
+				dropdownItem.putData("action", "openExtensionSelector");
+
+				String extensionsFilterURL = PortletURLBuilder.createRenderURL(
+					_liferayPortletResponse
+				).setMVCPath(
+					"/document_library/filter_by_extensions.jsp"
+				).buildString();
+
+				dropdownItem.putData(
+					"extensionsFilterURL", extensionsFilterURL);
+
+				dropdownItem.setLabel(
+					LanguageUtil.get(_httpServletRequest, "Extensions...."));
+			}
 		).build();
 	}
 

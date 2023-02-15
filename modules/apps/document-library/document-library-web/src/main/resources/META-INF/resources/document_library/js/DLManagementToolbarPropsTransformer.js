@@ -343,6 +343,22 @@ export default function propsTransformer({
 					url: selectFileEntryTypeURL,
 				});
 			}
+			else if (item?.data?.action === 'openExtensionSelector') {
+				openSelectionModal({
+					buttonAddLabel: Liferay.Language.get('select'),
+					height: '70vh',
+					multiple: true,
+					onSelect(selectedItems) {
+
+						// TODO ...
+
+					},
+					selectEventName: `${portletNamespace}FilterByExtensions`,
+					size: 'md',
+					title: Liferay.Language.get('select-extensions'),
+					url: item?.data?.extensionsFilterURL,
+				});
+			}
 		},
 		onShowMoreButtonClick() {
 			openModal({
