@@ -21,9 +21,13 @@ import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.feature.flag.FeatureFlagManager;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
+import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.repository.model.Folder;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -38,9 +42,11 @@ import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.portlet.PortletMode;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 import javax.portlet.WindowStateException;
@@ -306,6 +312,44 @@ public class MenuItemProvider {
 		return urlMenuItem;
 	}
 
+	public MenuItem getAICreatorMenuItem(
+		Folder folder, ThemeDisplay themeDisplay,
+		PortletRequest portletRequest) {
+
+		if (!_featureFlagManager.isEnabled("LPS-196648")) {
+			return null;
+		}
+
+		long folderId = _getFolderId(folder);
+
+		if (!_hasPermission(
+				themeDisplay.getPermissionChecker(),
+				themeDisplay.getScopeGroupId(), folderId,
+				ActionKeys.ADD_DOCUMENT)) {
+
+			return null;
+		}
+
+		URLMenuItem urlMenuItem = new URLMenuItem();
+
+		HashMap<String, Object> data = new HashMap<>();
+
+		data.put("action", "openAICreateImage");
+		data.put(
+			"aiCreatorURL", _getAICreatorURL(folder, themeDisplay, folderId));
+		data.put("available", false);
+
+		urlMenuItem.setData(data);
+		urlMenuItem.setIcon("stars");
+		urlMenuItem.setKey(DLUIItemKeys.AI_CREATOR);
+		urlMenuItem.setLabel(
+			_language.get(
+				_portal.getHttpServletRequest(portletRequest),
+				"create-ai-image"));
+
+		return urlMenuItem;
+	}
+
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openMultiValueMap(
@@ -327,6 +371,36 @@ public class MenuItemProvider {
 		_serviceTrackerMap = null;
 
 		_dlFileEntryTypeLocalService = null;
+	}
+
+	private String _getAICreatorURL(
+		Folder folder, ThemeDisplay themeDisplay, long folderId) {
+
+		RequestBackedPortletURLFactory requestBackedPortletURLFactory =
+			RequestBackedPortletURLFactoryUtil.create(
+				themeDisplay.getRequest());
+
+		return PortletURLBuilder.create(
+			requestBackedPortletURLFactory.createControlPanelRenderURL(
+				"com_liferay_ai_creator_openai_web_internal_portlet_" +
+					"AICreatorOpenAIPortlet",
+				themeDisplay.getScopeGroup(), themeDisplay.getRefererGroupId(),
+				0)
+		).setMVCPath(
+			"/view.jsp"
+		).setParameter(
+			"fileEntryTypeId", _getDefaultFileEntryTypeId(folderId)
+		).setParameter(
+			"folderId", folderId
+		).setParameter(
+			"getGenerations", true
+		).setParameter(
+			"repositoryId", _getRepositoryId(folder, themeDisplay)
+		).setPortletMode(
+			PortletMode.VIEW
+		).setWindowState(
+			LiferayWindowState.POP_UP
+		).buildString();
 	}
 
 	private long _getDefaultFileEntryTypeId(long folderId) {
@@ -560,6 +634,9 @@ public class MenuItemProvider {
 
 	@Reference
 	private DLFileEntryTypeService _dlFileEntryTypeService;
+
+	@Reference
+	private FeatureFlagManager _featureFlagManager;
 
 	@Reference
 	private Language _language;
