@@ -38,6 +38,14 @@ type RequestStatus =
 	| {type: 'loading'}
 	| {errorMessage: string; type: 'error'};
 
+const defaultGenerations = [
+	'https://fastly.picsum.photos/id/1/5000/3333.jpg?hmac=Asv2DU3rA_5D1xSe22xZK47WEAN0wjWeFOhzd13ujW4',
+	'https://images.unsplash.com/photo-1682687982468-4584ff11f88a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxMXx8fGVufDB8fHx8fA%3D%3D',
+	'https://images.unsplash.com/photo-1703925154646-1a09c3380453?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOXx8fGVufDB8fHx8fA%3D%3D',
+	'https://images.unsplash.com/photo-1704381375059-b6861e025dd8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNXx8fGVufDB8fHx8fA%3D%3D',
+]
+
+
 export default function AICreatorImageModal({
 	getGenerationsURL,
 	learnResources,
@@ -50,7 +58,7 @@ export default function AICreatorImageModal({
 	};
 
 	const [status, setStatus] = useState<RequestStatus>({type: 'idle'});
-	const [imagesURL, setImagesURL] = useState<string[] | null>(null);
+	const [imagesURL, setImagesURL] = useState<string[] | null>(defaultGenerations);
 
 	const onAdd = () => {
 		if (imagesURL) {
