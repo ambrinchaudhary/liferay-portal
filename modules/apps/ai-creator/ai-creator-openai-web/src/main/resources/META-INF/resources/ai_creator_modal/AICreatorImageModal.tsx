@@ -45,7 +45,6 @@ const defaultGenerations = [
 	'https://images.unsplash.com/photo-1704381375059-b6861e025dd8?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNXx8fGVufDB8fHx8fA%3D%3D',
 ]
 
-
 export default function AICreatorImageModal({
 	getGenerationsURL,
 	learnResources,
@@ -60,12 +59,27 @@ export default function AICreatorImageModal({
 	const [status, setStatus] = useState<RequestStatus>({type: 'idle'});
 	const [imagesURL, setImagesURL] = useState<string[] | null>(defaultGenerations);
 
+	const [selectedImages, setSelectedImages] = useState<string[]>([]);
+
 	const onAdd = () => {
 		if (imagesURL) {
 			const opener = Liferay.Util.getOpener();
 
 			opener.Liferay.fire('closeModal', {imagesURL});
 		}
+	};
+
+	const onSelectedChange = (imageURL: string) => {
+		const newSelectedImages = selectedImages || [];
+
+		if (selectedImages?.includes(imageURL)) {
+			newSelectedImages?.splice(selectedImages.indexOf(imageURL), 1);
+		}
+		else {
+			newSelectedImages?.push(imageURL);
+		}
+
+		setSelectedImages(newSelectedImages);
 	};
 
 	const onSubmit = (event: FormEvent) => {
@@ -139,7 +153,13 @@ export default function AICreatorImageModal({
 					>
 						<FormImage portletNamespace={portletNamespace} />
 
-						{imagesURL && <ImagesResult imagesURL={imagesURL} />}
+						{imagesURL && (
+							<ImagesResult
+								imagesURL={imagesURL}
+								onSelectedChange={onSelectedChange}
+								selectedImages={selectedImages}
+							/>
+						)}
 
 						<ClayForm.Group className="c-mb-0">
 							<LearnResourcesContext.Provider
