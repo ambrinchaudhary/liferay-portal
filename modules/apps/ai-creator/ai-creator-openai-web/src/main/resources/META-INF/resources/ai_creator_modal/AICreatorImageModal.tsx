@@ -68,7 +68,7 @@ export default function AICreatorImageModal({
 			Promise.all(
 				selectedImages.map((imageURL) => {
 					return fetch(uploadGenerationsURL, {
-						body: JSON.stringify(imageURL),
+						body: JSON.stringify({urlPath: imageURL}),
 						method: 'POST',
 					})
 					.then((response) => response.json())
