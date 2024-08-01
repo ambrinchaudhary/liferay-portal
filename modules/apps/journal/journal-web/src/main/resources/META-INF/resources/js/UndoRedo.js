@@ -471,6 +471,7 @@ export default function UndoRedo({
 						disabled={step <= 0}
 						onClick={() => {
 							handleUndo(0);
+							setActive(false);
 						}}
 					>
 						{Liferay.Language.get('undo-all')}
