@@ -457,6 +457,14 @@ export default function UndoRedo({
 				}
 			>
 				<ClayDropDown.ItemList>
+					{history.slice(1, step + 1).map((item, i) => (
+						<ClayDropDown.Item
+							key={i}
+						>
+							{Liferay.Language.get('Edit')} {item.name}
+						</ClayDropDown.Item>
+					))}
+
 					<ClayDropDown.Divider />
 
 					<ClayDropDown.Item
