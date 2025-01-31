@@ -85,13 +85,6 @@ const keepTitlesUntranslated = mergeTests(baseTest);
 
 const prefixUrlTest = mergeTests(baseTest);
 
-const translationAndAutosaveTest = mergeTests(
-	baseTest,
-	featureFlagsTest({
-		'LPD-11228': {enabled: true},
-	})
-);
-
 const privateContentIconTest = mergeTests(baseTest);
 
 baseTest(
@@ -298,7 +291,7 @@ baseTest(
 	}
 );
 
-translationAndAutosaveTest(
+baseTest(
 	'Article selector should only list approved content',
 	{
 		tag: '@LPD-39264',
@@ -1791,27 +1784,5 @@ ckeditor5Test(
 				).toBeVisible();
 			}
 		);
-	}
-);
-
-translationAndAutosaveTest(
-	'Web Content is published when Feature Flags LPD-11228 is are active',
-	{
-		tag: '@LPD-33570',
-	},
-	async ({journalEditArticlePage, page, site}) => {
-		await journalEditArticlePage.goto({siteUrl: site.friendlyUrlPath});
-
-		const articleTitle = 'Web Content Title';
-
-		journalEditArticlePage.createAndPublishBasicArticle(articleTitle);
-
-		await expect(page.getByTitle(articleTitle)).toBeVisible();
-
-		await expect(
-			page.locator(
-				'[id="_com_liferay_journal_web_portlet_JournalPortlet_articles_1"] span.label-item'
-			)
-		).toHaveText('Approved');
 	}
 );
