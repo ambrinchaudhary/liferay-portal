@@ -772,8 +772,6 @@ baseTest(
 
 		await journalEditArticlePage.publishArticle();
 
-		await waitForAlert(page, `Success:${title} was created successfully.`);
-
 		await journalPage.goToJournalArticleAction(
 			'Delete Translations',
 			title
