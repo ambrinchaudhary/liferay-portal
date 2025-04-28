@@ -9,31 +9,49 @@ import {Item} from '@clayui/multi-select/lib/types';
 import ClayToolbar from '@clayui/toolbar';
 import {useFormik} from 'formik';
 import {navigate} from 'frontend-js-web';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
+import FolderService, {TFolder} from '../../../services/FolderService';
 import {FieldPicker, FieldText} from '../forms';
 import {required, validate} from '../forms/validations';
 
 interface EditFolderProps {
 	backURL: string;
-	description?: string;
-	name: string;
-	space: string;
+	folderId: string;
 }
 
-const EditFolder: React.FC<EditFolderProps> = ({
-	backURL,
-	description,
-	name,
-	space,
-}) => {
-	const spaceItems: Item[] = [{label: space, value: space}];
+const EditFolder: React.FC<EditFolderProps> = ({backURL, folderId}) => {
+	const [folderData, setFolderData] = useState<TFolder | null>(null);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-	const {errors, handleChange, handleSubmit, values} = useFormik({
+	useEffect(() => {
+		const fetchFolderData = async () => {
+			setIsLoading(true);
+			try {
+				const response = await FolderService.getFolder(folderId);
+
+				setFolderData(response);
+			}
+			catch (error: any) {
+				console.log(error.message || 'An error occurred');
+			}
+			finally {
+				setIsLoading(false);
+			}
+		};
+
+		fetchFolderData();
+	}, [folderId]);
+
+	const spaceItems: Item[] = folderData
+		? [{label: folderData.scopeKey, value: folderData.scopeKey}]
+		: [];
+
+	const {errors, handleChange, handleSubmit, setValues, values} = useFormik({
 		initialValues: {
-			folderDescription: description || '',
-			folderName: name,
-			folderSpace: space,
+			folderDescription: folderData?.description || '',
+			folderName: folderData?.title || '',
+			folderSpace: folderData?.scopeKey || '',
 		},
 		onSubmit: () => {},
 		validate: (values) =>
@@ -44,6 +62,16 @@ const EditFolder: React.FC<EditFolderProps> = ({
 				values
 			),
 	});
+
+	useEffect(() => {
+		if (folderData) {
+			setValues({
+				folderDescription: folderData.description,
+				folderName: folderData.title,
+				folderSpace: folderData.scopeKey,
+			});
+		}
+	}, [folderData, setValues]);
 
 	return (
 		<div className="edit-folder">
@@ -64,7 +92,11 @@ const EditFolder: React.FC<EditFolderProps> = ({
 
 					<ClayToolbar.Item className="text-left" expand>
 						<h2 className="font-weight-semi-bold m-0 text-5">
-							{name}
+							{isLoading ? (
+								<span className="loading-animation"></span>
+							) : (
+								folderData?.title
+							)}
 						</h2>
 					</ClayToolbar.Item>
 
