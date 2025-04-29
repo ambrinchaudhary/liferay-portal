@@ -65,13 +65,9 @@ public class EditFolderFragmentRenderer extends BaseSectionFragmentRenderer {
 			componentTag.setProps(
 				HashMapBuilder.<String, Object>put(
 					"backURL",
-					ParamUtil.getString(httpServletRequest, "backURL")
+					ParamUtil.getString(httpServletRequest, "backURL") //TODO get current url
 				).put(
-					"description", "description"
-				).put(
-					"name", "name"
-				).put(
-					"space", "space 1"
+					"folderId", "description" //TODO get folderId from parameters
 				).build());
 
 			componentTag.setServletContext(_servletContext);
