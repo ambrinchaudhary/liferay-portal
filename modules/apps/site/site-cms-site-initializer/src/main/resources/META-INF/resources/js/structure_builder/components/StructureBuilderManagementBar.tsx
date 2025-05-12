@@ -88,7 +88,9 @@ function SaveButton() {
 					spaces,
 				});
 
-				dispatch({id: data.id, type: 'create-structure'});
+				if (data) {
+					dispatch({id: data.id, type: 'create-structure'});
+				}
 			}
 			else {
 				await StructureService.updateStructure({
@@ -181,11 +183,13 @@ function PublishButton() {
 					spaces,
 				});
 
-				const id = data.id;
+				if (data) {
+					const id = data.id;
 
-				await StructureService.publishStructure({id});
+					await StructureService.publishStructure({id});
 
-				dispatch({id, type: 'publish-structure'});
+					dispatch({id, type: 'publish-structure'});
+				}
 			}
 			else if (status === 'draft') {
 				await StructureService.updateStructure({
