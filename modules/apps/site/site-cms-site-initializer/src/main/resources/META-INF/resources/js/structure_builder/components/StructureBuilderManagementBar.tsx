@@ -80,7 +80,7 @@ function SaveButton() {
 
 		try {
 			if (status === 'new') {
-				const {id} = await StructureService.createStructure({
+				const {data} = await StructureService.createStructure({
 					erc,
 					fields,
 					label,
@@ -88,7 +88,7 @@ function SaveButton() {
 					spaces,
 				});
 
-				dispatch({id, type: 'create-structure'});
+				dispatch({id: data.id, type: 'create-structure'});
 			}
 			else {
 				await StructureService.updateStructure({
@@ -173,13 +173,15 @@ function PublishButton() {
 
 		try {
 			if (status === 'new') {
-				const {id} = await StructureService.createStructure({
+				const {data} = await StructureService.createStructure({
 					erc,
 					fields,
 					label,
 					name,
 					spaces,
 				});
+
+				const id = data.id;
 
 				await StructureService.publishStructure({id});
 

@@ -35,7 +35,7 @@ export default function CreateSpaceModalContent({
 			const {name} = values;
 
 			SpaceService.addSpace({name}).then((response) => {
-				const url = new URL(redirect + '/' + response.id);
+				const url = new URL(redirect + '/' + response.data.id);
 
 				url.searchParams.set('name', name);
 
