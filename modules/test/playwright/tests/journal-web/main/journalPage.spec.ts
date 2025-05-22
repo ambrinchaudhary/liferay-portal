@@ -381,7 +381,7 @@ test(
 );
 
 test(
-	'Folders Comes First when Having Multiple Pages and Filtering by Approved',
+	'Folders come first when having multiple pages and filtering by Approved',
 	{
 		tag: '@LPD-55865',
 	},
@@ -429,12 +429,11 @@ test(
 
 		await page.getByRole('menuitem', {name: 'Web Content'}).click();
 
-		await page.getByLabel('Order', {exact: true}).click();
+		const foldersList = await page
+			.getByRole('link')
+			.filter({hasText: 'Folder'})
+			.all();
 
-		await page.getByRole('menuitem', {name: 'Create Date'}).click();
-
-		await expect(page.locator('dd[data-folder="true"]')).toHaveCount(12, {
-			timeout: 10000,
-		});
+		expect(foldersList.length).toBe(12);
 	}
 );
