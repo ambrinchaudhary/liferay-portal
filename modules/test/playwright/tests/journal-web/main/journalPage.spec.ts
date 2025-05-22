@@ -309,25 +309,26 @@ test(
 		await page.getByRole('link', {name: title}).click();
 		await journalEditArticlePage.fillTitle('Basic Web Content');
 
-		const productMenuToggleButton = page.locator(
-			'button[aria-label="Close Product Menu"]'
-		);
+		await test.step('Update article', async () => {
+			await journalEditArticlePage.publishArticle(true);
 
-		if (await productMenuToggleButton.isVisible()) {
-			await productMenuToggleButton.click();
-		}
+			await expect(page.locator('.alert-success')).toBeVisible();
+		});
 
-		await journalEditArticlePage.publishArticle(true);
-		page.waitForTimeout(1000);
+		await journalPage.goto(site.friendlyUrlPath);
 
 		await page.getByRole('button', {name: 'Actions'}).click();
 		await page.getByRole('menuitem', {name: 'View History'}).click();
 
-		const searchInput = page.locator('input[type="search"]');
+		const searchInput = page.getByPlaceholder('Search for');
 		await searchInput.waitFor({state: 'visible'});
+
 		await searchInput.fill('Basic');
 		await searchInput.press('Enter');
-		page.waitForTimeout(1000);
+
+		await page
+				.getByRole('heading', {name: 'Search Results'})
+				.waitFor({state: 'visible'});
 
 		const resultRows = page.locator('tbody tr[data-selectable="true"]');
 		await resultRows.first().waitFor({state: 'visible'});
