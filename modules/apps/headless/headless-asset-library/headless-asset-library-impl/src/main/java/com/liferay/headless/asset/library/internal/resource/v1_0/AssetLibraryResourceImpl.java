@@ -544,7 +544,7 @@ public class AssetLibraryResourceImpl extends BaseAssetLibraryResourceImpl {
 			GetterUtil.getBoolean(settings.getAutoTaggingEnabled())
 		).put(
 			"inheritLocales",
-			!GetterUtil.getBoolean(settings.getUseCustomLanguages(), true)
+			GetterUtil.getBoolean(settings.getUseCustomLanguages(), true)
 		).put(
 			"languageId", settings.getDefaultLanguageId()
 		).put(
