@@ -24,7 +24,7 @@
 				"../../../object/object-js-components-web/src/main/resources/META-INF/resources/index.ts"
 			],
 			"document-library-preview-image": [
-				"../../../document-library/document-library-preview-image/src/main/resources/META-INF/resources/preview/js/index.js"
+				"../../../document-library/document-library-preview-image/src/main/resources/META-INF/resources/preview/js/index.ts"
 			],
 			"frontend-editor-ckeditor-web": [
 				"../../../frontend-editor/frontend-editor-ckeditor-web/src/main/resources/META-INF/resources/js/index.ts"
