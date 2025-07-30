@@ -30,15 +30,9 @@
 		"strict": true,
 		"target": "esnext",
 		"tsBuildInfoFile": "../../../../../../../../.tsc/buildinfo/document-library-preview-image.tsbuildinfo",
-		"typeRoots": [
-			"../../../../../../../../node_modules/@types"
-		]
+		"typeRoots": ["../../../../../../../../node_modules/@types"]
 	},
-	"include": [
-		"**/*.ts",
-		"**/*.tsx",
-		"../../../../../../../../global.d.ts"
-	],
+	"include": ["**/*.ts", "**/*.tsx", "../../../../../../../../global.d.ts"],
 	"references": [
 		{
 			"path": "../../../../../../document-library-preview-css/src/main/resources/META-INF/resources/tsconfig.json"

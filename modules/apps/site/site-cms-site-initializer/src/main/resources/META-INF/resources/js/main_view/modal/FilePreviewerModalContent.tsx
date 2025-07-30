@@ -8,10 +8,8 @@ import ClayIcon from '@clayui/icon';
 import ClayLink from '@clayui/link';
 import ClayModal from '@clayui/modal';
 import classNames from 'classnames';
-import React, {ComponentType} from 'react';
-declare module 'document-library-preview-image' {
-	export const ImagePreviewer: ComponentType<any>;
-}
+import {ImagePreviewer} from 'document-library-preview-image';
+import React from 'react';
 
 type File = {
 	externalReferenceCode: string;
