@@ -38,20 +38,21 @@ exports[`document-library-preview-image renders an image previewer 1`] = `
           </svg>
         </button>
         <button
-          aria-label="real-size"
+          aria-label="zoom-to-fit"
           class="btn-floating-bar btn-floating-bar-text btn"
-          title="real-size"
+          title="zoom-to-fit"
           type="button"
         >
           <span
             class="preview-toolbar-label-percent"
           >
-            0%
+            100%
           </span>
         </button>
         <button
           aria-label="zoom-in"
           class="btn-floating-bar btn btn-monospaced"
+          disabled=""
           title="zoom-in"
           type="button"
         >
