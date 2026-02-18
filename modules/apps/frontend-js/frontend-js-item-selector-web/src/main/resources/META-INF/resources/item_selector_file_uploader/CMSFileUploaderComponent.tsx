@@ -70,24 +70,14 @@ const CMSFileUploaderComponent: FilesUploaderComponent = function ({
 		}
 	};
 
-	if (groupId) {
-		return (
-			<MultipleFileUploader
-				filesToUpload={files}
-				onModalClose={onCloseUploadView}
-				onUploadComplete={onUploadComplete}
-				uploadRequest={uploadRequest}
-			/>
-		);
-	}
-	else {
-		return (
-			<MultipleFileUploader
-				filesToUpload={files}
-				formValidation={formValidation}
-				onModalClose={onCloseUploadView}
-				onUploadComplete={onUploadComplete}
-				scopeSelectorElement={
+	return (
+		<MultipleFileUploader
+			filesToUpload={files}
+			formValidation={!groupId ? formValidation : undefined}
+			onModalClose={onCloseUploadView}
+			onUploadComplete={onUploadComplete}
+			scopeSelectorElement={
+				!groupId ? (
 					<div className="mt-4">
 						<FieldBase
 							errorMessage={
@@ -114,11 +104,11 @@ const CMSFileUploaderComponent: FilesUploaderComponent = function ({
 							/>
 						</FieldBase>
 					</div>
-				}
-				uploadRequest={uploadRequest}
-			/>
-		);
-	}
+				) : undefined
+			}
+			uploadRequest={uploadRequest}
+		/>
+	);
 };
 
 export default CMSFileUploaderComponent;
