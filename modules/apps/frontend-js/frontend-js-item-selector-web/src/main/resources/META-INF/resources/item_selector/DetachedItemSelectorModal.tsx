@@ -25,7 +25,7 @@ function DetachedItemSelectorModal<T extends Record<string, any>>(
 	return (
 		<>
 			{open && (
-				<ItemSelectorModal
+				<ItemSelectorModal<T>
 					{...props}
 					observer={observer}
 					onOpenChange={onOpenChange}
