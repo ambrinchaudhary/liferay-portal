@@ -94,7 +94,30 @@ export default function _JournalPortlet({
 		contextualSidebarButton.setAttribute('title', title);
 	};
 
+	const getFormDataValues = () => {
+		if (!form) {
+			return null;
+		}
+
+		const formData = new FormData(form);
+
+		formData.delete(`${namespace}articleId`);
+		formData.delete(`${namespace}formDate`);
+		formData.delete(`${namespace}jakarta-portlet-action`);
+		formData.delete(`${namespace}version`);
+
+		return new URLSearchParams(formData).toString();
+	};
+
+	let lastFormData = getFormDataValues();
+
 	const handleAutoSave = () => {
+		const currentFormData = getFormDataValues();
+
+		if (currentFormData === lastFormData) {
+			return;
+		}
+
 		lockHolder.lock?.lock();
 
 		actionInput.value = articleId
@@ -337,6 +360,8 @@ export default function _JournalPortlet({
 		formElement,
 		{redirectOnSave} = {redirectOnSave: false}
 	) => {
+		const currentCapturedFormData = getFormDataValues();
+
 		return fetch(autoSaveDraftURL, {
 			body: new FormData(formElement),
 			method: formElement.method,
@@ -415,6 +440,9 @@ export default function _JournalPortlet({
 					displayedArticleId.innerHTML = articleId;
 
 					formDateInput.value = data.modifiedDate;
+
+					lastFormData = currentCapturedFormData;
+
 					lockHolder.lock?.unlock();
 					removeAlert();
 
