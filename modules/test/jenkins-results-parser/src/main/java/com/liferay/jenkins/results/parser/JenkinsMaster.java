@@ -8,6 +8,7 @@ package com.liferay.jenkins.results.parser;
 import com.liferay.jenkins.results.parser.aws.AWSFactory;
 import com.liferay.jenkins.results.parser.aws.AWSFleetCloud;
 
+import java.io.File;
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -166,6 +168,34 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 		}
 	}
 
+	public void copyFileFromJenkinsMaster(
+		String sourceFilePath, File targetFile) {
+
+		String targetFilePath = JenkinsResultsParserUtil.getCanonicalPath(
+			targetFile);
+
+		if (!_isRunningOnJenkinsMaster()) {
+			sourceFilePath = JenkinsResultsParserUtil.combine(
+				_SSH_USER_NAME, "@", getName(), ":", sourceFilePath);
+		}
+
+		_executeSCPCommand(sourceFilePath, targetFilePath);
+	}
+
+	public void copyFileToJenkinsMaster(
+		File sourceFile, String targetFilePath) {
+
+		String sourceFilePath = JenkinsResultsParserUtil.getCanonicalPath(
+			sourceFile);
+
+		if (!_isRunningOnJenkinsMaster()) {
+			targetFilePath = JenkinsResultsParserUtil.combine(
+				_SSH_USER_NAME, "@", getName(), ":", targetFilePath);
+		}
+
+		_executeSCPCommand(sourceFilePath, targetFilePath);
+	}
+
 	@Override
 	public boolean equals(Object object) {
 		if (!(object instanceof JenkinsMaster)) {
@@ -177,65 +207,56 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 		return Objects.equals(jenkinsMaster.getName(), getName());
 	}
 
-	public synchronized List<APIToken> getAPITokens(String jenkinsUserID) {
-		if (JenkinsResultsParserUtil.isNullOrEmpty(jenkinsUserID)) {
-			return null;
-		}
+	public String executeBashCommand(String command) {
+		String sshCommand = JenkinsResultsParserUtil.combine(
+			"ssh ", _SSH_OPTIONS, " ", _SSH_USER_NAME, "@", getName(), " \"",
+			command, "\"");
 
-		List<APIToken> cachedAPITokens = _apiTokens.get(jenkinsUserID);
-
-		if (cachedAPITokens != null) {
-			return cachedAPITokens;
-		}
-
-		String propertyName = JenkinsResultsParserUtil.combine(
-			"jenkins.user.op.item[", jenkinsUserID, "]");
-
-		String itemReference = null;
+		Process process = null;
 
 		try {
-			itemReference = JenkinsResultsParserUtil.getBuildProperty(
-				propertyName);
+			if (_isRunningOnJenkinsMaster()) {
+				process = JenkinsResultsParserUtil.executeBashCommands(
+					new File("."), true, false, _SSH_COMMAND_TIMEOUT, command);
+			}
+			else {
+				process = JenkinsResultsParserUtil.executeBashCommands(
+					new File("."), true, false, _SSH_COMMAND_TIMEOUT,
+					sshCommand);
+			}
+		}
+		catch (IOException | TimeoutException exception) {
+			throw new RuntimeException(
+				"Unable to execute command " + sshCommand, exception);
+		}
+
+		if (process.exitValue() != 0) {
+			throw new RuntimeException(
+				JenkinsResultsParserUtil.combine(
+					"Unable to execute command ", command, " on ", getName()));
+		}
+
+		try {
+			String output = JenkinsResultsParserUtil.readInputStream(
+				process.getInputStream());
+
+			return output.replace("Finished executing Bash commands.", "");
 		}
 		catch (IOException ioException) {
 			throw new RuntimeException(
-				"Unable to get property " + propertyName, ioException);
+				"Unable to read output of command " + sshCommand, ioException);
+		}
+	}
+
+	public List<JenkinsUser.APIToken> getAPITokens(String jenkinsUserName) {
+		if (JenkinsResultsParserUtil.isNullOrEmpty(jenkinsUserName)) {
+			return null;
 		}
 
-		List<APIToken> apiTokens = new ArrayList<>();
+		JenkinsUser jenkinsUser = JenkinsUserFactory.getJenkinsUser(
+			this, jenkinsUserName);
 
-		if (JenkinsResultsParserUtil.isNullOrEmpty(itemReference)) {
-			return apiTokens;
-		}
-
-		SecretsUtil.Item item = SecretsUtil.getItem(itemReference);
-
-		if (item == null) {
-			throw new RuntimeException(
-				JenkinsResultsParserUtil.combine(
-					"Unable to find item ", itemReference, " from property ",
-					propertyName));
-		}
-
-		apiTokens.add(new APIToken(itemReference));
-
-		Set<String> apiTokenItemFieldLabels = new HashSet<>();
-
-		for (SecretsUtil.ItemField itemField : item.getItemFields()) {
-			String label = itemField.getLabel();
-
-			if ((label == null) || !label.startsWith("api.token.json.") ||
-				!apiTokenItemFieldLabels.add(label)) {
-
-				continue;
-			}
-
-			apiTokens.add(new APIToken(new JSONObject(itemField.getValue())));
-		}
-
-		_apiTokens.put(jenkinsUserID, apiTokens);
-
-		return apiTokens;
+		return jenkinsUser.getAPITokens();
 	}
 
 	@Override
@@ -1001,6 +1022,30 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 		return false;
 	}
 
+	public void reloadJenkinsUser(String jenkinsUserName) {
+		JenkinsUser jenkinsUser = JenkinsUserFactory.getJenkinsUser(
+			this, jenkinsUserName);
+
+		String jenkinsUserID = jenkinsUser.getJenkinsUserID();
+
+		if (JenkinsResultsParserUtil.isNullOrEmpty(jenkinsUserID)) {
+			throw new RuntimeException(
+				"Unable to find Jenkins user ID for " + jenkinsUserName);
+		}
+
+		JenkinsResultsParserUtil.executeJenkinsScript(
+			getName(),
+			JenkinsResultsParserUtil.combine(
+				"hudson.model.User user = hudson.model.User.getById('",
+				jenkinsUserID, "', false)\n", "if (user == null) {\n",
+				"throw new RuntimeException('Unable to find user ",
+				jenkinsUserID, "')\n", "}\n", "user.load()"));
+
+		System.out.println(
+			JenkinsResultsParserUtil.combine(
+				"Successfully reloaded ", jenkinsUserName, " for ", getURL()));
+	}
+
 	@Override
 	public String toString() {
 		return JenkinsResultsParserUtil.combine(
@@ -1299,67 +1344,6 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 
 	protected static long maxRecentBatchAge = 120 * 1000;
 
-	protected static class APIToken {
-
-		public String getCreationDateString() {
-			return _creationDateString;
-		}
-
-		public String getHash() {
-			return _hash;
-		}
-
-		public String getName() {
-			return _name;
-		}
-
-		public String getToken() {
-			return _token;
-		}
-
-		public String getUUID() {
-			return _uuid;
-		}
-
-		public String getVersion() {
-			return _version;
-		}
-
-		private APIToken(JSONObject jsonObject) {
-			_creationDateString = jsonObject.getString(
-				"api.token.creation.date");
-			_hash = jsonObject.getString("api.token.hash");
-			_name = jsonObject.getString("api.token.name");
-			_token = jsonObject.getString("api.token");
-			_uuid = jsonObject.getString("api.token.uuid");
-			_version = jsonObject.getString("api.token.version");
-		}
-
-		private APIToken(String itemReference) {
-			_creationDateString = _getSecret(
-				itemReference, "api.token.creation.date");
-			_hash = _getSecret(itemReference, "api.token.hash");
-			_name = _getSecret(itemReference, "api.token.name");
-			_token = _getSecret(itemReference, "api.token");
-			_uuid = _getSecret(itemReference, "api.token.uuid");
-			_version = _getSecret(itemReference, "api.token.version");
-		}
-
-		private String _getSecret(String itemReference, String itemFieldLabel) {
-			return SecretsUtil.getSecret(
-				JenkinsResultsParserUtil.combine(
-					itemReference, "/", itemFieldLabel));
-		}
-
-		private final String _creationDateString;
-		private final String _hash;
-		private final String _name;
-		private final String _token;
-		private final String _uuid;
-		private final String _version;
-
-	}
-
 	private static Map<String, String> _getParameters(JSONObject jsonObject) {
 		Map<String, String> parameters = new HashMap<>();
 
@@ -1467,6 +1451,29 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 		catch (Exception exception) {
 			throw new RuntimeException(
 				"Unable to determine URL for master " + _masterName, exception);
+		}
+	}
+
+	private void _executeSCPCommand(
+		String sourceFilePath, String targetFilePath) {
+
+		String scpCommand = JenkinsResultsParserUtil.combine(
+			"scp ", _SSH_OPTIONS, " ", sourceFilePath, " ", targetFilePath);
+
+		Process process = null;
+
+		try {
+			process = JenkinsResultsParserUtil.executeBashCommands(
+				true, new File("."), _SSH_COMMAND_TIMEOUT, scpCommand);
+		}
+		catch (IOException | TimeoutException exception) {
+			throw new RuntimeException(
+				"Unable to execute command " + scpCommand, exception);
+		}
+
+		if (process.exitValue() != 0) {
+			throw new RuntimeException(
+				"Unable to execute command " + scpCommand);
 		}
 	}
 
@@ -1705,6 +1712,10 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 		return usableNodeCount;
 	}
 
+	private boolean _isRunningOnJenkinsMaster() {
+		return Objects.equals(System.getenv("HOSTNAME"), getName());
+	}
+
 	private boolean _isTopLevelJobName(String jobName) {
 		if (_topLevelJobNames != null) {
 			return _topLevelJobNames.contains(jobName);
@@ -1800,6 +1811,13 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 
 	private static final long _MAXIMUM_UPDATE_DURATION = 1000 * 15;
 
+	private static final long _SSH_COMMAND_TIMEOUT = 1000 * 60 * 5;
+
+	private static final String _SSH_OPTIONS =
+		"-o ConnectTimeout=60 -o NumberOfPasswordPrompts=0";
+
+	private static final String _SSH_USER_NAME = "root";
+
 	private static final Pattern _globalEnvironmentVariablesPattern =
 		Pattern.compile("[^\\{]+(?<json>\\{.*\\})\\s+");
 	private static final Map<String, JenkinsMaster> _jenkinsMasters =
@@ -1828,7 +1846,6 @@ public class JenkinsMaster implements JenkinsNode<JenkinsMaster> {
 		}
 	}
 
-	private final Map<String, List<APIToken>> _apiTokens = new HashMap<>();
 	private final List<String> _assignedLabels = new ArrayList<>();
 	private boolean _available;
 	private long _availableTimestamp = -1;
