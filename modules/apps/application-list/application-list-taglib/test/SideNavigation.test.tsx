@@ -125,11 +125,29 @@ describe('SideNavigation', () => {
 	const languageGet = Liferay.Language.get as jest.Mock;
 	const languageGetImplementation = languageGet.getMockImplementation();
 
+	let resizeObserverCallbacks: Array<() => void> = [];
+
 	afterEach(() => {
 		languageGet.mockImplementation(languageGetImplementation!);
+
+		delete (window as any).ResizeObserver;
 	});
 
 	beforeEach(() => {
+		resizeObserverCallbacks = [];
+
+		(window as any).ResizeObserver = class {
+			constructor(callback: () => void) {
+				resizeObserverCallbacks.push(callback);
+			}
+
+			disconnect() {}
+
+			observe() {}
+
+			unobserve() {}
+		};
+
 		Liferay.Util = {
 			...Liferay.Util,
 			Session: {
@@ -271,6 +289,62 @@ describe('SideNavigation', () => {
 
 		expect(tabbable).toHaveLength(1);
 		expect(tabbable[0]).toHaveTextContent('Home');
+	});
+
+	it('does not shadow the scroll area at rest', () => {
+		const {container} = renderComponent({items: ITEMS_WITH_SCOPES});
+
+		expect(
+			container.querySelector('.side-navigation-scroll')
+		).not.toHaveClass('side-navigation-scroll-stuck');
+	});
+
+	it('shadows the scroll area once a scope item is pinned', async () => {
+		const {container} = renderComponent({items: ITEMS_WITH_SCOPES});
+
+		const scroller = container.querySelector(
+			'.sidebar-body'
+		) as HTMLElement;
+
+		jest.spyOn(scroller, 'scrollTop', 'get').mockReturnValue(120);
+
+		fireEvent.scroll(scroller);
+
+		await waitFor(() =>
+			expect(
+				container.querySelector('.side-navigation-scroll')
+			).toHaveClass('side-navigation-scroll-stuck')
+		);
+	});
+
+	it('does not shadow the scroll area while the scope item is below the top', async () => {
+		const {container} = renderComponent({items: ITEMS_WITH_SCOPES});
+
+		const scroller = container.querySelector(
+			'.sidebar-body'
+		) as HTMLElement;
+
+		jest.spyOn(scroller, 'scrollTop', 'get').mockReturnValue(20);
+
+		jest.spyOn(scroller, 'getBoundingClientRect').mockReturnValue({
+			top: 0,
+		} as DOMRect);
+
+		container
+			.querySelectorAll('.side-navigation-scope-item')
+			.forEach((scopeItem) =>
+				jest
+					.spyOn(scopeItem, 'getBoundingClientRect')
+					.mockReturnValue({top: 80} as DOMRect)
+			);
+
+		fireEvent.scroll(scroller);
+
+		await waitFor(() =>
+			expect(
+				container.querySelector('.side-navigation-scroll')
+			).not.toHaveClass('side-navigation-scroll-stuck')
+		);
 	});
 
 	it('shows only the navigation items from the expanded keys', () => {
