@@ -7,7 +7,6 @@ import {useEffect, useState} from 'react';
 
 import {SideNavigationItem} from './types/SideNavigation';
 
-const PINNED_TOLERANCE = 0.5;
 const SCOPE_ITEM_SELECTOR = '.side-navigation-scope-item';
 const SCROLLER_SELECTOR = '.sidebar-body';
 
@@ -25,40 +24,30 @@ export function useSideNavigationStuck(
 			return;
 		}
 
-		const update = () => {
-			const {top} = scroller.getBoundingClientRect();
+		const scopeItem =
+			scroller.querySelector<HTMLElement>(SCOPE_ITEM_SELECTOR);
 
-			const scopeItems = Array.from(
-				scroller.querySelectorAll(SCOPE_ITEM_SELECTOR)
-			);
+		if (!scopeItem) {
+			setStuck(false);
 
-			setStuck(
-				scroller.scrollTop > 0 &&
-					(!scopeItems.length ||
-						scopeItems.some(
-							(scopeItem) =>
-								scopeItem.getBoundingClientRect().top <=
-								top + PINNED_TOLERANCE
-						))
-			);
-		};
-
-		update();
-
-		scroller.addEventListener('scroll', update, {passive: true});
-
-		const resizeObserver = new ResizeObserver(update);
-
-		resizeObserver.observe(scroller);
-
-		if (scroller.firstElementChild) {
-			resizeObserver.observe(scroller.firstElementChild);
+			return;
 		}
 
-		return () => {
-			resizeObserver.disconnect();
+		const sentinel = document.createElement('div');
 
-			scroller.removeEventListener('scroll', update);
+		scopeItem.before(sentinel);
+
+		const observer = new IntersectionObserver(
+			([entry]) => setStuck(!entry.isIntersecting),
+			{root: scroller}
+		);
+
+		observer.observe(sentinel);
+
+		return () => {
+			observer.disconnect();
+
+			sentinel.remove();
 		};
 	}, [items, ref]);
 

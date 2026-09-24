@@ -6,6 +6,7 @@
 import '@testing-library/jest-dom';
 import {configure} from '@testing-library/dom';
 import {
+	act,
 	fireEvent,
 	render,
 	screen,
@@ -125,20 +126,18 @@ describe('SideNavigation', () => {
 	const languageGet = Liferay.Language.get as jest.Mock;
 	const languageGetImplementation = languageGet.getMockImplementation();
 
-	let resizeObserverCallbacks: Array<() => void> = [];
+	let intersectionObserverCallback: IntersectionObserverCallback;
 
 	afterEach(() => {
 		languageGet.mockImplementation(languageGetImplementation!);
 
-		delete (window as any).ResizeObserver;
+		delete (window as any).IntersectionObserver;
 	});
 
 	beforeEach(() => {
-		resizeObserverCallbacks = [];
-
-		(window as any).ResizeObserver = class {
-			constructor(callback: () => void) {
-				resizeObserverCallbacks.push(callback);
+		(window as any).IntersectionObserver = class {
+			constructor(callback: IntersectionObserverCallback) {
+				intersectionObserverCallback = callback;
 			}
 
 			disconnect() {}
@@ -302,13 +301,12 @@ describe('SideNavigation', () => {
 	it('shadows the scroll area once a scope item is pinned', async () => {
 		const {container} = renderComponent({items: ITEMS_WITH_SCOPES});
 
-		const scroller = container.querySelector(
-			'.sidebar-body'
-		) as HTMLElement;
-
-		jest.spyOn(scroller, 'scrollTop', 'get').mockReturnValue(120);
-
-		fireEvent.scroll(scroller);
+		act(() => {
+			intersectionObserverCallback(
+				[{isIntersecting: false}] as IntersectionObserverEntry[],
+				{} as IntersectionObserver
+			);
+		});
 
 		await waitFor(() =>
 			expect(
@@ -317,28 +315,15 @@ describe('SideNavigation', () => {
 		);
 	});
 
-	it('does not shadow the scroll area while the scope item is below the top', async () => {
+	it('does not shadow the scroll area while the scope item is not yet pinned', async () => {
 		const {container} = renderComponent({items: ITEMS_WITH_SCOPES});
 
-		const scroller = container.querySelector(
-			'.sidebar-body'
-		) as HTMLElement;
-
-		jest.spyOn(scroller, 'scrollTop', 'get').mockReturnValue(20);
-
-		jest.spyOn(scroller, 'getBoundingClientRect').mockReturnValue({
-			top: 0,
-		} as DOMRect);
-
-		container
-			.querySelectorAll('.side-navigation-scope-item')
-			.forEach((scopeItem) =>
-				jest
-					.spyOn(scopeItem, 'getBoundingClientRect')
-					.mockReturnValue({top: 80} as DOMRect)
+		act(() => {
+			intersectionObserverCallback(
+				[{isIntersecting: true}] as IntersectionObserverEntry[],
+				{} as IntersectionObserver
 			);
-
-		fireEvent.scroll(scroller);
+		});
 
 		await waitFor(() =>
 			expect(
