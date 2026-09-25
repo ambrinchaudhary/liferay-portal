@@ -6,6 +6,7 @@
 import '@testing-library/jest-dom';
 import {configure} from '@testing-library/dom';
 import {
+	act,
 	fireEvent,
 	render,
 	screen,
@@ -125,11 +126,27 @@ describe('SideNavigation', () => {
 	const languageGet = Liferay.Language.get as jest.Mock;
 	const languageGetImplementation = languageGet.getMockImplementation();
 
+	let intersectionObserverCallback: IntersectionObserverCallback;
+
 	afterEach(() => {
 		languageGet.mockImplementation(languageGetImplementation!);
+
+		delete (window as any).IntersectionObserver;
 	});
 
 	beforeEach(() => {
+		(window as any).IntersectionObserver = class {
+			constructor(callback: IntersectionObserverCallback) {
+				intersectionObserverCallback = callback;
+			}
+
+			disconnect() {}
+
+			observe() {}
+
+			unobserve() {}
+		};
+
 		Liferay.Util = {
 			...Liferay.Util,
 			Session: {
@@ -271,6 +288,48 @@ describe('SideNavigation', () => {
 
 		expect(tabbable).toHaveLength(1);
 		expect(tabbable[0]).toHaveTextContent('Home');
+	});
+
+	it('does not shadow the scroll area at rest', () => {
+		const {container} = renderComponent({items: ITEMS_WITH_SCOPES});
+
+		expect(
+			container.querySelector('.side-navigation-scroll')
+		).not.toHaveClass('side-navigation-scroll-stuck');
+	});
+
+	it('shadows the scroll area once a scope item is pinned', async () => {
+		const {container} = renderComponent({items: ITEMS_WITH_SCOPES});
+
+		act(() => {
+			intersectionObserverCallback(
+				[{isIntersecting: false}] as IntersectionObserverEntry[],
+				{} as IntersectionObserver
+			);
+		});
+
+		await waitFor(() =>
+			expect(
+				container.querySelector('.side-navigation-scroll')
+			).toHaveClass('side-navigation-scroll-stuck')
+		);
+	});
+
+	it('does not shadow the scroll area while the scope item is not yet pinned', async () => {
+		const {container} = renderComponent({items: ITEMS_WITH_SCOPES});
+
+		act(() => {
+			intersectionObserverCallback(
+				[{isIntersecting: true}] as IntersectionObserverEntry[],
+				{} as IntersectionObserver
+			);
+		});
+
+		await waitFor(() =>
+			expect(
+				container.querySelector('.side-navigation-scroll')
+			).not.toHaveClass('side-navigation-scroll-stuck')
+		);
 	});
 
 	it('shows only the navigation items from the expanded keys', () => {
