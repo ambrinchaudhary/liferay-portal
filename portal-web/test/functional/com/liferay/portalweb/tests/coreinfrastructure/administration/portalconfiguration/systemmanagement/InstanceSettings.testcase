@@ -43,6 +43,8 @@ definition {
 	@description = "This test asserts that a user can add additional mail host name."
 	@priority = 3
 	test CanAddAdditionalMailHostName {
+		property portal.acceptance = "true";
+
 		PortalSettings.gotoConfiguration(
 			configurationCategory = "Email",
 			configurationName = "Mail Host Names",
@@ -71,6 +73,8 @@ definition {
 	@description = "This test add the contact information via appearance in Instance Configuration."
 	@priority = 3
 	test CanAddContactInformationInInstanceConfiguration {
+		property portal.acceptance = "true";
+
 		PortalSettings.gotoConfiguration(
 			configurationCategory = "Instance Configuration",
 			configurationName = "Contact Information",
@@ -157,6 +161,7 @@ definition {
 	@priority = 3
 	test CanChangeTheTermsOfUseNotRequired {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "true";
 
 		PortalSettings.gotoConfiguration(
 			configurationCategory = "Instance Configuration",
@@ -205,6 +210,8 @@ definition {
 	@description = "This test asserts that a user can delete site logo via portal setting."
 	@priority = 3
 	test CanDeleteSiteLogoViaAppearance {
+		property portal.acceptance = "quarantine";
+
 		Page.viewDefaultLogoPG();
 
 		PortalSettings.gotoConfiguration(
@@ -253,6 +260,8 @@ definition {
 	@description = "This test asserts that a user can disable site admin to use their own logo."
 	@priority = 3
 	test CanDisableSiteAdminToUseTheirOwnLogo {
+		property portal.acceptance = "true";
+
 		PortalSettings.gotoConfiguration(
 			configurationCategory = "Instance Configuration",
 			configurationName = "Appearance",
@@ -361,6 +370,7 @@ definition {
 
 	@priority = 4
 	test FactoryConfigurationAreInTheirProperScope {
+		property portal.acceptance = "quarantine";
 		property test.liferay.virtual.instance = "false";
 		property test.run.type = "single";
 
@@ -405,6 +415,8 @@ definition {
 	@description = "This test asserts that a user can reset the value of a single configuration."
 	@priority = 4
 	test SingleConfigurationCanBeDeleted {
+		property portal.acceptance = "true";
+
 		PortalSettings.gotoConfiguration(
 			configurationCategory = "Accounts",
 			configurationName = "Email Domains",
