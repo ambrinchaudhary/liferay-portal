@@ -40,6 +40,7 @@ const Liferay = {
 		getDoAsUserIdEncoded: () => '',
 		getLanguageId: () => 'it_IT',
 		getPathContext: () => '',
+		getPathThemeEmptyStatesSpritemap: () => '/assets/empty-states.svg',
 		getPathThemeImages: () => '/assets',
 		getPortalURL: () => window.location.origin,
 		getScopeGroupId: () => '123',
