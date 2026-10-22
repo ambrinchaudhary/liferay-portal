@@ -26,6 +26,8 @@ String impersonateStickerCssClasses = "sticker";
 if (size != null) {
 	impersonateStickerCssClasses += " sticker-sm";
 }
+
+boolean showColorSchemeButton = FeatureFlagManagerUtil.isEnabled("LPD-57922") && (themeDisplay.isShowControlPanelIcon() || GroupPermissionUtil.contains(themeDisplay.getPermissionChecker(), themeDisplay.getScopeGroup(), ActionKeys.VIEW_SITE_ADMINISTRATION));
 %>
 
 <aui:link hashedFile="<%= true %>" href="product-navigation-taglib/css/main.css" rel="stylesheet" type="text/css" />
@@ -63,12 +65,8 @@ if (size != null) {
 	</c:choose>
 
 	<%
-	boolean showColorSchemeButton = themeDisplay.isShowControlPanelIcon() || GroupPermissionUtil.contains(themeDisplay.getPermissionChecker(), themeDisplay.getScopeGroup(), ActionKeys.VIEW_SITE_ADMINISTRATION);
-
 	Map<String, Object> props = HashMapBuilder.<String, Object>put(
 		"color", color
-	).put(
-		"colorSchemeSessionKey", "com_liferay_application_list_taglib_SideNavigationColorScheme"
 	).put(
 		"isImpersonated", themeDisplay.isImpersonated()
 	).put(
