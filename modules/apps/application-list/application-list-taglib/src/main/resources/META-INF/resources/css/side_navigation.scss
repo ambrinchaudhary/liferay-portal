@@ -33,7 +33,9 @@ $side-navigation-scope-item-height: 2.5rem;
 	width: 0;
 
 	&.side-navigation-open {
-		width: 280px;
+		@include media-breakpoint-up(lg) {
+			width: 280px;
+		}
 	}
 
 	a.nav-link {
