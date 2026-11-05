@@ -9,7 +9,7 @@
 
 <div class="frontend-js-components-sample-web">
 	<liferay-ui:tabs
-		names="Chat Shell, Feature Indicator, Management Toolbar, Test Walkable, Translation Manager, Walkable"
+		names="Chat Shell, Feature Indicator, Management Toolbar, Test Walkable, Tour, Translation Manager, Walkable"
 		refresh="<%= false %>"
 	>
 		<liferay-ui:section>
@@ -26,6 +26,10 @@
 
 		<liferay-ui:section>
 			<liferay-util:include page="/partials/test_walkable.jsp" servletContext="<%= application %>" />
+		</liferay-ui:section>
+
+		<liferay-ui:section>
+			<liferay-util:include page="/partials/tour.jsp" servletContext="<%= application %>" />
 		</liferay-ui:section>
 
 		<liferay-ui:section>

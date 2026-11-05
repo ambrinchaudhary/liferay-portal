@@ -8,4 +8,5 @@ export {default as FeatureIndicatorSamples} from './FeatureIndicatorSamples';
 export {default as ManagementToolbarSamples} from './ManagementToolbarSamples';
 export {default as SampleWalkthrough} from './SampleWalkthrough';
 export {default as TestSampleWalkthrough} from './TestSampleWalkthrough';
+export {default as TourSamples} from './TourSamples';
 export {default as TranslationManagerSamples} from './TranslationManagerSamples';
