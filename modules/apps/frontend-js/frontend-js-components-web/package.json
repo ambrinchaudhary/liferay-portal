@@ -23,6 +23,7 @@
 		"@clayui/sticker": "^3.166.0",
 		"@clayui/table": "^3.166.0",
 		"@clayui/tooltip": "^3.166.0",
+		"@liferay/accessibility-settings-state-web": "*",
 		"@liferay/frontend-js-react-web": "*",
 		"@liferay/frontend-js-state-web": "*",
 		"classnames": "2.3.1",

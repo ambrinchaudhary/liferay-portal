@@ -98,17 +98,25 @@ export type {
 export {default as openToast} from './toast/openToast';
 export type {OpenToastProps} from './toast/openToast';
 
+export {start as tourStart} from './tour';
+export type {
+	TourCloseReason,
+	TourDefinition,
+	TourEventType,
+	TourStep,
+} from './tour/types';
 export {
 	Locale,
 	Translations,
 } from './translation_manager/TranslationAdminContent';
-export {default as TranslationAdminItem} from './translation_manager/TranslationAdminItem';
 
+export {default as TranslationAdminItem} from './translation_manager/TranslationAdminItem';
 export {default as TranslationAdminModal} from './translation_manager/TranslationAdminModal';
 export {
 	default as TranslationAdminSelector,
 	TranslationProgress,
 } from './translation_manager/TranslationAdminSelector';
+
 export {
 	activeLanguageIdsAtom,
 	selectedLanguageIdAtom,
