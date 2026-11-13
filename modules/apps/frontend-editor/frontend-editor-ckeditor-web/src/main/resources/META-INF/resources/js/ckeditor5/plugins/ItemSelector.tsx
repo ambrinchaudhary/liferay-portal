@@ -6,10 +6,40 @@
 import {Command, Plugin} from '@ckeditor/ckeditor5-core';
 import {ButtonView} from '@ckeditor/ckeditor5-ui';
 import {Config} from '@ckeditor/ckeditor5-utils';
+import {openUnifiedFileSelectorModal} from '@liferay/frontend-js-item-selector-web';
 import {openSelectionModal} from 'frontend-js-components-web';
 
 import getIcon from '../utils/getIcon';
 import {LiferayEditorConfig} from '../utils/types';
+
+const ALLOWED_IMAGE_EXTENSIONS_CSV = [
+	'apng',
+	'avif',
+	'gif',
+	'jpg',
+	'jpeg',
+	'png',
+	'svg',
+	'tiff',
+	'webp',
+]
+	.map((extension) => `.${extension}`)
+	.join(',');
+
+/**
+ * PoC: the image button opens the unified selector (Documents and Media of
+ * the current site + CMS Spaces). Run
+ * localStorage.setItem('poc-unified-selector', 'off') to get the legacy
+ * selector back.
+ */
+function isUnifiedSelectorEnabled() {
+	try {
+		return localStorage.getItem('poc-unified-selector') !== 'off';
+	}
+	catch (error) {
+		return true;
+	}
+}
 
 const ITEM_SELECTOR_FOLDER_ID_PARAM =
 	'_com_liferay_item_selector_web_portlet_ItemSelectorPortlet_folderId';
@@ -85,6 +115,41 @@ class ItemSelector extends Plugin {
 				buttonView.bind('isEnabled').to(command, 'isEnabled');
 
 				buttonView.on('execute', () => {
+					if (isUnifiedSelectorEnabled()) {
+						const scopeGroupId = Number(
+							Liferay.ThemeDisplay.getScopeGroupId()
+						);
+
+						openUnifiedFileSelectorModal({
+							allowDragAndDrop: true,
+							allowedExtensions: ALLOWED_IMAGE_EXTENSIONS_CSV,
+							containerId: config.get('itemSelectorEventName'),
+							groupId: scopeGroupId,
+							initialSiteId: scopeGroupId,
+							initialSource: 'dl',
+							itemTypeLabel: Liferay.Language.get('image'),
+							onSelect: (items) => {
+								const url = items[0]?.url;
+
+								if (!url) {
+									return;
+								}
+
+								const viewFragment =
+									editor.data.processor.toView(
+										`<img src="${url}">`
+									);
+
+								const modelFragment =
+									editor.data.toModel(viewFragment);
+
+								editor.model.insertContent(modelFragment);
+							},
+						});
+
+						return;
+					}
+
 					openSelectionModal({
 						onSelect: ({
 							folderId,

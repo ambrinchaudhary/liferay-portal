@@ -27,10 +27,69 @@ type FileEntry = {
 	url: string;
 };
 
+/**
+ * PoC: the image editable opens the unified selector (Documents and Media of
+ * sites, Global and asset libraries, CMS Spaces and URL). It is loaded at
+ * runtime from the URL the build gives to @liferay/frontend-js-item-selector-web
+ * (bare specifiers are not in the import map), so this module does not need
+ * to depend on it. Run localStorage.setItem('poc-unified-selector', 'off') to
+ * get the legacy selector back.
+ */
+const UNIFIED_SELECTOR_MODULE = `${Liferay.ThemeDisplay.getPathContext()}/o/frontend-js-item-selector-web/__liferay__/index.js`;
+
+function isUnifiedSelectorEnabled() {
+	try {
+		return localStorage.getItem('poc-unified-selector') !== 'off';
+	}
+	catch (error) {
+		return true;
+	}
+}
+
+function openUnifiedImageSelector(
+	callback: (image: SelectedImage) => void,
+	destroyedCallback?: () => void
+) {
+	const scopeGroupId = Number(Liferay.ThemeDisplay.getScopeGroupId());
+
+	import(/* @vite-ignore */ UNIFIED_SELECTOR_MODULE)
+		.then(({openUnifiedFileSelectorModal}) => {
+			openUnifiedFileSelectorModal({
+				allowDragAndDrop: true,
+				allowedExtensions:
+					'.apng,.avif,.gif,.jpg,.jpeg,.png,.svg,.tiff,.webp',
+				groupId: scopeGroupId,
+				initialSiteId: scopeGroupId,
+				initialSource: 'dl',
+				itemTypeLabel: Liferay.Language.get('image'),
+				onSelect: (items: Array<{title: string; url?: string}>) => {
+					const item = items[0];
+
+					if (item?.url) {
+						callback({title: item.title, url: item.url});
+					}
+
+					destroyedCallback?.();
+				},
+			});
+		})
+		.catch((error) => {
+			console.error(error);
+
+			destroyedCallback?.();
+		});
+}
+
 export function openImageSelector(
 	callback: (image: SelectedImage) => void,
 	destroyedCallback?: () => void
 ) {
+	if (isUnifiedSelectorEnabled()) {
+		openUnifiedImageSelector(callback, destroyedCallback);
+
+		return;
+	}
+
 	openSelectionModal<SelectedItem>({
 		onClose: destroyedCallback,
 		onSelect: (selectedItem) => {
