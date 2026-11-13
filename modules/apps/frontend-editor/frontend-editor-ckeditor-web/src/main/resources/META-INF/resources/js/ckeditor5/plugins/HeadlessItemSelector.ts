@@ -5,7 +5,10 @@
 
 import {Command, Plugin} from '@ckeditor/ckeditor5-core';
 import {ButtonView} from '@ckeditor/ckeditor5-ui';
-import {openCMSFileSelectorModal} from '@liferay/frontend-js-item-selector-web';
+import {
+	openCMSFileSelectorModal,
+	openUnifiedFileSelectorModal,
+} from '@liferay/frontend-js-item-selector-web';
 
 import getIcon from '../utils/getIcon';
 import getItemSelectorGroupId from '../utils/getItemSelectorGroupId';
@@ -75,14 +78,16 @@ class HeadlessItemSelector extends Plugin {
 			buttonView.bind('isEnabled').to(command, 'isEnabled');
 
 			buttonView.on('execute', () => {
-				openCMSFileSelectorModal({
+				// PoC: Spaces (CMS) and Documents and Media in one selector
+
+				openUnifiedFileSelectorModal({
 					allowDragAndDrop: true,
 					allowedExtensions: ALLOWED_IMAGE_EXTENSIONS_CSV,
-					folderMemoryKey: `${folderMemoryKeyPrefix}:image`,
 					groupId: getItemSelectorGroupId(editor),
 					itemTypeLabel: Liferay.Language.get('image'),
+					uploadGroupId: getItemSelectorGroupId(editor),
 					onSelect: (items) => {
-						const href = items[0]?.embedded?.file?.link?.href;
+						const href = items[0]?.url;
 
 						if (!href) {
 							return;
