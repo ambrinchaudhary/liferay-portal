@@ -83,6 +83,12 @@ export interface IItemSelectorModalProps<T> {
 	confirmButtonLabel?: string;
 
 	/**
+	 * When set, it replaces the data set and the footer. Used by the unified
+	 * selector PoC for its URL option.
+	 */
+	customBody?: React.ReactNode;
+
+	/**
 	 * Label shown in the footer as "{label} Selected" when
 	 * 'allowEmptySelection' is true and no items are selected.
 	 */
@@ -176,6 +182,7 @@ function ItemSelectorModal<T extends Record<string, any>>({
 	breadcrumbs,
 	breadcrumbsLabel = true,
 	confirmButtonLabel,
+	customBody,
 	emptySelectionLabel,
 	fdsProps,
 	filesUploaderComponent: FilesUploaderComponent,
@@ -256,7 +263,13 @@ function ItemSelectorModal<T extends Record<string, any>>({
 
 			{message}
 
-			<ClayModal.Body className="d-flex flex-column p-0">
+			{customBody && <ClayModal.Body>{customBody}</ClayModal.Body>}
+
+			<ClayModal.Body
+				className={
+					customBody ? 'd-none' : 'd-flex flex-column p-0'
+				}
+			>
 				<ClayLayout.Container
 					className={classNames({'d-none': view !== 'fds'})}
 					fluid
@@ -326,7 +339,7 @@ function ItemSelectorModal<T extends Record<string, any>>({
 				)}
 			</ClayModal.Body>
 
-			{view === 'fds' && (
+			{view === 'fds' && !customBody && (
 				<ClayModal.Footer
 					className={classNames({
 						'bg-primary-l3 border-primary border-top':

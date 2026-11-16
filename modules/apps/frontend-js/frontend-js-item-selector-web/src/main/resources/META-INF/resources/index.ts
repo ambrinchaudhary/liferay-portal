@@ -18,6 +18,8 @@ export {
 export {default as openCMSFileSelectorModal} from './item_selector/openCMSFileSelectorModal';
 export {default as openItemSelectorModal} from './item_selector/openItemSelectorModal';
 export {default as openTreeItemSelectorModal} from './item_selector/openTreeItemSelectorModal';
+export {default as openUnifiedFileSelectorModal} from './item_selector/openUnifiedFileSelectorModal';
+export type {UnifiedFile} from './item_selector/openUnifiedFileSelectorModal';
 export type {
 	ITaxonomyCategory,
 	ITaxonomyCategoryTreeNode,
