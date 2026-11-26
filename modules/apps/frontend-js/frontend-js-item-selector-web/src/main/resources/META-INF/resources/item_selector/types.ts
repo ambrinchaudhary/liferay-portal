@@ -95,6 +95,8 @@ export type AnyFileItem = {
 
 export type Site = {id: number; kind: 'global' | 'site'; name: string};
 
+export type ActiveKey = 'cms' | `dm-${number}`;
+
 export type CMSFileItemSelectorModalProps = IItemSelectorModalProps<CMSFile>;
 
 export type CMSFileItemSelectorModalConfig = {
@@ -102,4 +104,24 @@ export type CMSFileItemSelectorModalConfig = {
 	items: CMSFileItemSelectorModalProps['items'];
 	locator: CMSFileItemSelectorModalProps['locator'];
 	multiSelect: CMSFileItemSelectorModalProps['multiSelect'];
+};
+
+export type SourceSidebarProps = {
+	activeKey: ActiveKey;
+	onActiveKeyChange: (key: ActiveKey) => void;
+	sites: Site[];
+};
+
+export type CMSFileSelectorModalProps = {
+	allowDragAndDrop: boolean;
+	allowedExtensions?: string;
+	cmsFdsFilters: string[];
+	extensionList: string[];
+	fdsPropsOverride?: Partial<CMSFileItemSelectorModalProps['fdsProps']>;
+	finalConfig: CMSFileItemSelectorModalConfig;
+	folderMemoryKey?: string;
+	groupId?: number;
+	itemTypeLabel?: string;
+	maxFileSize?: number;
+	onSelect: (items: Array<CMSFile>) => void;
 };
