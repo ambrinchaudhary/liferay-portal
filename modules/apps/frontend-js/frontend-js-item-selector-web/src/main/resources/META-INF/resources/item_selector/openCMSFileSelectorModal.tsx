@@ -8,17 +8,21 @@ import {ClayVerticalNav} from '@clayui/nav';
 import {EConfigInURLBehavior} from '@liferay/frontend-data-set-web';
 import {render} from '@liferay/frontend-js-react-web';
 import {fetch, mimeTypeUtils} from 'frontend-js-web';
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 
 import CMSFileUploaderComponent from '../item_selector_file_uploader/CMSFileUploaderComponent';
+import DLFileUploaderComponent from '../item_selector_file_uploader/DLFileUploaderComponent';
 import DetachedCMSFilesItemSelectorModal from './DetachedCMSFilesItemSelectorModal';
 import {
+	ActiveKey,
 	AnyFileItem,
 	CMSFile,
 	CMSFileItemSelectorModalConfig,
 	CMSFileItemSelectorModalProps,
+	CMSFileSelectorModalProps,
 	DLFile,
 	Site,
+	SourceSidebarProps,
 } from './types';
 import {
 	getCMSItemSelectorFilters,
@@ -27,6 +31,8 @@ import {
 
 const DL_FILE_ENTRY_CLASS_NAME =
 	'com.liferay.document.library.kernel.model.DLFileEntry';
+
+const lastActiveKeyMap = new Map<string, ActiveKey>();
 
 function urlBuilder({
 	base = location.origin,
@@ -315,19 +321,22 @@ const FDS_PROPS: Omit<
 	],
 };
 
-type Source = {icon: string; key: string; label: string};
+function SourceSidebar({
+	activeKey,
+	onActiveKeyChange,
+	sites,
+}: SourceSidebarProps) {
+	const sourceItems: Array<{icon: string; key: ActiveKey; label: string}> = [
+		{icon: 'box-container', key: 'cms', label: 'Spaces'},
+		...sites.map((site) => ({
+			icon: 'sites',
+			key: `dm-${site.id}` as ActiveKey,
+			label: site.name,
+		})),
+	];
 
-const SOURCES: Source[] = [
-	{icon: 'box-container', key: 'cms', label: 'Spaces'},
-	{icon: 'sites', key: 'dm', label: 'Sites'},
-	{icon: 'link', key: 'url', label: 'URL'},
-];
-
-function SourceSidebar() {
-	const [activeSourceKey, setActiveSourceKey] = useState(SOURCES[0].key);
-
-	const items = SOURCES.map((source) => ({
-		active: activeSourceKey === source.key,
+	const items = sourceItems.map((source) => ({
+		active: activeKey === source.key,
 		label: (
 			<>
 				<ClayIcon
@@ -338,7 +347,7 @@ function SourceSidebar() {
 				{source.label}
 			</>
 		),
-		onClick: () => setActiveSourceKey(source.key),
+		onClick: () => onActiveKeyChange(source.key),
 		textValue: source.label,
 	}));
 
@@ -377,6 +386,144 @@ function normalizeExtensions(allowedExtensions: string) {
 	return `(extension in (${extensions}) or objectDefinitionExternalReferenceCode eq 'L_OBJECT_ENTRY_FOLDER')`;
 }
 
+function CMSFileSelectorModal({
+	allowDragAndDrop,
+	allowedExtensions,
+	cmsFdsFilters,
+	extensionList,
+	fdsPropsOverride,
+	finalConfig,
+	folderMemoryKey,
+	groupId,
+	itemTypeLabel,
+	maxFileSize,
+	onSelect,
+}: CMSFileSelectorModalProps) {
+	const [activeKey, setActiveKey] = useState<ActiveKey>(
+		() =>
+			(folderMemoryKey && lastActiveKeyMap.get(folderMemoryKey)) || 'cms'
+	);
+	const [sites, setSites] = useState<Site[]>([]);
+
+	const [fdsBaseId] = useState(() => getRandomId());
+
+	const fdsId = `CMSItemSelectorFDS_${fdsBaseId}_${activeKey}`;
+
+	const isSidebarEnabled = Liferay.FeatureFlags['LPD-95652'];
+
+	useEffect(() => {
+		if (!isSidebarEnabled) {
+			return;
+		}
+
+		fetchSites().then(setSites);
+	}, [isSidebarEnabled]);
+
+	useEffect(() => {
+		if (folderMemoryKey) {
+			lastActiveKeyMap.set(folderMemoryKey, activeKey);
+		}
+	}, [activeKey, folderMemoryKey]);
+
+	const activeSiteId = useMemo(
+		() =>
+			activeKey.startsWith('dm-')
+				? parseInt(activeKey.slice(3), 10)
+				: null,
+		[activeKey]
+	);
+
+	const buildApiURL = useCallback(
+		(folderId: number | null) => {
+			if (activeSiteId !== null) {
+				return buildDLApiURL(extensionList, activeSiteId, folderId);
+			}
+
+			return urlBuilder({
+				filters: cmsFdsFilters,
+				folderId: folderId ?? undefined,
+			});
+		},
+		[activeSiteId, cmsFdsFilters, extensionList]
+	);
+
+	const rootLabel = useMemo(
+		() =>
+			activeSiteId !== null
+				? sites.find((site) => site.id === activeSiteId)?.name
+				: undefined,
+		[activeSiteId, sites]
+	);
+
+	const {fdsFilters, fdsGroupedFilters} = useMemo(
+		() =>
+			activeSiteId !== null
+				? {fdsFilters: undefined, fdsGroupedFilters: undefined}
+				: {
+						fdsFilters: getCMSItemSelectorFilters(
+							groupId ?? Liferay.ThemeDisplay.getScopeGroupId()
+						),
+						fdsGroupedFilters: getCMSItemSelectorGroupedFilters(),
+					},
+		[activeSiteId, groupId]
+	);
+
+	const sidebar = isSidebarEnabled ? (
+		<SourceSidebar
+			activeKey={activeKey}
+			onActiveKeyChange={setActiveKey}
+			sites={sites}
+		/>
+	) : undefined;
+
+	return (
+		<DetachedCMSFilesItemSelectorModal
+			{...finalConfig}
+			allowedExtensions={allowedExtensions}
+			buildApiURL={buildApiURL}
+			fdsProps={{
+				...FDS_PROPS,
+				emptyState: allowDragAndDrop
+					? {
+							description: Liferay.Language.get(
+								'drag-and-drop-to-upload'
+							),
+							image: '/states/cms_empty_state_files.svg',
+							title: Liferay.Language.get('no-files-yet'),
+						}
+					: undefined,
+				filters: fdsFilters,
+				groupedFilters: fdsGroupedFilters,
+				hideManagementBarInEmptyState: true,
+				...fdsPropsOverride,
+				id: fdsId,
+			}}
+			filesUploaderComponent={
+				allowDragAndDrop
+					? activeSiteId !== null
+						? DLFileUploaderComponent
+						: CMSFileUploaderComponent
+					: undefined
+			}
+			folderMemoryKey={folderMemoryKey}
+			groupId={activeSiteId ?? groupId}
+			itemTypeLabel={itemTypeLabel ?? Liferay.Language.get('files')}
+			locator={finalConfig.locator}
+			maxFileSize={maxFileSize}
+			onItemsChange={(items) =>
+				onSelect(
+					activeSiteId !== null
+						? (items as unknown as DLFile[]).map(normalizeDLItem)
+						: (items as CMSFile[])
+				)
+			}
+			resetKey={activeKey}
+			rootLabel={rootLabel}
+			sidebar={sidebar}
+		/>
+	);
+}
+
 export default function openCMSFileSelectorModal({
 	allowDragAndDrop = false,
 	allowedExtensions,
@@ -407,63 +554,40 @@ export default function openCMSFileSelectorModal({
 	maxFileSize?: number;
 	onSelect: (items: Array<CMSFile>) => void;
 }) {
-	let effectiveFilters: string[] = [];
+	let cmsFdsFilters: string[] = [];
+	let extensionList: string[] = [];
 
 	if (filters?.length) {
-		effectiveFilters = filters;
+		cmsFdsFilters = filters;
 	}
 	else if (allowedExtensions) {
-		effectiveFilters = [normalizeExtensions(allowedExtensions)];
+		cmsFdsFilters = [normalizeExtensions(allowedExtensions)];
+		extensionList = allowedExtensions
+			.split(',')
+			.map((ext) => ext.trim().replace(/^\./, ''))
+			.filter(Boolean);
 	}
 
-	const buildApiURL = (folderId: number | null) =>
-		urlBuilder({
-			filters: effectiveFilters,
-			folderId: folderId ?? undefined,
-		});
-
-	const finalConfig = {
+	const finalConfig: CMSFileItemSelectorModalConfig = {
 		...CMS_FILE_ITEM_SELECTOR_CONFIG,
 		...config,
-		apiURL: buildApiURL(null),
+		apiURL: urlBuilder({filters: cmsFdsFilters}),
 	};
 
 	return render(
-		DetachedCMSFilesItemSelectorModal,
+		CMSFileSelectorModal,
 		{
-			...finalConfig,
+			allowDragAndDrop,
 			allowedExtensions,
-			buildApiURL,
-			fdsProps: {
-				...FDS_PROPS,
-				emptyState: allowDragAndDrop
-					? {
-							description: Liferay.Language.get(
-								'drag-and-drop-to-upload'
-							),
-							image: '/states/cms_empty_state_files.svg',
-							title: Liferay.Language.get('no-files-yet'),
-						}
-					: undefined,
-				filters: getCMSItemSelectorFilters(
-					groupId ?? Liferay.ThemeDisplay.getScopeGroupId()
-				),
-				groupedFilters: getCMSItemSelectorGroupedFilters(),
-				hideManagementBarInEmptyState: true,
-				...fdsProps,
-				id: `CMSItemSelectorFDS_${getRandomId()}`,
-			},
-			filesUploaderComponent: allowDragAndDrop
-				? CMSFileUploaderComponent
-				: undefined,
+			cmsFdsFilters,
+			extensionList,
+			fdsPropsOverride: fdsProps,
+			finalConfig,
 			folderMemoryKey,
 			groupId,
-			itemTypeLabel: itemTypeLabel ?? Liferay.Language.get('files'),
+			itemTypeLabel,
 			maxFileSize,
-			onItemsChange: onSelect,
-			sidebar: Liferay.FeatureFlags['LPD-95652'] ? (
-				<SourceSidebar />
-			) : undefined,
+			onSelect,
 		},
 		document.createElement('div')
 	);
