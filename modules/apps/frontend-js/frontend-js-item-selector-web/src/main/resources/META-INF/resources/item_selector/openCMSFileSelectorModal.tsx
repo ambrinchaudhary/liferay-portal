@@ -7,42 +7,26 @@ import ClayIcon from '@clayui/icon';
 import {ClayVerticalNav} from '@clayui/nav';
 import {EConfigInURLBehavior} from '@liferay/frontend-data-set-web';
 import {render} from '@liferay/frontend-js-react-web';
-import {mimeTypeUtils} from 'frontend-js-web';
+import {fetch, mimeTypeUtils} from 'frontend-js-web';
 import React, {useState} from 'react';
 
 import CMSFileUploaderComponent from '../item_selector_file_uploader/CMSFileUploaderComponent';
 import DetachedCMSFilesItemSelectorModal from './DetachedCMSFilesItemSelectorModal';
-import {IItemSelectorModalProps} from './ItemSelectorModal';
+import {
+	AnyFileItem,
+	CMSFile,
+	CMSFileItemSelectorModalConfig,
+	CMSFileItemSelectorModalProps,
+	DLFile,
+	Site,
+} from './types';
 import {
 	getCMSItemSelectorFilters,
 	getCMSItemSelectorGroupedFilters,
 } from './getCMSItemSelectorFilters';
 
-interface CMSFile {
-	description: string;
-	embedded: {
-		file?: {
-			link?: {
-				href?: string;
-			};
-			mimeType: string;
-			thumbnailURL: string;
-		};
-		id: number;
-		title: string;
-		videoURL?: string;
-	};
-	title: string;
-}
-
-type CMSFileItemSelectorModalProps = IItemSelectorModalProps<CMSFile>;
-
-type CMSFileItemSelectorModalConfig = {
-	apiURL: CMSFileItemSelectorModalProps['apiURL'];
-	items: CMSFileItemSelectorModalProps['items'];
-	locator: CMSFileItemSelectorModalProps['locator'];
-	multiSelect: CMSFileItemSelectorModalProps['multiSelect'];
-};
+const DL_FILE_ENTRY_CLASS_NAME =
+	'com.liferay.document.library.kernel.model.DLFileEntry';
 
 function urlBuilder({
 	base = location.origin,
@@ -78,6 +62,96 @@ function urlBuilder({
 	return finalURL.toString();
 }
 
+function buildDLApiURL(
+	extensions: string[],
+	siteId: number,
+	_folderId: number | null
+): string {
+	const url = new URL('/o/search/v1.0/search', location.origin);
+
+	const predicates = [`(scopeGroupId eq ${siteId})`, '(status eq 0)'];
+
+	if (extensions.length) {
+		const extList = extensions.map((ext) => `'${ext}'`).join(',');
+
+		predicates.push(`(extension in (${extList}))`);
+	}
+
+	url.search = new URLSearchParams({
+		emptySearch: 'true',
+		entryClassNames: DL_FILE_ENTRY_CLASS_NAME,
+		filter: predicates.join(' and '),
+		nestedFields: 'embedded',
+	}).toString();
+
+	return url.toString();
+}
+
+async function fetchSites(): Promise<Site[]> {
+	try {
+		const companyGroupId = Number(
+			(
+				Liferay.ThemeDisplay as unknown as {
+					getCompanyGroupId: () => number;
+				}
+			).getCompanyGroupId()
+		);
+
+		const response = await fetch(
+			'/o/headless-admin-user/v1.0/my-user-account/sites'
+		);
+
+		const data: Record<string, unknown> | null = response.ok
+			? await response.json()
+			: null;
+
+		const sites: Site[] = (
+			(
+				data?.items as Array<{
+					descriptiveName?: string;
+					id: number;
+					name: string;
+				}>
+			) ?? []
+		)
+			.filter((site) => site.id !== companyGroupId)
+			.map((site) => ({
+				id: site.id,
+				kind: 'site' as const,
+				name: site.descriptiveName || site.name,
+			}));
+
+		sites.push({
+			id: companyGroupId,
+			kind: 'global',
+			name: Liferay.Language.get('global'),
+		});
+
+		return sites;
+	}
+	catch {
+		return [];
+	}
+}
+
+function normalizeDLItem(item: DLFile): CMSFile {
+	const title = item.title || item.embedded.title || item.embedded.name || '';
+
+	return {
+		description: '',
+		embedded: {
+			file: {
+				link: {href: item.embedded.contentUrl ?? ''},
+				mimeType: item.embedded.encodingFormat ?? '',
+				thumbnailURL: item.embedded.contentUrl ?? '',
+			},
+			id: item.embedded.id,
+			title,
+		},
+		title,
+	};
+}
+
 const CMS_FILE_ITEM_SELECTOR_CONFIG: CMSFileItemSelectorModalConfig = {
 	apiURL: urlBuilder({}),
 	items: [],
@@ -111,47 +185,77 @@ const FDS_PROPS: Omit<
 
 			setItemComponentProps: ({
 				item,
-				props,
+				props: initialProps,
 			}: {
-				item: Pick<CMSFile, 'embedded'>;
+				item: AnyFileItem;
 				props: object;
 			}) => {
-				const fallbackStickerProps = {
-					stickerProps: {
-						className: 'file-icon-color-5',
-						displayType: 'unstyled',
-					},
+				const embedded = item.embedded ?? {};
+
+				const props = {
+					...initialProps,
+					title:
+						(initialProps as {title?: string}).title ||
+						item.title ||
+						embedded.title ||
+						embedded.name ||
+						'',
 				};
 
-				if (item.embedded.file) {
-					const mimeType = item.embedded.file.mimeType || '';
+				if (embedded.file) {
+					const mimeType = embedded.file.mimeType || '';
 
 					return {
 						...props,
-						imgProps: {src: item.embedded.file.thumbnailURL},
+						imgProps: {src: embedded.file.thumbnailURL},
 						stickerProps: {
 							className:
 								mimeTypeUtils.getClassNameFromMimeType(
 									mimeType
 								),
-							content: React.createElement(ClayIcon, {
-								symbol: mimeTypeUtils.getIconFromMimeType(
+							content: (
+							<ClayIcon
+								symbol={mimeTypeUtils.getIconFromMimeType(
 									mimeType
-								),
-							}),
+								)}
+							/>
+						),
+						displayType: 'unstyled',
+					},
+				};
+			}
+
+				if (embedded.videoURL) {
+					return {
+						...props,
+						stickerProps: {
+							className: 'file-icon-color-3',
+							content: <ClayIcon symbol="document-multimedia" />,
 							displayType: 'unstyled',
 						},
 					};
 				}
 
-				if (item.embedded.videoURL) {
+				if (embedded.contentUrl) {
+					const mimeType = embedded.encodingFormat || '';
+
 					return {
 						...props,
+						imgProps: mimeType.startsWith('image/')
+							? {src: embedded.contentUrl}
+							: undefined,
 						stickerProps: {
-							className: 'file-icon-color-3',
-							content: React.createElement(ClayIcon, {
-								symbol: 'document-multimedia',
-							}),
+							className:
+								mimeTypeUtils.getClassNameFromMimeType(
+									mimeType
+								),
+							content: (
+								<ClayIcon
+									symbol={mimeTypeUtils.getIconFromMimeType(
+										mimeType
+									)}
+								/>
+							),
 							displayType: 'unstyled',
 						},
 					};
@@ -159,7 +263,10 @@ const FDS_PROPS: Omit<
 
 				return {
 					...props,
-					...fallbackStickerProps,
+					stickerProps: {
+						className: 'file-icon-color-5',
+						displayType: 'unstyled',
+					},
 				};
 			},
 
