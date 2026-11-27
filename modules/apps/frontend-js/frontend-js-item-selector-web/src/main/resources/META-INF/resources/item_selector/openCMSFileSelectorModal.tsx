@@ -8,11 +8,15 @@ import {ClayVerticalNav} from '@clayui/nav';
 import {EConfigInURLBehavior} from '@liferay/frontend-data-set-web';
 import {render} from '@liferay/frontend-js-react-web';
 import {fetch, mimeTypeUtils} from 'frontend-js-web';
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {useCallback, useEffect, useId, useMemo, useState} from 'react';
 
 import CMSFileUploaderComponent from '../item_selector_file_uploader/CMSFileUploaderComponent';
 import DLFileUploaderComponent from '../item_selector_file_uploader/DLFileUploaderComponent';
 import DetachedCMSFilesItemSelectorModal from './DetachedCMSFilesItemSelectorModal';
+import {
+	getCMSItemSelectorFilters,
+	getCMSItemSelectorGroupedFilters,
+} from './getCMSItemSelectorFilters';
 import {
 	ActiveKey,
 	AnyFileItem,
@@ -24,17 +28,13 @@ import {
 	Site,
 	SourceSidebarProps,
 } from './types';
-import {
-	getCMSItemSelectorFilters,
-	getCMSItemSelectorGroupedFilters,
-} from './getCMSItemSelectorFilters';
 
 const DL_FILE_ENTRY_CLASS_NAME =
 	'com.liferay.document.library.kernel.model.DLFileEntry';
 
 const lastActiveKeyMap = new Map<string, ActiveKey>();
 
-function urlBuilder({
+function buildSpacesApiURL({
 	base = location.origin,
 	filters = [],
 	folderId,
@@ -112,13 +112,11 @@ async function fetchSites(): Promise<Site[]> {
 			: null;
 
 		const sites: Site[] = (
-			(
-				data?.items as Array<{
-					descriptiveName?: string;
-					id: number;
-					name: string;
-				}>
-			) ?? []
+			(data?.items as Array<{
+				descriptiveName?: string;
+				id: number;
+				name: string;
+			}>) ?? []
 		)
 			.filter((site) => site.id !== companyGroupId)
 			.map((site) => ({
@@ -159,7 +157,6 @@ function normalizeDLItem(item: DLFile): CMSFile {
 }
 
 const CMS_FILE_ITEM_SELECTOR_CONFIG: CMSFileItemSelectorModalConfig = {
-	apiURL: urlBuilder({}),
 	items: [],
 	locator: {
 		id: 'embedded.id',
@@ -220,16 +217,16 @@ const FDS_PROPS: Omit<
 									mimeType
 								),
 							content: (
-							<ClayIcon
-								symbol={mimeTypeUtils.getIconFromMimeType(
-									mimeType
-								)}
-							/>
-						),
-						displayType: 'unstyled',
-					},
-				};
-			}
+								<ClayIcon
+									symbol={mimeTypeUtils.getIconFromMimeType(
+										mimeType
+									)}
+								/>
+							),
+							displayType: 'unstyled',
+						},
+					};
+				}
 
 				if (embedded.videoURL) {
 					return {
@@ -367,10 +364,6 @@ function SourceSidebar({
 	);
 }
 
-function getRandomId(): string {
-	return Math.random().toString(36).substring(2, 9);
-}
-
 function normalizeExtensions(allowedExtensions: string) {
 	const cleanExtensions = allowedExtensions
 		.split(',')
@@ -405,7 +398,7 @@ function CMSFileSelectorModal({
 	);
 	const [sites, setSites] = useState<Site[]>([]);
 
-	const [fdsBaseId] = useState(() => getRandomId());
+	const fdsBaseId = useId();
 
 	const fdsId = `CMSItemSelectorFDS_${fdsBaseId}_${activeKey}`;
 
@@ -439,7 +432,7 @@ function CMSFileSelectorModal({
 				return buildDLApiURL(extensionList, activeSiteId, folderId);
 			}
 
-			return urlBuilder({
+			return buildSpacesApiURL({
 				filters: cmsFdsFilters,
 				folderId: folderId ?? undefined,
 			});
@@ -571,7 +564,6 @@ export default function openCMSFileSelectorModal({
 	const finalConfig: CMSFileItemSelectorModalConfig = {
 		...CMS_FILE_ITEM_SELECTOR_CONFIG,
 		...config,
-		apiURL: urlBuilder({filters: cmsFdsFilters}),
 	};
 
 	return render(

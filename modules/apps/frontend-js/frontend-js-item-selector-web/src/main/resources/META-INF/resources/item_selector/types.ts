@@ -100,7 +100,6 @@ export type ActiveKey = 'cms' | `dm-${number}`;
 export type CMSFileItemSelectorModalProps = IItemSelectorModalProps<CMSFile>;
 
 export type CMSFileItemSelectorModalConfig = {
-	apiURL: CMSFileItemSelectorModalProps['apiURL'];
 	items: CMSFileItemSelectorModalProps['items'];
 	locator: CMSFileItemSelectorModalProps['locator'];
 	multiSelect: CMSFileItemSelectorModalProps['multiSelect'];
