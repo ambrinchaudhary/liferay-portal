@@ -7,11 +7,14 @@ import ClayIcon from '@clayui/icon';
 import {ClayVerticalNav} from '@clayui/nav';
 import {EConfigInURLBehavior} from '@liferay/frontend-data-set-web';
 import {render} from '@liferay/frontend-js-react-web';
-import {fetch, mimeTypeUtils} from 'frontend-js-web';
+import {mimeTypeUtils} from 'frontend-js-web';
 import React, {useCallback, useEffect, useId, useMemo, useState} from 'react';
 
 import CMSFileUploaderComponent from '../item_selector_file_uploader/CMSFileUploaderComponent';
 import DLFileUploaderComponent from '../item_selector_file_uploader/DLFileUploaderComponent';
+import {fetchSites} from '../utils/fetchSites';
+import {normalizeDLItem, normalizeExtensions} from '../utils/normalize';
+import {buildDLApiURL, buildSpacesApiURL} from '../utils/searchApiURL';
 import DetachedCMSFilesItemSelectorModal from './DetachedCMSFilesItemSelectorModal';
 import {
 	getCMSItemSelectorFilters,
@@ -29,132 +32,7 @@ import {
 	SourceSidebarProps,
 } from './types';
 
-const DL_FILE_ENTRY_CLASS_NAME =
-	'com.liferay.document.library.kernel.model.DLFileEntry';
-
 const lastActiveKeyMap = new Map<string, ActiveKey>();
-
-function buildSpacesApiURL({
-	base = location.origin,
-	filters = [],
-	folderId,
-	resource = '/o/search/v1.0/search',
-}: {
-	base?: string;
-	filters?: string[];
-	folderId?: number | null;
-	resource?: string;
-}) {
-	const finalURL = new URL(resource, base);
-
-	const scopePredicates = folderId
-		? [`(folderId eq ${folderId})`]
-		: [
-				'(cmsRoot eq true)',
-				"(cmsSection eq 'files')",
-				'(rootDescendantNode eq false)',
-			];
-
-	const filter = [...scopePredicates, '(status in (0, 2, 3))']
-		.concat(filters.filter(Boolean))
-		.join(' and ');
-
-	finalURL.search = new URLSearchParams({
-		emptySearch: 'true',
-		filter,
-		nestedFields: 'description,embedded,file.mimeType,file.thumbnailURL',
-	}).toString();
-
-	return finalURL.toString();
-}
-
-function buildDLApiURL(
-	extensions: string[],
-	siteId: number,
-	_folderId: number | null
-): string {
-	const url = new URL('/o/search/v1.0/search', location.origin);
-
-	const predicates = [`(scopeGroupId eq ${siteId})`, '(status eq 0)'];
-
-	if (extensions.length) {
-		const extList = extensions.map((ext) => `'${ext}'`).join(',');
-
-		predicates.push(`(extension in (${extList}))`);
-	}
-
-	url.search = new URLSearchParams({
-		emptySearch: 'true',
-		entryClassNames: DL_FILE_ENTRY_CLASS_NAME,
-		filter: predicates.join(' and '),
-		nestedFields: 'embedded',
-	}).toString();
-
-	return url.toString();
-}
-
-async function fetchSites(): Promise<Site[]> {
-	try {
-		const companyGroupId = Number(
-			(
-				Liferay.ThemeDisplay as unknown as {
-					getCompanyGroupId: () => number;
-				}
-			).getCompanyGroupId()
-		);
-
-		const response = await fetch(
-			'/o/headless-admin-user/v1.0/my-user-account/sites'
-		);
-
-		const data: Record<string, unknown> | null = response.ok
-			? await response.json()
-			: null;
-
-		const sites: Site[] = (
-			(data?.items as Array<{
-				descriptiveName?: string;
-				id: number;
-				name: string;
-			}>) ?? []
-		)
-			.filter((site) => site.id !== companyGroupId)
-			.map((site) => ({
-				id: site.id,
-				kind: 'site' as const,
-				name: site.descriptiveName || site.name,
-			}));
-
-		sites.push({
-			id: companyGroupId,
-			kind: 'global',
-			name: Liferay.Language.get('global'),
-		});
-
-		return sites;
-	}
-	catch {
-		return [];
-	}
-}
-
-function normalizeDLItem(item: DLFile): CMSFile {
-	const title = item.title || item.embedded.title || item.embedded.name || '';
-
-	return {
-		description: '',
-		embedded: {
-			file: {
-				link: {href: item.embedded.contentUrl ?? ''},
-				mimeType: item.embedded.encodingFormat ?? '',
-				thumbnailURL: item.embedded.contentUrl ?? '',
-			},
-			id: item.embedded.id,
-			title,
-		},
-		title,
-	};
-}
 
 const CMS_FILE_ITEM_SELECTOR_CONFIG: CMSFileItemSelectorModalConfig = {
 	items: [],
@@ -362,21 +240,6 @@ function SourceSidebar({
 			/>
 		</>
 	);
-}
-
-function normalizeExtensions(allowedExtensions: string) {
-	const cleanExtensions = allowedExtensions
-		.split(',')
-		.map((item) => item.trim().replace(/^\./, ''))
-		.filter(Boolean);
-
-	if (cleanExtensions.length < 1) {
-		return '';
-	}
-
-	const extensions = cleanExtensions.map((item) => `'${item}'`).join(',');
-
-	return `(extension in (${extensions}) or objectDefinitionExternalReferenceCode eq 'L_OBJECT_ENTRY_FOLDER')`;
 }
 
 function CMSFileSelectorModal({
