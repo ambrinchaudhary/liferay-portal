@@ -47,3 +47,59 @@ export type TDetachedItemSelectorModal<T> = Omit<
 	IItemSelectorModalProps<T>,
 	'observer' | 'onOpenChange' | 'open'
 >;
+
+export interface CMSFile {
+	description: string;
+	embedded: {
+		file?: {
+			link?: {
+				href?: string;
+			};
+			mimeType: string;
+			thumbnailURL: string;
+		};
+		id: number;
+		title: string;
+		videoURL?: string;
+	};
+	title: string;
+}
+
+export interface DLFile {
+	embedded: {
+		contentUrl?: string;
+		encodingFormat?: string;
+		id: number;
+		name?: string;
+		title?: string;
+	};
+	title: string;
+}
+
+export type AnyFileItem = {
+	embedded: {
+		contentUrl?: string;
+		encodingFormat?: string;
+		file?: {
+			link?: {href?: string};
+			mimeType: string;
+			thumbnailURL: string;
+		};
+		id: number;
+		name?: string;
+		title?: string;
+		videoURL?: string;
+	};
+	title: string;
+};
+
+export type Site = {id: number; kind: 'global' | 'site'; name: string};
+
+export type CMSFileItemSelectorModalProps = IItemSelectorModalProps<CMSFile>;
+
+export type CMSFileItemSelectorModalConfig = {
+	apiURL: CMSFileItemSelectorModalProps['apiURL'];
+	items: CMSFileItemSelectorModalProps['items'];
+	locator: CMSFileItemSelectorModalProps['locator'];
+	multiSelect: CMSFileItemSelectorModalProps['multiSelect'];
+};
