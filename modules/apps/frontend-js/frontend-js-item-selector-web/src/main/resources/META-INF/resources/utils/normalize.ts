@@ -23,11 +23,15 @@ export function normalizeDLItem(item: DLFile): CMSFile {
 	};
 }
 
-export function normalizeExtensions(allowedExtensions: string) {
-	const cleanExtensions = allowedExtensions
+export function parseExtensions(allowedExtensions: string): string[] {
+	return allowedExtensions
 		.split(',')
 		.map((item) => item.trim().replace(/^\./, ''))
 		.filter(Boolean);
+}
+
+export function normalizeExtensions(allowedExtensions: string) {
+	const cleanExtensions = parseExtensions(allowedExtensions);
 
 	if (cleanExtensions.length < 1) {
 		return '';

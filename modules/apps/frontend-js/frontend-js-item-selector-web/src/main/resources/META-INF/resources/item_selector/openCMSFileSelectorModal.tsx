@@ -13,7 +13,11 @@ import React, {useCallback, useEffect, useId, useMemo, useState} from 'react';
 import CMSFileUploaderComponent from '../item_selector_file_uploader/CMSFileUploaderComponent';
 import DLFileUploaderComponent from '../item_selector_file_uploader/DLFileUploaderComponent';
 import {fetchSites} from '../utils/fetchSites';
-import {normalizeDLItem, normalizeExtensions} from '../utils/normalize';
+import {
+	normalizeDLItem,
+	normalizeExtensions,
+	parseExtensions,
+} from '../utils/normalize';
 import {buildDLApiURL, buildSpacesApiURL} from '../utils/searchApiURL';
 import DetachedCMSFilesItemSelectorModal from './DetachedCMSFilesItemSelectorModal';
 import {
@@ -292,7 +296,7 @@ function CMSFileSelectorModal({
 	const buildApiURL = useCallback(
 		(folderId: number | null) => {
 			if (activeSiteId !== null) {
-				return buildDLApiURL(extensionList, activeSiteId, folderId);
+				return buildDLApiURL(extensionList, activeSiteId);
 			}
 
 			return buildSpacesApiURL({
@@ -421,10 +425,7 @@ export default function openCMSFileSelectorModal({
 	}
 
 	if (allowedExtensions) {
-		extensionList = allowedExtensions
-			.split(',')
-			.map((ext) => ext.trim().replace(/^\./, ''))
-			.filter(Boolean);
+		extensionList = parseExtensions(allowedExtensions);
 	}
 
 	const finalConfig: CMSFileItemSelectorModalConfig = {

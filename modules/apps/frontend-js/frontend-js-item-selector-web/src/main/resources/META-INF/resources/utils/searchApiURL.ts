@@ -36,11 +36,7 @@ export function buildSpacesApiURL({
 	return url.toString();
 }
 
-export function buildDLApiURL(
-	extensions: string[],
-	siteId: number,
-	_folderId: number | null
-): string {
+export function buildDLApiURL(extensions: string[], siteId: number): string {
 	const url = new URL('/o/search/v1.0/search', location.origin);
 
 	const predicates = [`(scopeGroupId eq ${siteId})`, '(status eq 0)'];

@@ -7,14 +7,11 @@ import {
 	buildDLApiURL,
 	buildSpacesApiURL,
 } from '../../src/main/resources/META-INF/resources/utils/searchApiURL';
-
-function decode(url: string) {
-	return decodeURIComponent(url).replace(/\+/g, ' ');
-}
+import {decodeSearchURL} from '../__lib__';
 
 describe('buildSpacesApiURL', () => {
 	it('uses root predicates when no folderId is given', () => {
-		const url = decode(buildSpacesApiURL({}));
+		const url = decodeSearchURL(buildSpacesApiURL({}));
 
 		expect(url).toContain('(cmsRoot eq true)');
 		expect(url).toContain("(cmsSection eq 'files')");
@@ -23,14 +20,14 @@ describe('buildSpacesApiURL', () => {
 	});
 
 	it('scopes to folderId when given', () => {
-		const url = decode(buildSpacesApiURL({folderId: 42}));
+		const url = decodeSearchURL(buildSpacesApiURL({folderId: 42}));
 
 		expect(url).toContain('(folderId eq 42)');
 		expect(url).not.toContain('(cmsRoot eq true)');
 	});
 
 	it('includes extra filters', () => {
-		const url = decode(
+		const url = decodeSearchURL(
 			buildSpacesApiURL({
 				filters: ["(extension in ('mp4'))", '(videoURL ne null)'],
 			})
@@ -41,7 +38,7 @@ describe('buildSpacesApiURL', () => {
 	});
 
 	it('always adds the status filter', () => {
-		const url = decode(buildSpacesApiURL({}));
+		const url = decodeSearchURL(buildSpacesApiURL({}));
 
 		expect(url).toContain('(status in (0, 2, 3))');
 	});
@@ -49,20 +46,20 @@ describe('buildSpacesApiURL', () => {
 
 describe('buildDLApiURL', () => {
 	it('filters by site and published status', () => {
-		const url = decode(buildDLApiURL([], 123, null));
+		const url = decodeSearchURL(buildDLApiURL([], 123));
 
 		expect(url).toContain('(scopeGroupId eq 123)');
 		expect(url).toContain('(status eq 0)');
 	});
 
 	it('adds an extension predicate when extensions are given', () => {
-		const url = decode(buildDLApiURL(['mp4', 'avi'], 123, null));
+		const url = decodeSearchURL(buildDLApiURL(['mp4', 'avi'], 123));
 
 		expect(url).toContain("extension in ('mp4','avi')");
 	});
 
 	it('omits the extension predicate when no extensions are given', () => {
-		const url = decode(buildDLApiURL([], 123, null));
+		const url = decodeSearchURL(buildDLApiURL([], 123));
 
 		expect(url).not.toContain('extension in');
 	});

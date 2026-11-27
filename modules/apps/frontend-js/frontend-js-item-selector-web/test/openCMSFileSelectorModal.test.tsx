@@ -13,6 +13,8 @@ import {
 	setLastBreadcrumbFolders,
 } from '../src/main/resources/META-INF/resources/item_selector/lastBreadcrumbFoldersMemory';
 import openCMSFileSelectorModal from '../src/main/resources/META-INF/resources/item_selector/openCMSFileSelectorModal';
+import {clearSitesCache} from '../src/main/resources/META-INF/resources/utils/fetchSites';
+import {decodeSearchURL} from './__lib__';
 
 const FOLDER_MEMORY_KEY = 'test-field';
 
@@ -50,9 +52,7 @@ const mockedFetch = fetch as jest.Mock;
 
 function getDecodedSearchURLs() {
 	return mockedFetch.mock.calls
-		.map(([url]) =>
-			decodeURIComponent(url?.toString?.() ?? '').replace(/\+/g, ' ')
-		)
+		.map(([url]) => decodeSearchURL(url?.toString?.() ?? ''))
 		.filter((url) => url.includes('/o/search/v1.0/search'));
 }
 
@@ -355,6 +355,8 @@ describe('openCMSFileSelectorModal', () => {
 		});
 
 		beforeEach(() => {
+			clearSitesCache();
+
 			Liferay.FeatureFlags['LPD-95652'] = true;
 
 			mockedFetch.mockImplementation((url: string | URL) => {

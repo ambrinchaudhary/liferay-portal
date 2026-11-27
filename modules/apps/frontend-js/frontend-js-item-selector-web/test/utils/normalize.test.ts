@@ -6,6 +6,7 @@
 import {
 	normalizeDLItem,
 	normalizeExtensions,
+	parseExtensions,
 } from '../../src/main/resources/META-INF/resources/utils/normalize';
 
 describe('normalizeDLItem', () => {
@@ -45,6 +46,16 @@ describe('normalizeDLItem', () => {
 		});
 
 		expect(withNameOnly.title).toBe('file.pdf');
+	});
+});
+
+describe('parseExtensions', () => {
+	it('splits on comma and strips leading dots', () => {
+		expect(parseExtensions('.jpg, .png')).toEqual(['jpg', 'png']);
+	});
+
+	it('filters out empty entries', () => {
+		expect(parseExtensions(' , , ')).toEqual([]);
 	});
 });
 

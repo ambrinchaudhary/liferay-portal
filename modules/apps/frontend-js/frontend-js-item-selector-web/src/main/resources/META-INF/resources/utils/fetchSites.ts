@@ -7,7 +7,21 @@ import {fetch} from 'frontend-js-web';
 
 import {Site} from '../item_selector/types';
 
-export async function fetchSites(): Promise<Site[]> {
+let sitesPromise: Promise<Site[]> | null = null;
+
+export function clearSitesCache(): void {
+	sitesPromise = null;
+}
+
+export function fetchSites(): Promise<Site[]> {
+	if (!sitesPromise) {
+		sitesPromise = doFetchSites();
+	}
+
+	return sitesPromise;
+}
+
+async function doFetchSites(): Promise<Site[]> {
 	try {
 		const companyGroupId = Number(
 			(
@@ -25,27 +39,26 @@ export async function fetchSites(): Promise<Site[]> {
 			? await response.json()
 			: null;
 
-		const sites: Site[] = (
-			(data?.items as Array<{
-				descriptiveName?: string;
-				id: number;
-				name: string;
-			}>) ?? []
-		)
-			.filter((site) => site.id !== companyGroupId)
-			.map((site) => ({
-				id: site.id,
-				kind: 'site' as const,
-				name: site.descriptiveName || site.name,
-			}));
-
-		sites.push({
-			id: companyGroupId,
-			kind: 'global',
-			name: Liferay.Language.get('global'),
-		});
-
-		return sites;
+		return [
+			...(
+				(data?.items as Array<{
+					descriptiveName?: string;
+					id: number;
+					name: string;
+				}>) ?? []
+			)
+				.filter((site) => site.id !== companyGroupId)
+				.map((site) => ({
+					id: site.id,
+					kind: 'site' as const,
+					name: site.descriptiveName || site.name,
+				})),
+			{
+				id: companyGroupId,
+				kind: 'global' as const,
+				name: Liferay.Language.get('global'),
+			},
+		];
 	}
 	catch {
 		return [];
