@@ -479,6 +479,7 @@ function CMSFileSelectorModal({
 	return (
 		<DetachedCMSFilesItemSelectorModal
 			{...finalConfig}
+			activeKey={activeKey}
 			allowedExtensions={allowedExtensions}
 			buildApiURL={buildApiURL}
 			fdsProps={{
@@ -517,7 +518,6 @@ function CMSFileSelectorModal({
 						: (items as CMSFile[])
 				)
 			}
-			resetKey={activeKey}
 			rootLabel={rootLabel}
 			sidebar={sidebar}
 		/>
