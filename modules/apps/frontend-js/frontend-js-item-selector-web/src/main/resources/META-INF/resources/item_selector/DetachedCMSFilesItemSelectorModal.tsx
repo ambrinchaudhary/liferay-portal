@@ -159,9 +159,9 @@ const NewItemsNotificationComponent = ({
 
 type DetachedCMSFilesItemSelectorModalProps<T extends Record<string, any>> =
 	TDetachedItemSelectorModal<T> & {
+		activeKey?: string;
 		buildApiURL: (folderId: number | null) => string;
 		folderMemoryKey?: string;
-		resetKey?: string;
 		rootLabel?: string;
 	};
 
@@ -214,10 +214,10 @@ const DetachedCMSFilesItemSelectorModal = <T extends Record<string, any>>(
 	props: DetachedCMSFilesItemSelectorModalProps<T>
 ) => {
 	const {
+		activeKey,
 		buildApiURL,
 		folderMemoryKey,
 		onItemsChange,
-		resetKey,
 		rootLabel,
 		...restProps
 	} = props;
@@ -237,7 +237,7 @@ const DetachedCMSFilesItemSelectorModal = <T extends Record<string, any>>(
 
 	const isBrowserTabVisible = useBrowserTabVisibility();
 	const lastRequestTimeRef = useRef(new Date().toISOString());
-	const resetKeyRef = useRef(resetKey);
+	const activeKeyRef = useRef(activeKey);
 	const rootLabelRef = useRef(rootLabel);
 
 	useEffect(() => {
@@ -273,14 +273,14 @@ const DetachedCMSFilesItemSelectorModal = <T extends Record<string, any>>(
 	}, [folderMemoryKey]);
 
 	useEffect(() => {
-		if (resetKeyRef.current === resetKey) {
+		if (activeKeyRef.current === activeKey) {
 			return;
 		}
 
-		resetKeyRef.current = resetKey;
+		activeKeyRef.current = activeKey;
 
 		setBreadcrumbFolders(getRootBreadcrumbFolders(rootLabel));
-	}, [resetKey, rootLabel]);
+	}, [activeKey, rootLabel]);
 
 	const activeFolderId = breadcrumbFolders.at(-1)!.id;
 	const activeScopeId = breadcrumbFolders.at(-1)!.scopeId ?? null;
