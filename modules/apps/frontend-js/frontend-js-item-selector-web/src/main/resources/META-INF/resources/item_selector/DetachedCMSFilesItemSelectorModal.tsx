@@ -158,7 +158,7 @@ const NewItemsNotificationComponent = ({
 };
 
 type DetachedCMSFilesItemSelectorModalProps<T extends Record<string, any>> =
-	TDetachedItemSelectorModal<T> & {
+	Omit<TDetachedItemSelectorModal<T>, 'apiURL'> & {
 		activeKey?: string;
 		buildApiURL: (folderId: number | null) => string;
 		folderMemoryKey?: string;
